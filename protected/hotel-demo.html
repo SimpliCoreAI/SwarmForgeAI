@@ -1,0 +1,2478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SwarmForge AI • Hotel OS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@500;600&display=swap');
+        :root { --primary: #0F172A; }
+        body { font-family: 'Inter', system-ui, sans-serif; }
+        .font-display { font-family: 'Space Grotesk', 'Inter', sans-serif; font-weight: 600; }
+        .section-header { font-size: 1.1rem; font-weight: 600; color: #0F172A; }
+        .agent-card { transition: all 0.2s cubic-bezier(0.4,0,0.2,1); }
+        .agent-card:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgb(0 0 0/.05),0 4px 6px -4px rgb(0 0 0/.05); }
+        .log-entry { transition: all 0.2s ease; }
+        .demo-modal { animation: modalPopIn 0.2s ease forwards; }
+        @keyframes modalPopIn { from { opacity:0; transform:scale(0.97) translateY(6px); } to { opacity:1; transform:scale(1) translateY(0); } }
+
+        /* Discovery step indicators */
+        .disc-step { transition: all 0.3s ease; }
+        .disc-step.active { border-color: #0F172A; background: #0F172A; color: white; }
+        .disc-step.done { border-color: #059669; background: #059669; color: white; }
+
+        /* Goal panel slide-in */
+        #goal-panel { transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.4,0,0.2,1); }
+        #goal-panel.open { transform: translateX(0); }
+
+        /* Agent flow diagram */
+        .flow-node { transition: all 0.2s ease; }
+        .flow-node:hover { transform: scale(1.03); }
+
+        /* Locked feature */
+        .locked-card { position: relative; overflow: hidden; }
+        .locked-card::after { content:''; position:absolute; inset:0; background:repeating-linear-gradient(45deg,transparent,transparent 6px,rgba(248,250,252,0.6) 6px,rgba(248,250,252,0.6) 12px); pointer-events:none; }
+
+        /* Pulse badge */
+        @keyframes badge-pulse { 0%,100%{opacity:1} 50%{opacity:0.6} }
+        .badge-pulse { animation: badge-pulse 2s ease infinite; }
+
+        /* OTA connection line */
+        .connect-line { stroke-dasharray: 6 3; animation: dash 1s linear infinite; }
+        @keyframes dash { to { stroke-dashoffset: -18; } }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900">
+
+<!-- ═══════════════ TOP NAV ═══════════════ -->
+<nav class="bg-white border-b border-slate-200 sticky top-0 z-50">
+    <div class="max-w-screen-2xl mx-auto">
+        <div class="px-8 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-x-3">
+                <div class="flex items-center gap-x-2">
+                    <div class="w-9 h-9 bg-slate-900 rounded-2xl flex items-center justify-center">
+                        <i class="fa-solid fa-robot text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <span class="font-display text-2xl tracking-tighter">SwarmForge</span>
+                        <span class="text-xs font-medium text-slate-500 tracking-[2px] ml-0.5">AI</span>
+                    </div>
+                </div>
+                <div class="px-3 py-1 bg-emerald-100 text-emerald-700 text-xs font-semibold rounded-full flex items-center gap-x-1">
+                    <i class="fa-solid fa-check-circle text-xs"></i><span>HOTEL OS</span>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-x-3">
+                <!-- Hotel Info + Manage Subscription -->
+                <div class="flex items-center gap-x-2 px-4 py-2 bg-white border border-slate-200 rounded-2xl">
+                    <div class="text-right">
+                        <div class="font-semibold text-sm">The Meridian Hotel</div>
+                        <div class="text-[10px] text-slate-500">Boutique • 48 rooms • San Francisco</div>
+                    </div>
+                    <div class="w-8 h-8 bg-slate-200 rounded-xl overflow-hidden">
+                        <img src="https://i.pravatar.cc/32?img=28" alt="avatar">
+                    </div>
+                    <button onclick="showSubscriptionModal()" class="ml-1 px-2.5 py-1 text-[10px] font-semibold bg-violet-100 text-violet-700 hover:bg-violet-200 rounded-xl transition-colors flex items-center gap-x-1">
+                        <i class="fa-solid fa-crown text-[9px]"></i> Manage Plan
+                    </button>
+                </div>
+
+                <!-- Active Plan Badge -->
+                <div class="flex items-center gap-x-2 px-3 py-1.5 bg-white border border-slate-200 rounded-2xl text-sm">
+                    <div><span class="font-semibold">Growth</span><span class="text-emerald-600 text-xs font-medium ml-1">$349/mo</span></div>
+                    <div class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+                </div>
+
+                <button onclick="showPrivacyModal()" class="flex items-center gap-x-2 px-3 py-1.5 bg-white border border-emerald-200 hover:bg-emerald-50 rounded-2xl transition-colors text-xs font-semibold text-emerald-700">
+                    <i class="fa-solid fa-shield-halved text-emerald-500"></i> Privacy-First
+                </button>
+                <button onclick="showProfileMenu()" class="flex items-center gap-x-2 px-3 py-2 hover:bg-slate-100 rounded-2xl transition-colors">
+                    <i class="fa-solid fa-user-circle text-xl text-slate-600"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- ═══════════════ MAIN CONTENT ═══════════════ -->
+<div class="max-w-screen-2xl mx-auto px-8 pt-8 pb-16">
+
+    <!-- Page Header -->
+    <div class="flex items-end justify-between mb-8">
+        <div>
+            <h1 class="font-display text-4xl tracking-tighter font-semibold">Good morning, Priya.</h1>
+            <p class="text-slate-600 mt-1">Your AI team has been active overnight. Here's what's happening.</p>
+        </div>
+        <div class="flex items-center gap-x-3">
+            <button onclick="runDiscoveryFlow()"
+                    class="flex items-center gap-x-2 px-5 py-2.5 bg-white border border-slate-300 hover:bg-slate-50 text-sm font-medium rounded-2xl transition-all active:scale-[0.985]">
+                <i class="fa-solid fa-radar mr-1"></i> Run Discovery
+            </button>
+            <button onclick="showIntegrationsPanel()"
+                    class="flex items-center gap-x-2 px-5 py-2.5 bg-white border border-slate-300 hover:bg-slate-50 text-sm font-medium rounded-2xl transition-all active:scale-[0.985]">
+                <i class="fa-solid fa-plug mr-1"></i> Integrations
+            </button>
+            <button onclick="openGoalPanel()"
+                    class="flex items-center gap-x-2 px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold rounded-2xl transition-all active:scale-[0.985]">
+                <i class="fa-solid fa-plus mr-1"></i> New Goal
+            </button>
+        </div>
+    </div>
+
+    <!-- Key Metrics -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        <div class="bg-white border border-slate-200 rounded-3xl p-5">
+            <div class="flex justify-between items-start">
+                <div>
+                    <div class="text-xs font-medium text-slate-500 tracking-wider">OCCUPANCY (MTD)</div>
+                    <div class="text-4xl font-semibold tabular-nums mt-1">78<span class="text-2xl font-normal text-slate-400">%</span></div>
+                </div>
+                <div class="text-emerald-600 text-xs font-medium flex items-center gap-x-1"><i class="fa-solid fa-arrow-trend-up"></i><span>+12%</span></div>
+            </div>
+            <div class="text-[10px] text-slate-500 mt-4">vs last month • Agent assisted: 14 direct bookings</div>
+        </div>
+        <div class="bg-white border border-slate-200 rounded-3xl p-5">
+            <div class="flex justify-between items-start">
+                <div>
+                    <div class="text-xs font-medium text-slate-500 tracking-wider">REVENUE THIS MONTH</div>
+                    <div class="text-4xl font-semibold tabular-nums mt-1">$184.2k</div>
+                </div>
+                <div class="text-emerald-600 text-xs font-medium flex items-center gap-x-1"><i class="fa-solid fa-arrow-trend-up"></i><span>+8%</span></div>
+            </div>
+            <div class="text-[10px] text-slate-500 mt-4">Notebook flagged +$11k in event upsells</div>
+        </div>
+        <div class="bg-white border border-slate-200 rounded-3xl p-5">
+            <div class="flex justify-between items-start">
+                <div>
+                    <div class="text-xs font-medium text-slate-500 tracking-wider">PENDING APPROVALS</div>
+                    <div class="text-4xl font-semibold tabular-nums mt-1">8</div>
+                </div>
+                <i class="fa-solid fa-clock text-amber-500 text-xl mt-1"></i>
+            </div>
+            <div class="text-[10px] text-amber-600 font-medium mt-4">4 high priority • Marketing + Ancillary + Financial</div>
+        </div>
+        <div class="bg-white border border-slate-200 rounded-3xl p-5">
+            <div class="flex justify-between items-start">
+                <div>
+                    <div class="text-xs font-medium text-slate-500 tracking-wider">AGENT ACTIONS (7d)</div>
+                    <div class="text-4xl font-semibold tabular-nums mt-1">142</div>
+                </div>
+                <div class="px-2.5 py-0.5 bg-emerald-100 text-emerald-700 text-xs font-semibold rounded-full">+31</div>
+            </div>
+            <div class="text-[10px] text-slate-500 mt-4">94% auto-approved • 6 required your review</div>
+        </div>
+    </div>
+
+    <!-- Main Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- LEFT: Skills + Notebook -->
+        <div class="lg:col-span-5 space-y-6">
+
+            <!-- Skills Hub -->
+            <div class="bg-white border border-slate-200 rounded-3xl p-6">
+                <div class="flex items-center justify-between mb-5">
+                    <div>
+                        <div class="section-header">Active Skills</div>
+                        <div class="text-xs text-slate-500">Modular capabilities enabled for your property</div>
+                    </div>
+                    <button onclick="showSkillsModal()" class="text-xs font-medium flex items-center gap-x-1 text-slate-600 hover:text-slate-900">
+                        <span>Manage</span> <i class="fa-solid fa-arrow-right text-xs"></i>
+                    </button>
+                </div>
+                <div class="space-y-3" id="skills-list"></div>
+
+                <!-- Sub-agents legend -->
+                <div class="mt-5 pt-4 border-t border-slate-100">
+                    <div class="text-[10px] font-semibold text-slate-400 tracking-wider mb-3">ACTIVE SUB-AGENTS</div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div class="flex items-center gap-x-2 px-3 py-2 bg-emerald-50 border border-emerald-200 rounded-xl">
+                            <div class="w-6 h-6 bg-emerald-600 rounded-lg flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-binoculars text-white text-[10px]"></i></div>
+                            <div><div class="text-xs font-semibold">Scout</div><div class="text-[9px] text-slate-500">Trend & opportunity</div></div>
+                        </div>
+                        <div class="flex items-center gap-x-2 px-3 py-2 bg-blue-50 border border-blue-200 rounded-xl">
+                            <div class="w-6 h-6 bg-blue-600 rounded-lg flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-pen-nib text-white text-[10px]"></i></div>
+                            <div><div class="text-xs font-semibold">Creator</div><div class="text-[9px] text-slate-500">Content & campaigns</div></div>
+                        </div>
+                        <div class="flex items-center gap-x-2 px-3 py-2 bg-indigo-50 border border-indigo-200 rounded-xl">
+                            <div class="w-6 h-6 bg-indigo-600 rounded-lg flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-chart-line text-white text-[10px]"></i></div>
+                            <div><div class="text-xs font-semibold">Analyst</div><div class="text-[9px] text-slate-500">Data & insights</div></div>
+                        </div>
+                        <div class="flex items-center gap-x-2 px-3 py-2 bg-amber-50 border border-amber-200 rounded-xl">
+                            <div class="w-6 h-6 bg-amber-500 rounded-lg flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-bolt text-white text-[10px]"></i></div>
+                            <div><div class="text-xs font-semibold">Executor</div><div class="text-[9px] text-slate-500">Actions & approvals</div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notebook Skill -->
+            <div class="bg-white border border-slate-200 rounded-3xl p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-x-3">
+                        <div class="w-9 h-9 bg-indigo-100 text-indigo-600 rounded-2xl flex items-center justify-center">
+                            <i class="fa-solid fa-file-excel text-lg"></i>
+                        </div>
+                        <div>
+                            <div class="font-semibold">Notebook</div>
+                            <div class="text-xs text-slate-500">Analysis • Insights • Recommendations</div>
+                        </div>
+                    </div>
+                    <span class="px-3 py-1 text-xs font-medium bg-emerald-100 text-emerald-700 rounded-full">Active</span>
+                </div>
+                <div class="border border-dashed border-slate-300 rounded-2xl p-4 mb-3">
+                    <div class="flex items-center justify-between mb-2">
+                        <div class="text-xs font-medium text-slate-600">Upload cost sheets, P&amp;L, or opportunity tracker</div>
+                        <!-- Safe Mode Toggle -->
+                        <div class="flex items-center gap-x-2">
+                            <span class="text-[10px] text-slate-500">Safe Mode</span>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" id="safe-mode-toggle" checked onchange="toggleSafeMode(this.checked)" class="sr-only peer">
+                                <div class="w-8 h-4 bg-slate-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-emerald-500"></div>
+                            </label>
+                        </div>
+                    </div>
+                    <div id="safe-mode-banner" class="flex items-center gap-x-2 px-3 py-1.5 bg-emerald-50 border border-emerald-200 rounded-xl mb-3">
+                        <i class="fa-solid fa-shield-halved text-emerald-500 text-xs"></i>
+                        <span class="text-[10px] text-emerald-700 font-medium">Safe Mode ON — PII stripped before AI processing. Your raw data never leaves your tenant.</span>
+                    </div>
+                    <div class="flex items-center gap-x-3">
+                        <button onclick="simulateFileUpload()" class="flex-1 flex items-center justify-center gap-x-2 px-4 py-3 border border-slate-300 hover:bg-slate-50 text-sm font-medium rounded-2xl transition-colors">
+                            <i class="fa-solid fa-upload mr-2"></i><span>Upload Excel / CSV</span>
+                        </button>
+                        <button onclick="runPrebuiltAnalysis()" class="flex-1 flex items-center justify-center gap-x-2 px-4 py-3 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-2xl transition-colors">
+                            <span>Run Analysis</span>
+                        </button>
+                    </div>
+                </div>
+                <!-- PII Scan Result -->
+                <div id="pii-scan-result" class="hidden mb-3"></div>
+                <div class="text-[10px] text-slate-500 flex items-center gap-x-1">
+                    <i class="fa-solid fa-info-circle"></i>
+                    <span>Last analysis: Feb 3 • Labor cost flagged +14% vs forecast</span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- RIGHT: Approvals + Activity -->
+        <div class="lg:col-span-7 space-y-6">
+
+            <!-- Pending Approvals -->
+            <div class="bg-white border border-slate-200 rounded-3xl p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="section-header">Pending Your Approval</div>
+                    <span class="text-xs px-3 py-1 bg-amber-100 text-amber-700 font-medium rounded-full">7 items</span>
+                </div>
+                <div class="space-y-3" id="approvals-list"></div>
+            </div>
+
+            <!-- Recent Agent Activity -->
+            <div class="bg-white border border-slate-200 rounded-3xl p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="section-header">Recent Agent Activity</div>
+                    <button onclick="showTelemetryModal()" class="text-xs text-slate-500 hover:text-slate-700 flex items-center gap-x-1">
+                        View full telemetry <i class="fa-solid fa-arrow-right-long text-xs ml-1"></i>
+                    </button>
+                </div>
+                <div class="space-y-2 text-sm" id="activity-log"></div>
+            </div>
+
+            <!-- ── Missed Opportunities (locked behind Pro) ── -->
+            <div class="bg-white border border-slate-200 rounded-3xl p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <div class="section-header">Missed Opportunities</div>
+                        <div class="text-xs text-slate-500">Revenue your agents couldn't act on this week</div>
+                    </div>
+                    <button onclick="showSubscriptionModal()" class="flex items-center gap-x-1.5 px-3 py-1.5 bg-violet-600 hover:bg-violet-700 text-white text-xs font-semibold rounded-xl transition-colors">
+                        <i class="fa-solid fa-crown text-[10px]"></i> Upgrade to Pro
+                    </button>
+                </div>
+
+                <div class="space-y-3">
+                    <!-- Missed item 1 -->
+                    <div class="locked-card relative flex items-start gap-x-4 p-4 border border-red-100 bg-red-50/40 rounded-2xl">
+                        <div class="w-8 h-8 flex-shrink-0 bg-red-100 rounded-xl flex items-center justify-center mt-0.5">
+                            <i class="fa-solid fa-dollar-sign text-red-500 text-sm"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center gap-x-2 mb-1">
+                                <span class="font-semibold text-sm">Dynamic Pricing — Valentine's Weekend</span>
+                                <span class="px-2 py-0.5 text-[9px] font-bold bg-red-100 text-red-600 rounded uppercase tracking-wide">Pro</span>
+                            </div>
+                            <div class="text-xs text-slate-600">Scout detected 340% demand surge for Feb 14-16. Dynamic Pricing agent could have raised ADR by est. <span class="font-semibold text-red-600">+$68/night</span>. Requires Pro tier.</div>
+                        </div>
+                        <div class="text-right flex-shrink-0">
+                            <div class="text-lg font-bold text-red-500">$3,264</div>
+                            <div class="text-[10px] text-slate-400">est. missed</div>
+                        </div>
+                    </div>
+
+                    <!-- Missed item 2 -->
+                    <div class="locked-card relative flex items-start gap-x-4 p-4 border border-amber-100 bg-amber-50/40 rounded-2xl">
+                        <div class="w-8 h-8 flex-shrink-0 bg-amber-100 rounded-xl flex items-center justify-center mt-0.5">
+                            <i class="fa-solid fa-link text-amber-500 text-sm"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center gap-x-2 mb-1">
+                                <span class="font-semibold text-sm">QuickBooks Reconciliation Backlog</span>
+                                <span class="px-2 py-0.5 text-[9px] font-bold bg-amber-100 text-amber-600 rounded uppercase tracking-wide">Coming Soon</span>
+                            </div>
+                            <div class="text-xs text-slate-600">14 OTA payouts from Jan unreconciled. QuickBooks Sync (coming next) would auto-create journal entries and flag a $2,100 discrepancy.</div>
+                        </div>
+                        <div class="text-right flex-shrink-0">
+                            <div class="text-lg font-bold text-amber-500">14 txns</div>
+                            <div class="text-[10px] text-slate-400">unreconciled</div>
+                        </div>
+                    </div>
+
+                    <!-- Missed item 3 -->
+                    <div class="locked-card relative flex items-start gap-x-4 p-4 border border-slate-200 bg-slate-50/60 rounded-2xl">
+                        <div class="w-8 h-8 flex-shrink-0 bg-slate-200 rounded-xl flex items-center justify-center mt-0.5">
+                            <i class="fa-solid fa-users text-slate-500 text-sm"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center gap-x-2 mb-1">
+                                <span class="font-semibold text-sm">Payroll Overtime Risk — Feb Week 2</span>
+                                <span class="px-2 py-0.5 text-[9px] font-bold bg-slate-200 text-slate-500 rounded uppercase tracking-wide">Coming Soon</span>
+                            </div>
+                            <div class="text-xs text-slate-600">Analyst flagged 3 housekeeping staff trending toward overtime. Payroll & Labor agent (coming next) would auto-suggest schedule rebalancing.</div>
+                        </div>
+                        <div class="text-right flex-shrink-0">
+                            <div class="text-lg font-bold text-slate-500">$840</div>
+                            <div class="text-[10px] text-slate-400">avoidable OT</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4 text-center text-[10px] text-slate-400">
+                    Unlock all Pro features from <span class="font-semibold text-violet-600">$599/mo</span> • Cancel anytime
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ═══ AGENT-IN-THE-LOOP FLOW ═══ -->
+    <div class="mt-6 bg-white border border-slate-200 rounded-3xl p-6">
+        <div class="flex items-center justify-between mb-6">
+            <div>
+                <div class="section-header">How Your AI Team Works — Agent-in-the-Loop</div>
+                <div class="text-xs text-slate-500 mt-0.5">Every high-impact action pauses for your approval before execution</div>
+            </div>
+            <div class="px-3 py-1 bg-emerald-100 text-emerald-700 text-xs font-semibold rounded-full flex items-center gap-x-1">
+                <div class="w-1.5 h-1.5 bg-emerald-500 rounded-full badge-pulse"></div> Live
+            </div>
+        </div>
+
+        <!-- Swimlane diagram -->
+        <div class="overflow-x-auto pb-2">
+            <div style="min-width:680px">
+                <!-- Row labels -->
+                <div class="grid grid-cols-6 gap-3 mb-2">
+                    <div class="text-[9px] font-semibold text-slate-400 tracking-wider text-center">YOU</div>
+                    <div class="text-[9px] font-semibold text-slate-400 tracking-wider text-center">MASTER AGENT</div>
+                    <div class="text-[9px] font-semibold text-slate-400 tracking-wider text-center col-span-2">SUB-AGENTS</div>
+                    <div class="text-[9px] font-semibold text-slate-400 tracking-wider text-center">APPROVAL GATE</div>
+                    <div class="text-[9px] font-semibold text-slate-400 tracking-wider text-center">TOOLS / OTA</div>
+                </div>
+
+                <!-- Flow nodes -->
+                <div class="grid grid-cols-6 gap-3 items-center">
+                    <!-- YOU: Goal -->
+                    <div class="flex flex-col items-center gap-y-2">
+                        <div class="w-12 h-12 bg-slate-900 rounded-2xl flex items-center justify-center flow-node cursor-pointer" title="You set a goal or approve actions">
+                            <i class="fa-solid fa-user text-white text-base"></i>
+                        </div>
+                        <div class="text-[9px] text-center text-slate-500 font-medium">Set Goal /<br>Approve</div>
+                    </div>
+
+                    <!-- MASTER AGENT -->
+                    <div class="flex flex-col items-center gap-y-2">
+                        <div class="w-12 h-12 bg-violet-600 rounded-2xl flex items-center justify-center flow-node cursor-pointer" title="Supervisor breaks down goal and assigns to sub-agents">
+                            <i class="fa-solid fa-brain text-white text-base"></i>
+                        </div>
+                        <div class="text-[9px] text-center text-slate-500 font-medium">Supervisor<br>Agent</div>
+                    </div>
+
+                    <!-- SUB-AGENTS (span 2) -->
+                    <div class="col-span-2 flex flex-col gap-y-2">
+                        <div class="grid grid-cols-2 gap-2">
+                            <div class="flex items-center gap-x-1.5 px-2 py-1.5 bg-emerald-50 border border-emerald-200 rounded-xl flow-node cursor-pointer" title="Scouts market trends and OTA data">
+                                <div class="w-6 h-6 bg-emerald-600 rounded-lg flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-binoculars text-white text-[9px]"></i></div>
+                                <div class="text-[9px] font-semibold">Scout</div>
+                            </div>
+                            <div class="flex items-center gap-x-1.5 px-2 py-1.5 bg-blue-50 border border-blue-200 rounded-xl flow-node cursor-pointer" title="Creates content and campaigns">
+                                <div class="w-6 h-6 bg-blue-600 rounded-lg flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-pen-nib text-white text-[9px]"></i></div>
+                                <div class="text-[9px] font-semibold">Creator</div>
+                            </div>
+                            <div class="flex items-center gap-x-1.5 px-2 py-1.5 bg-indigo-50 border border-indigo-200 rounded-xl flow-node cursor-pointer" title="Analyzes data and surfaces recommendations">
+                                <div class="w-6 h-6 bg-indigo-600 rounded-lg flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-chart-line text-white text-[9px]"></i></div>
+                                <div class="text-[9px] font-semibold">Analyst</div>
+                            </div>
+                            <div class="flex items-center gap-x-1.5 px-2 py-1.5 bg-amber-50 border border-amber-200 rounded-xl flow-node cursor-pointer" title="Executes approved actions">
+                                <div class="w-6 h-6 bg-amber-500 rounded-lg flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-bolt text-white text-[9px]"></i></div>
+                                <div class="text-[9px] font-semibold">Executor</div>
+                            </div>
+                        </div>
+                        <div class="text-[9px] text-center text-slate-400">Parallel execution</div>
+                    </div>
+
+                    <!-- APPROVAL GATE -->
+                    <div class="flex flex-col items-center gap-y-2">
+                        <div onclick="showApprovalGateDemo()" class="w-12 h-12 bg-amber-100 border-2 border-amber-400 rounded-2xl flex items-center justify-center flow-node cursor-pointer" title="Click to demo approval gate">
+                            <i class="fa-solid fa-shield-halved text-amber-600 text-base"></i>
+                        </div>
+                        <div class="text-[9px] text-center text-slate-500 font-medium">Human<br>Approval</div>
+                        <div class="text-[9px] text-center text-amber-600 font-semibold cursor-pointer hover:underline" onclick="showApprovalGateDemo()">Try it →</div>
+                    </div>
+
+                    <!-- TOOLS / OTA -->
+                    <div class="flex flex-col items-center gap-y-2">
+                        <div class="grid grid-cols-2 gap-1.5">
+                            <div class="w-9 h-9 bg-blue-100 rounded-xl flex items-center justify-center flow-node" title="Booking.com MCP"><i class="fa-solid fa-globe text-blue-500 text-sm"></i></div>
+                            <div class="w-9 h-9 bg-orange-100 rounded-xl flex items-center justify-center flow-node" title="MakeMyTrip MCP"><i class="fa-solid fa-plane text-orange-500 text-sm"></i></div>
+                            <div class="w-9 h-9 bg-pink-100 rounded-xl flex items-center justify-center flow-node" title="Instagram OAuth"><i class="fa-brands fa-instagram text-pink-500 text-sm"></i></div>
+                            <div class="w-9 h-9 bg-slate-100 rounded-xl flex items-center justify-center flow-node" title="Email & more"><i class="fa-solid fa-ellipsis text-slate-500 text-sm"></i></div>
+                        </div>
+                        <div class="text-[9px] text-center text-slate-400">Platforms</div>
+                    </div>
+                </div>
+
+                <!-- Flow arrows (row below) -->
+                <div class="flex items-center justify-between mt-4 px-6">
+                    <div class="flex-1 h-px bg-slate-200 relative">
+                        <div class="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-2 border-r-2 border-t-2 border-slate-300 rotate-45"></div>
+                    </div>
+                    <div class="mx-3 text-[9px] text-slate-400 whitespace-nowrap">assigns tasks</div>
+                    <div class="flex-1 h-px bg-slate-200 relative">
+                        <div class="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-2 border-r-2 border-t-2 border-slate-300 rotate-45"></div>
+                    </div>
+                    <div class="mx-3 text-[9px] text-slate-400 whitespace-nowrap">proposes actions</div>
+                    <div class="flex-1 h-px bg-amber-300 relative">
+                        <div class="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-2 border-r-2 border-t-2 border-amber-400 rotate-45"></div>
+                    </div>
+                    <div class="mx-3 text-[9px] text-amber-600 font-semibold whitespace-nowrap">YOU approve</div>
+                    <div class="flex-1 h-px bg-emerald-300 relative">
+                        <div class="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-2 border-r-2 border-t-2 border-emerald-400 rotate-45"></div>
+                    </div>
+                    <div class="ml-3 text-[9px] text-emerald-600 font-semibold whitespace-nowrap">executes</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <!-- ═══ ANCILLARY REVENUE SECTION ═══ -->
+    <div class="mt-8 bg-white border border-slate-200 rounded-3xl overflow-hidden">
+
+        <!-- Section header -->
+        <div class="px-6 py-5 border-b border-slate-100 flex items-center justify-between flex-wrap gap-3">
+            <div class="flex items-center gap-x-3">
+                <div class="w-10 h-10 bg-violet-600 rounded-2xl flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-champagne-glasses text-white text-lg"></i>
+                </div>
+                <div>
+                    <div class="section-header">Ancillary Revenue Intelligence</div>
+                    <div class="text-xs text-slate-500 mt-0.5">AI-powered bundle offers, upsells & experience packages — reviewed by you before guest contact</div>
+                </div>
+            </div>
+            <div class="flex items-center gap-x-3">
+                <div class="px-3 py-1.5 bg-violet-50 border border-violet-200 rounded-xl text-xs font-semibold text-violet-700 flex items-center gap-x-1.5">
+                    <i class="fa-solid fa-bolt text-xs"></i> 4 opportunities identified today
+                </div>
+                <button onclick="showAncillaryServicesModal()" class="px-4 py-1.5 text-xs font-medium border border-slate-300 hover:bg-slate-50 rounded-xl transition-colors flex items-center gap-x-1.5">
+                    <i class="fa-solid fa-sliders text-xs"></i> Manage Services
+                </button>
+            </div>
+        </div>
+
+        <!-- Revenue summary strip -->
+        <div class="grid grid-cols-2 md:grid-cols-4 border-b border-slate-100">
+            <div class="px-6 py-4 border-r border-slate-100">
+                <div class="text-[10px] font-medium text-slate-400 tracking-wider">ANCILLARY REV (MTD)</div>
+                <div class="text-2xl font-semibold mt-1">$8,240</div>
+                <div class="text-[10px] text-emerald-600 font-medium mt-0.5 flex items-center gap-x-1"><i class="fa-solid fa-arrow-trend-up text-[9px]"></i> +34% vs last month</div>
+            </div>
+            <div class="px-6 py-4 border-r border-slate-100">
+                <div class="text-[10px] font-medium text-slate-400 tracking-wider">AVG UPLIFT / BOOKING</div>
+                <div class="text-2xl font-semibold mt-1">$171</div>
+                <div class="text-[10px] text-slate-400 mt-0.5">per stay • 48 bookings this month</div>
+            </div>
+            <div class="px-6 py-4 border-r border-slate-100">
+                <div class="text-[10px] font-medium text-slate-400 tracking-wider">OFFER ACCEPTANCE RATE</div>
+                <div class="text-2xl font-semibold mt-1">68%</div>
+                <div class="text-[10px] text-slate-400 mt-0.5">vs 31% industry average</div>
+            </div>
+            <div class="px-6 py-4">
+                <div class="text-[10px] font-medium text-slate-400 tracking-wider">PENDING OFFERS</div>
+                <div class="text-2xl font-semibold mt-1">4</div>
+                <div class="text-[10px] text-amber-600 font-medium mt-0.5">Awaiting your approval</div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-0">
+
+            <!-- Left col: Service catalogue -->
+            <div class="border-r border-slate-100 p-6">
+                <div class="text-xs font-semibold text-slate-500 tracking-wider mb-4">YOUR SERVICE CATALOGUE</div>
+                <div class="space-y-2" id="ancillary-services-list">
+                    <div class="flex items-center justify-between py-2 border-b border-slate-50">
+                        <div class="flex items-center gap-x-2.5">
+                            <div class="w-7 h-7 bg-rose-100 rounded-lg flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-spa text-rose-500 text-xs"></i></div>
+                            <div><div class="text-xs font-medium">Couples Spa 90min</div><div class="text-[10px] text-slate-400">Spa & Wellness</div></div>
+                        </div>
+                        <div class="text-xs font-semibold text-emerald-600">$220</div>
+                    </div>
+                    <div class="flex items-center justify-between py-2 border-b border-slate-50">
+                        <div class="flex items-center gap-x-2.5">
+                            <div class="w-7 h-7 bg-amber-100 rounded-lg flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-champagne-glasses text-amber-500 text-xs"></i></div>
+                            <div><div class="text-xs font-medium">Champagne Dinner for 2</div><div class="text-[10px] text-slate-400">Food & Beverage</div></div>
+                        </div>
+                        <div class="text-xs font-semibold text-emerald-600">$180</div>
+                    </div>
+                    <div class="flex items-center justify-between py-2 border-b border-slate-50">
+                        <div class="flex items-center gap-x-2.5">
+                            <div class="w-7 h-7 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-car text-blue-500 text-xs"></i></div>
+                            <div><div class="text-xs font-medium">Airport Transfer</div><div class="text-[10px] text-slate-400">Transport</div></div>
+                        </div>
+                        <div class="text-xs font-semibold text-emerald-600">$85</div>
+                    </div>
+                    <div class="flex items-center justify-between py-2 border-b border-slate-50">
+                        <div class="flex items-center gap-x-2.5">
+                            <div class="w-7 h-7 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-person-running text-green-500 text-xs"></i></div>
+                            <div><div class="text-xs font-medium">Yoga Class (private)</div><div class="text-[10px] text-slate-400">Fitness & Wellness</div></div>
+                        </div>
+                        <div class="text-xs font-semibold text-emerald-600">$65</div>
+                    </div>
+                    <div class="flex items-center justify-between py-2 border-b border-slate-50">
+                        <div class="flex items-center gap-x-2.5">
+                            <div class="w-7 h-7 bg-violet-100 rounded-lg flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-masks-theater text-violet-500 text-xs"></i></div>
+                            <div><div class="text-xs font-medium">SF Jazz Show Tickets</div><div class="text-[10px] text-slate-400">Experiences</div></div>
+                        </div>
+                        <div class="text-xs font-semibold text-emerald-600">$120</div>
+                    </div>
+                    <div class="flex items-center justify-between py-2 border-b border-slate-50">
+                        <div class="flex items-center gap-x-2.5">
+                            <div class="w-7 h-7 bg-orange-100 rounded-lg flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-mug-hot text-orange-500 text-xs"></i></div>
+                            <div><div class="text-xs font-medium">In-Room Breakfast</div><div class="text-[10px] text-slate-400">Food & Beverage</div></div>
+                        </div>
+                        <div class="text-xs font-semibold text-emerald-600">$45</div>
+                    </div>
+                    <div class="flex items-center justify-between py-2">
+                        <div class="flex items-center gap-x-2.5">
+                            <div class="w-7 h-7 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-wine-bottle text-slate-500 text-xs"></i></div>
+                            <div><div class="text-xs font-medium">Welcome Wine Amenity</div><div class="text-[10px] text-slate-400">Complimentary Upgrade</div></div>
+                        </div>
+                        <div class="text-xs font-semibold text-slate-500">Comp</div>
+                    </div>
+                </div>
+                <button onclick="showAncillaryServicesModal()" class="mt-4 w-full py-2 text-xs font-medium border border-dashed border-slate-300 rounded-xl hover:bg-slate-50 transition-colors text-slate-500 flex items-center justify-center gap-x-1.5">
+                    <i class="fa-solid fa-plus text-xs"></i> Add Service
+                </button>
+            </div>
+
+            <!-- Right 2 cols: Upcoming opportunities -->
+            <div class="lg:col-span-2 p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="text-xs font-semibold text-slate-500 tracking-wider">UPCOMING BOOKING OPPORTUNITIES</div>
+                    <button onclick="runAncillaryAnalysis()" class="px-3 py-1.5 bg-violet-600 hover:bg-violet-700 text-white text-xs font-semibold rounded-xl transition-colors flex items-center gap-x-1.5">
+                        <i class="fa-solid fa-radar text-xs"></i> Re-analyse Bookings
+                    </button>
+                </div>
+
+                <div class="space-y-3" id="ancillary-opportunities">
+
+                    <!-- Opportunity 1 — pending approval -->
+                    <div class="border border-violet-200 bg-violet-50/40 rounded-2xl p-4 cursor-pointer hover:border-violet-300 transition-all active:scale-[0.99]"
+                         onclick="showApprovalModal({id:4, type:'Ancillary', title:'Send Spa + Champagne Dinner bundle to Rm 204 (Valentina R.)', impact:'High', bundle:'Couples Spa 90min + Champagne Dinner for 2', revenue:'$340', probability:'74%', agent:'Ancillary Agent', time:'1 hour ago'})">
+                        <div class="flex items-start justify-between gap-x-3">
+                            <div class="flex items-start gap-x-3 flex-1">
+                                <div class="w-9 h-9 bg-rose-500 rounded-xl flex items-center justify-center flex-shrink-0">
+                                    <i class="fa-solid fa-spa text-white text-sm"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center gap-x-2 flex-wrap mb-1">
+                                        <span class="font-semibold text-sm">Rm 204 · Valentina R.</span>
+                                        <span class="px-2 py-0.5 text-[9px] font-bold bg-violet-100 text-violet-700 rounded">ANNIVERSARY</span>
+                                        <span class="px-2 py-0.5 text-[9px] font-bold bg-amber-100 text-amber-700 rounded">AWAITING APPROVAL</span>
+                                    </div>
+                                    <div class="text-xs text-slate-600 mb-2">Couples Spa 90min + Champagne Dinner for 2 · Check-in: yesterday · 3 nights</div>
+                                    <div class="flex items-center gap-x-4 text-xs">
+                                        <span class="text-emerald-600 font-semibold"><i class="fa-solid fa-dollar-sign text-[10px]"></i> $340 est. revenue</span>
+                                        <span class="text-slate-500"><i class="fa-solid fa-chart-bar text-[10px]"></i> 74% uptake probability</span>
+                                        <span class="text-slate-500"><i class="fa-solid fa-clock text-[10px]"></i> Send by 6pm tonight</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-chevron-right text-slate-400 mt-1 flex-shrink-0"></i>
+                        </div>
+                    </div>
+
+                    <!-- Opportunity 2 — pre-arrival -->
+                    <div class="border border-blue-200 bg-blue-50/30 rounded-2xl p-4 cursor-pointer hover:border-blue-300 transition-all active:scale-[0.99]"
+                         onclick="showApprovalModal({id:5, type:'Ancillary', title:'Send Airport Transfer offer to James K. (arriving tomorrow)', impact:'Medium', bundle:'Round-trip Airport Transfer SFO ↔ Hotel', revenue:'$85', probability:'61%', agent:'Ancillary Agent', time:'3 hours ago'})">
+                        <div class="flex items-start justify-between gap-x-3">
+                            <div class="flex items-start gap-x-3 flex-1">
+                                <div class="w-9 h-9 bg-blue-500 rounded-xl flex items-center justify-center flex-shrink-0">
+                                    <i class="fa-solid fa-car text-white text-sm"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center gap-x-2 flex-wrap mb-1">
+                                        <span class="font-semibold text-sm">James K. · Arriving tomorrow</span>
+                                        <span class="px-2 py-0.5 text-[9px] font-bold bg-blue-100 text-blue-700 rounded">BUSINESS</span>
+                                        <span class="px-2 py-0.5 text-[9px] font-bold bg-slate-100 text-slate-600 rounded">PRE-ARRIVAL</span>
+                                    </div>
+                                    <div class="text-xs text-slate-600 mb-2">SFO → Hotel + Return Transfer · Flight arrives 11:40pm · 2 nights</div>
+                                    <div class="flex items-center gap-x-4 text-xs">
+                                        <span class="text-emerald-600 font-semibold"><i class="fa-solid fa-dollar-sign text-[10px]"></i> $85 est. revenue</span>
+                                        <span class="text-slate-500"><i class="fa-solid fa-chart-bar text-[10px]"></i> 61% uptake probability</span>
+                                        <span class="text-slate-500"><i class="fa-solid fa-clock text-[10px]"></i> Send today</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-chevron-right text-slate-400 mt-1 flex-shrink-0"></i>
+                        </div>
+                    </div>
+
+                    <!-- Opportunity 3 — new booking upsell -->
+                    <div class="border border-amber-200 bg-amber-50/30 rounded-2xl p-4 cursor-pointer hover:border-amber-300 transition-all active:scale-[0.99]"
+                         onclick="showApprovalModal({id:6, type:'Ancillary', title:'SF Jazz Show + In-Room Breakfast bundle — New booking (Chen family)', impact:'Medium', bundle:'SF Jazz Show Tickets (x2) + In-Room Breakfast (2 days)', revenue:'$330', probability:'55%', agent:'Ancillary Agent', time:'30 min ago'})">
+                        <div class="flex items-start justify-between gap-x-3">
+                            <div class="flex items-start gap-x-3 flex-1">
+                                <div class="w-9 h-9 bg-amber-500 rounded-xl flex items-center justify-center flex-shrink-0">
+                                    <i class="fa-solid fa-masks-theater text-white text-sm"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center gap-x-2 flex-wrap mb-1">
+                                        <span class="font-semibold text-sm">Chen Family · Check-in Friday</span>
+                                        <span class="px-2 py-0.5 text-[9px] font-bold bg-green-100 text-green-700 rounded">LEISURE</span>
+                                        <span class="px-2 py-0.5 text-[9px] font-bold bg-amber-100 text-amber-700 rounded">NEW BOOKING</span>
+                                    </div>
+                                    <div class="text-xs text-slate-600 mb-2">SF Jazz Show (Sat) + In-Room Breakfast × 2 mornings · 3 guests · 4 nights</div>
+                                    <div class="flex items-center gap-x-4 text-xs">
+                                        <span class="text-emerald-600 font-semibold"><i class="fa-solid fa-dollar-sign text-[10px]"></i> $330 est. revenue</span>
+                                        <span class="text-slate-500"><i class="fa-solid fa-chart-bar text-[10px]"></i> 55% uptake probability</span>
+                                        <span class="text-slate-500"><i class="fa-solid fa-clock text-[10px]"></i> Send confirmation email</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-chevron-right text-slate-400 mt-1 flex-shrink-0"></i>
+                        </div>
+                    </div>
+
+                    <!-- Opportunity 4 — mid-stay upsell -->
+                    <div class="border border-emerald-200 bg-emerald-50/30 rounded-2xl p-4 cursor-pointer hover:border-emerald-300 transition-all active:scale-[0.99]"
+                         onclick="showApprovalModal({id:7, type:'Ancillary', title:'Yoga class upgrade offer — Rm 312 mid-stay (Sarah M.)', impact:'Medium', bundle:'Private Yoga Class + In-Room Breakfast tomorrow', revenue:'$110', probability:'58%', agent:'Ancillary Agent', time:'Just now'})">
+                        <div class="flex items-start justify-between gap-x-3">
+                            <div class="flex items-start gap-x-3 flex-1">
+                                <div class="w-9 h-9 bg-emerald-500 rounded-xl flex items-center justify-center flex-shrink-0">
+                                    <i class="fa-solid fa-person-running text-white text-sm"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center gap-x-2 flex-wrap mb-1">
+                                        <span class="font-semibold text-sm">Rm 312 · Sarah M.</span>
+                                        <span class="px-2 py-0.5 text-[9px] font-bold bg-emerald-100 text-emerald-700 rounded">MID-STAY</span>
+                                        <span class="px-2 py-0.5 text-[9px] font-bold bg-slate-100 text-slate-600 rounded">WELLNESS PROFILE</span>
+                                    </div>
+                                    <div class="text-xs text-slate-600 mb-2">Private Yoga 7am + In-Room Breakfast · Used gym yesterday at 6am · Solo traveller</div>
+                                    <div class="flex items-center gap-x-4 text-xs">
+                                        <span class="text-emerald-600 font-semibold"><i class="fa-solid fa-dollar-sign text-[10px]"></i> $110 est. revenue</span>
+                                        <span class="text-slate-500"><i class="fa-solid fa-chart-bar text-[10px]"></i> 58% uptake probability</span>
+                                        <span class="text-slate-500"><i class="fa-solid fa-clock text-[10px]"></i> Send tonight</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-chevron-right text-slate-400 mt-1 flex-shrink-0"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Total opportunity strip -->
+                <div class="mt-4 p-3 bg-slate-900 rounded-2xl flex items-center justify-between">
+                    <div class="text-xs text-slate-400">Total ancillary opportunity today</div>
+                    <div class="flex items-center gap-x-4">
+                        <div class="text-sm font-bold text-white">$865 <span class="text-slate-400 font-normal text-xs">est. if all accepted</span></div>
+                        <div class="text-xs text-emerald-400 font-semibold">4 offers pending your approval</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end ancillary section -->
+
+    
+    <!-- ═══ ANCILLARY REVENUE SECTION ═══ -->
+    <div class="mt-8 bg-white border border-slate-200 rounded-3xl overflow-hidden">
+        <div class="px-6 py-5 border-b border-slate-100 flex items-center justify-between flex-wrap gap-3">
+            <div class="flex items-center gap-x-3">
+                <div class="w-10 h-10 bg-violet-600 rounded-2xl flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-champagne-glasses text-white text-lg"></i>
+                </div>
+                <div>
+                    <div class="section-header">Ancillary Revenue Intelligence</div>
+                    <div class="text-xs text-slate-500 mt-0.5">AI-powered bundle offers reviewed by you before guest contact</div>
+                </div>
+            </div>
+            <div class="flex items-center gap-x-3">
+                <div class="px-3 py-1.5 bg-violet-50 border border-violet-200 rounded-xl text-xs font-semibold text-violet-700 flex items-center gap-x-1.5">
+                    <i class="fa-solid fa-bolt text-xs"></i> 4 opportunities today
+                </div>
+                <button onclick="showAncillaryServicesModal()" class="px-4 py-1.5 text-xs font-medium border border-slate-300 hover:bg-slate-50 rounded-xl transition-colors">
+                    <i class="fa-solid fa-sliders text-xs mr-1"></i> Manage Services
+                </button>
+            </div>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 border-b border-slate-100">
+            <div class="px-6 py-4 border-r border-slate-100">
+                <div class="text-[10px] font-medium text-slate-400 tracking-wider">ANCILLARY REV (MTD)</div>
+                <div class="text-2xl font-semibold mt-1">$8,240</div>
+                <div class="text-[10px] text-emerald-600 font-medium mt-0.5">+34% vs last month</div>
+            </div>
+            <div class="px-6 py-4 border-r border-slate-100">
+                <div class="text-[10px] font-medium text-slate-400 tracking-wider">AVG UPLIFT / BOOKING</div>
+                <div class="text-2xl font-semibold mt-1">$171</div>
+                <div class="text-[10px] text-slate-400 mt-0.5">per stay, 48 bookings MTD</div>
+            </div>
+            <div class="px-6 py-4 border-r border-slate-100">
+                <div class="text-[10px] font-medium text-slate-400 tracking-wider">OFFER ACCEPTANCE</div>
+                <div class="text-2xl font-semibold mt-1">68%</div>
+                <div class="text-[10px] text-slate-400 mt-0.5">vs 31% industry average</div>
+            </div>
+            <div class="px-6 py-4">
+                <div class="text-[10px] font-medium text-slate-400 tracking-wider">PENDING OFFERS</div>
+                <div class="text-2xl font-semibold mt-1">4</div>
+                <div class="text-[10px] text-amber-600 font-medium mt-0.5">Awaiting your approval</div>
+            </div>
+        </div>
+        <div class="p-6">
+            <div class="flex items-center justify-between mb-4">
+                <div class="text-xs font-semibold text-slate-500 tracking-wider">UPCOMING BOOKING OPPORTUNITIES</div>
+                <button onclick="runAncillaryAnalysis()" class="px-3 py-1.5 bg-violet-600 hover:bg-violet-700 text-white text-xs font-semibold rounded-xl transition-colors">
+                    <i class="fa-solid fa-radar text-xs mr-1"></i> Re-analyse
+                </button>
+            </div>
+            <div class="space-y-3">
+                <div class="border border-violet-200 bg-violet-50/40 rounded-2xl p-4 cursor-pointer hover:border-violet-300 transition-all" onclick="showApprovalModal({id:4, type:'Ancillary', title:'Send Spa + Champagne Dinner bundle to Rm 204 (Valentina R.)', impact:'High', bundle:'Couples Spa 90min + Champagne Dinner for 2', revenue:'$340', probability:'74%', agent:'Ancillary Agent', time:'1 hour ago'})">
+                    <div class="flex items-start gap-x-3">
+                        <div class="w-9 h-9 bg-rose-500 rounded-xl flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-spa text-white text-sm"></i></div>
+                        <div class="flex-1">
+                            <div class="flex items-center gap-x-2 flex-wrap mb-1">
+                                <span class="font-semibold text-sm">Rm 204 - Valentina R.</span>
+                                <span class="px-2 py-0.5 text-[9px] font-bold bg-violet-100 text-violet-700 rounded">ANNIVERSARY</span>
+                                <span class="px-2 py-0.5 text-[9px] font-bold bg-amber-100 text-amber-700 rounded">AWAITING APPROVAL</span>
+                            </div>
+                            <div class="text-xs text-slate-600 mb-2">Couples Spa 90min + Champagne Dinner - checked in yesterday, 3 nights</div>
+                            <div class="flex items-center gap-x-4 text-xs">
+                                <span class="text-emerald-600 font-semibold">$340 est. revenue</span>
+                                <span class="text-slate-500">74% uptake probability</span>
+                                <span class="text-slate-500">Send by 6pm</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="border border-blue-200 bg-blue-50/30 rounded-2xl p-4 cursor-pointer hover:border-blue-300 transition-all" onclick="showApprovalModal({id:5, type:'Ancillary', title:'Airport Transfer offer to James K. arriving tomorrow', impact:'Medium', bundle:'Round-trip Airport Transfer SFO to Hotel', revenue:'$85', probability:'61%', agent:'Ancillary Agent', time:'3 hours ago'})">
+                    <div class="flex items-start gap-x-3">
+                        <div class="w-9 h-9 bg-blue-500 rounded-xl flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-car text-white text-sm"></i></div>
+                        <div class="flex-1">
+                            <div class="flex items-center gap-x-2 flex-wrap mb-1">
+                                <span class="font-semibold text-sm">James K. - Arriving tomorrow</span>
+                                <span class="px-2 py-0.5 text-[9px] font-bold bg-blue-100 text-blue-700 rounded">BUSINESS</span>
+                                <span class="px-2 py-0.5 text-[9px] font-bold bg-slate-100 text-slate-600 rounded">PRE-ARRIVAL</span>
+                            </div>
+                            <div class="text-xs text-slate-600 mb-2">SFO to Hotel + Return Transfer - flight arrives 11:40pm, 2 nights</div>
+                            <div class="flex items-center gap-x-4 text-xs">
+                                <span class="text-emerald-600 font-semibold">$85 est. revenue</span>
+                                <span class="text-slate-500">61% uptake probability</span>
+                                <span class="text-slate-500">Send today</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="border border-amber-200 bg-amber-50/30 rounded-2xl p-4 cursor-pointer hover:border-amber-300 transition-all" onclick="showApprovalModal({id:6, type:'Ancillary', title:'SF Jazz Show + Breakfast bundle for Chen family', impact:'Medium', bundle:'SF Jazz Show Tickets x2 + In-Room Breakfast 2 days', revenue:'$330', probability:'55%', agent:'Ancillary Agent', time:'30 min ago'})">
+                    <div class="flex items-start gap-x-3">
+                        <div class="w-9 h-9 bg-amber-500 rounded-xl flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-masks-theater text-white text-sm"></i></div>
+                        <div class="flex-1">
+                            <div class="flex items-center gap-x-2 flex-wrap mb-1">
+                                <span class="font-semibold text-sm">Chen Family - Check-in Friday</span>
+                                <span class="px-2 py-0.5 text-[9px] font-bold bg-green-100 text-green-700 rounded">LEISURE</span>
+                                <span class="px-2 py-0.5 text-[9px] font-bold bg-amber-100 text-amber-700 rounded">NEW BOOKING</span>
+                            </div>
+                            <div class="text-xs text-slate-600 mb-2">SF Jazz Show (Sat) + In-Room Breakfast x2 mornings, 3 guests, 4 nights</div>
+                            <div class="flex items-center gap-x-4 text-xs">
+                                <span class="text-emerald-600 font-semibold">$330 est. revenue</span>
+                                <span class="text-slate-500">55% uptake probability</span>
+                                <span class="text-slate-500">Send with confirmation</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="border border-emerald-200 bg-emerald-50/30 rounded-2xl p-4 cursor-pointer hover:border-emerald-300 transition-all" onclick="showApprovalModal({id:7, type:'Ancillary', title:'Yoga class upgrade for Sarah M. Rm 312 mid-stay', impact:'Medium', bundle:'Private Yoga Class + In-Room Breakfast tomorrow', revenue:'$110', probability:'58%', agent:'Ancillary Agent', time:'Just now'})">
+                    <div class="flex items-start gap-x-3">
+                        <div class="w-9 h-9 bg-emerald-500 rounded-xl flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-person-running text-white text-sm"></i></div>
+                        <div class="flex-1">
+                            <div class="flex items-center gap-x-2 flex-wrap mb-1">
+                                <span class="font-semibold text-sm">Rm 312 - Sarah M.</span>
+                                <span class="px-2 py-0.5 text-[9px] font-bold bg-emerald-100 text-emerald-700 rounded">MID-STAY</span>
+                                <span class="px-2 py-0.5 text-[9px] font-bold bg-slate-100 text-slate-600 rounded">WELLNESS</span>
+                            </div>
+                            <div class="text-xs text-slate-600 mb-2">Private Yoga 7am + In-Room Breakfast - used gym yesterday at 6am</div>
+                            <div class="flex items-center gap-x-4 text-xs">
+                                <span class="text-emerald-600 font-semibold">$110 est. revenue</span>
+                                <span class="text-slate-500">58% uptake probability</span>
+                                <span class="text-slate-500">Send tonight</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-4 p-3 bg-slate-900 rounded-2xl flex items-center justify-between">
+                <div class="text-xs text-slate-400">Total ancillary opportunity today</div>
+                <div class="flex items-center gap-x-4">
+                    <div class="text-sm font-bold text-white">$865 <span class="text-slate-400 font-normal text-xs">est. if all accepted</span></div>
+                    <div class="text-xs text-emerald-400 font-semibold">4 offers pending approval</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ═══ OTA & MCP INTEGRATIONS SECTION ═══ -->
+    <div class="mt-8 bg-white border border-slate-200 rounded-3xl p-6">
+        <div class="flex items-center justify-between mb-6">
+            <div>
+                <div class="section-header">OTA & Channel Integrations</div>
+                <div class="text-xs text-slate-500 mt-0.5">SwarmForge connects via MCP servers/ Skills  — the emerging standard for AI-to-platform integration</div>
+            </div>
+            <button onclick="showIntegrationsPanel()" class="text-xs font-medium text-slate-600 hover:text-slate-900 flex items-center gap-x-1">
+                Manage all <i class="fa-solid fa-arrow-right text-xs"></i>
+            </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6" id="ota-grid"></div>
+
+        <!-- MCP Architecture Explainer -->
+        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-5">
+            <div class="text-xs font-semibold text-slate-500 tracking-wider mb-4">HOW SWARMFORGE CONNECTS — MCP ARCHITECTURE</div>
+            <div class="flex items-center justify-between gap-x-3 overflow-x-auto pb-2">
+                <!-- Node: SwarmForge -->
+                <div class="flex-shrink-0 text-center">
+                    <div class="w-14 h-14 bg-slate-900 rounded-2xl flex items-center justify-center mx-auto mb-2 flow-node">
+                        <i class="fa-solid fa-robot text-white text-xl"></i>
+                    </div>
+                    <div class="text-[10px] font-semibold">SwarmForge</div>
+                    <div class="text-[9px] text-slate-400">AI Agents</div>
+                </div>
+                <!-- Arrow -->
+                <div class="flex-shrink-0 flex flex-col items-center gap-y-1">
+                    <svg width="60" height="20" viewBox="0 0 60 20"><line x1="0" y1="10" x2="50" y2="10" stroke="#94a3b8" stroke-width="2" class="connect-line"/><polygon points="50,6 60,10 50,14" fill="#94a3b8"/></svg>
+                    <div class="text-[9px] text-slate-400">MCP Protocol</div>
+                </div>
+                <!-- Node: MCP Hub -->
+                <div class="flex-shrink-0 text-center">
+                    <div class="w-14 h-14 bg-violet-100 border-2 border-violet-300 rounded-2xl flex items-center justify-center mx-auto mb-2 flow-node">
+                        <i class="fa-solid fa-sitemap text-violet-600 text-xl"></i>
+                    </div>
+                    <div class="text-[10px] font-semibold">MCP Hub</div>
+                    <div class="text-[9px] text-slate-400">Unified connector</div>
+                </div>
+                <!-- Arrow -->
+                <div class="flex-shrink-0 flex flex-col items-center gap-y-1">
+                    <svg width="60" height="20" viewBox="0 0 60 20"><line x1="0" y1="10" x2="50" y2="10" stroke="#94a3b8" stroke-width="2" class="connect-line"/><polygon points="50,6 60,10 50,14" fill="#94a3b8"/></svg>
+                    <div class="text-[9px] text-slate-400">OTA APIs</div>
+                </div>
+                <!-- OTA Nodes -->
+                <div class="flex-shrink-0 flex flex-col gap-y-2">
+                    <div class="flex items-center gap-x-2 px-3 py-1.5 bg-blue-50 border border-blue-200 rounded-xl">
+                        <i class="fa-solid fa-globe text-blue-500 text-xs"></i>
+                        <span class="text-[10px] font-semibold">Booking.com</span>
+                    </div>
+                    <div class="flex items-center gap-x-2 px-3 py-1.5 bg-orange-50 border border-orange-200 rounded-xl">
+                        <i class="fa-solid fa-plane text-orange-500 text-xs"></i>
+                        <span class="text-[10px] font-semibold">MakeMyTrip</span>
+                    </div>
+                    <div class="flex items-center gap-x-2 px-3 py-1.5 bg-red-50 border border-red-200 rounded-xl">
+                        <i class="fa-solid fa-airbnb text-red-500 text-xs fa-brands"></i>
+                        <span class="text-[10px] font-semibold">Airbnb</span>
+                    </div>
+                </div>
+                <!-- Arrow -->
+                <div class="flex-shrink-0 flex flex-col items-center gap-y-1">
+                    <svg width="60" height="20" viewBox="0 0 60 20"><line x1="0" y1="10" x2="50" y2="10" stroke="#94a3b8" stroke-width="2" class="connect-line"/><polygon points="50,6 60,10 50,14" fill="#94a3b8"/></svg>
+                    <div class="text-[9px] text-slate-400">Synced data</div>
+                </div>
+                <!-- Node: Dashboard -->
+                <div class="flex-shrink-0 text-center">
+                    <div class="w-14 h-14 bg-emerald-100 border-2 border-emerald-300 rounded-2xl flex items-center justify-center mx-auto mb-2 flow-node">
+                        <i class="fa-solid fa-table-cells text-emerald-600 text-xl"></i>
+                    </div>
+                    <div class="text-[10px] font-semibold">Your Dashboard</div>
+                    <div class="text-[9px] text-slate-400">All bookings unified</div>
+                </div>
+            </div>
+            <div class="mt-3 text-[10px] text-slate-400 text-center">
+                MCP (Model Context Protocol) is an open standard that lets AI agents securely read and act on data from external platforms. As OTAs adopt MCP, SwarmForge connects automatically.
+            </div>
+        </div>
+    </div>
+
+</div><!-- end main container -->
+
+<!-- ═══════════════ FOOTER ═══════════════ -->
+<footer class="mt-16 border-t border-slate-200 bg-white">
+    <div class="max-w-screen-2xl mx-auto px-8 py-14">
+
+        <!-- Top row: 3 columns -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+
+            <!-- Col 1: Why SwarmForge -->
+            <div>
+                <div class="flex items-center gap-x-2 mb-4">
+                    <div class="w-8 h-8 bg-slate-900 rounded-xl flex items-center justify-center">
+                        <i class="fa-solid fa-robot text-white text-sm"></i>
+                    </div>
+                    <span class="font-display text-lg">SwarmForge AI</span>
+                </div>
+                <div class="text-xs font-semibold text-slate-500 tracking-wider mb-3">WHY WE BUILT THIS</div>
+                <p class="text-sm text-slate-600 leading-relaxed mb-4">
+                    Independent hotels have the data, the guests, and the ambition — but they are resource-constrained. SwarmForge gives them a personal team of AI agents working 24/7, while keeping the human firmly in control of every high-impact decision.
+                </p>
+                <div class="space-y-2">
+                    <div class="flex items-start gap-x-2 text-xs text-slate-600">
+                        <i class="fa-solid fa-shield-halved text-emerald-500 mt-0.5 flex-shrink-0"></i>
+                        <span><strong>Privacy by architecture</strong> — your data never trains our models or touches another hotel's tenant.</span>
+                    </div>
+                    <div class="flex items-start gap-x-2 text-xs text-slate-600">
+                        <i class="fa-solid fa-lock text-emerald-500 mt-0.5 flex-shrink-0"></i>
+                        <span><strong>Encrypted end-to-end</strong> — AES-256 at rest, TLS 1.3 in transit, UUID tenant isolation throughout.</span>
+                    </div>
+                    <div class="flex items-start gap-x-2 text-xs text-slate-600">
+                        <i class="fa-solid fa-user-shield text-emerald-500 mt-0.5 flex-shrink-0"></i>
+                        <span><strong>Safe Mode</strong> — strip PII from any document before AI ever sees it. Your choice, always.</span>
+                    </div>
+                    <div class="flex items-start gap-x-2 text-xs text-slate-600">
+                        <i class="fa-solid fa-eye text-emerald-500 mt-0.5 flex-shrink-0"></i>
+                        <span><strong>Full audit trail</strong> — every agent action logged. You always know what ran, when, and why.</span>
+                    </div>
+                    <div class="flex items-start gap-x-2 text-xs text-slate-600">
+                        <i class="fa-solid fa-person-circle-check text-emerald-500 mt-0.5 flex-shrink-0"></i>
+                        <span><strong>Human-in-the-loop</strong> — no financial or public-facing action executes without your explicit approval.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Col 2: Technology Stack -->
+            <div>
+                <div class="text-xs font-semibold text-slate-500 tracking-wider mb-4">BUILT WITH</div>
+                <div class="grid grid-cols-2 gap-3">
+                    <!-- Anthropic -->
+                    <div class="flex items-center gap-x-2.5 p-3 border border-slate-200 rounded-2xl hover:border-slate-300 transition-colors">
+                        <div class="w-8 h-8 bg-orange-50 border border-orange-200 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <i class="fa-solid fa-brain text-orange-500 text-sm"></i>
+                        </div>
+                        <div>
+                            <div class="text-xs font-semibold">Anthropic Claude</div>
+                            <div class="text-[9px] text-slate-400">LLM backbone</div>
+                        </div>
+                    </div>
+                    <!-- LangGraph -->
+                    <div class="flex items-center gap-x-2.5 p-3 border border-slate-200 rounded-2xl hover:border-slate-300 transition-colors">
+                        <div class="w-8 h-8 bg-green-50 border border-green-200 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <i class="fa-solid fa-diagram-project text-green-600 text-sm"></i>
+                        </div>
+                        <div>
+                            <div class="text-xs font-semibold">LangGraph</div>
+                            <div class="text-[9px] text-slate-400">Agent orchestration</div>
+                        </div>
+                    </div>
+                    <!-- Supabase -->
+                    <div class="flex items-center gap-x-2.5 p-3 border border-slate-200 rounded-2xl hover:border-slate-300 transition-colors">
+                        <div class="w-8 h-8 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <i class="fa-solid fa-database text-emerald-600 text-sm"></i>
+                        </div>
+                        <div>
+                            <div class="text-xs font-semibold">Supabase</div>
+                            <div class="text-[9px] text-slate-400">DB + vector memory</div>
+                        </div>
+                    </div>
+                    <!-- React -->
+                    <div class="flex items-center gap-x-2.5 p-3 border border-slate-200 rounded-2xl hover:border-slate-300 transition-colors">
+                        <div class="w-8 h-8 bg-blue-50 border border-blue-200 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <i class="fa-brands fa-react text-blue-500 text-sm"></i>
+                        </div>
+                        <div>
+                            <div class="text-xs font-semibold">React + Tailwind</div>
+                            <div class="text-[9px] text-slate-400">Frontend</div>
+                        </div>
+                    </div>
+                    <!-- FastAPI -->
+                    <div class="flex items-center gap-x-2.5 p-3 border border-slate-200 rounded-2xl hover:border-slate-300 transition-colors">
+                        <div class="w-8 h-8 bg-teal-50 border border-teal-200 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <i class="fa-solid fa-bolt text-teal-600 text-sm"></i>
+                        </div>
+                        <div>
+                            <div class="text-xs font-semibold">FastAPI</div>
+                            <div class="text-[9px] text-slate-400">Backend API</div>
+                        </div>
+                    </div>
+                    <!-- Redis -->
+                    <div class="flex items-center gap-x-2.5 p-3 border border-slate-200 rounded-2xl hover:border-slate-300 transition-colors">
+                        <div class="w-8 h-8 bg-red-50 border border-red-200 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <i class="fa-solid fa-server text-red-500 text-sm"></i>
+                        </div>
+                        <div>
+                            <div class="text-xs font-semibold">Redis + Celery</div>
+                            <div class="text-[9px] text-slate-400">Async agent jobs</div>
+                        </div>
+                    </div>
+                    <!-- Stripe -->
+                    <div class="flex items-center gap-x-2.5 p-3 border border-slate-200 rounded-2xl hover:border-slate-300 transition-colors">
+                        <div class="w-8 h-8 bg-violet-50 border border-violet-200 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <i class="fa-brands fa-stripe text-violet-600 text-sm"></i>
+                        </div>
+                        <div>
+                            <div class="text-xs font-semibold">Stripe</div>
+                            <div class="text-[9px] text-slate-400">Billing + metering</div>
+                        </div>
+                    </div>
+                    <!-- MCP -->
+                    <div class="flex items-center gap-x-2.5 p-3 border border-slate-200 rounded-2xl hover:border-slate-300 transition-colors">
+                        <div class="w-8 h-8 bg-slate-100 border border-slate-200 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <i class="fa-solid fa-plug text-slate-600 text-sm"></i>
+                        </div>
+                        <div>
+                            <div class="text-xs font-semibold">MCP Protocol</div>
+                            <div class="text-[9px] text-slate-400">OTA integrations</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-3 px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl">
+                    <div class="text-[10px] text-slate-500 flex items-center gap-x-1.5">
+                        <i class="fa-solid fa-shield-halved text-emerald-500"></i>
+                        <span>AES-256 encryption at rest • TLS 1.3 in transit • UUID tenant isolation • GDPR-ready data policies</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Col 3: About + Contact -->
+            <div>
+                <div class="text-xs font-semibold text-slate-500 tracking-wider mb-4">ABOUT US</div>
+                <div class="flex items-start gap-x-3 mb-4">
+                    <div class="w-12 h-12 bg-slate-900 rounded-2xl flex items-center justify-center flex-shrink-0">
+                        <i class="fa-solid fa-user text-white"></i>
+                    </div>
+                    <div>
+                        <div class="font-semibold text-sm">Founder, SimpliCore AI</div>
+                        <div class="text-xs text-slate-500 mt-0.5">Full-stack engineer • Agentic systems • Hospitality tech veteran</div>
+                    </div>
+                </div>
+                <p class="text-sm text-slate-600 leading-relaxed mb-4">
+                    Built and operated <strong>PreferTrip.com</strong> and <strong>PreferHospitality.com</strong> — an OTA and hospitality platform serving independent hotels before COVID-19 upended the industry. That experience — understanding hotel workflows, OTA dynamics, and the pain of fragmented tools — is the foundation of SwarmForge AI.
+                </p>
+                <p class="text-sm text-slate-600 leading-relaxed mb-5">
+                    Currently building agentic AI infrastructure professionally, with deep expertise in agent observability, telemetry, and distributed systems. SwarmForge is the convergence of hospitality domain knowledge and modern AI engineering.
+                </p>
+
+                <!-- Contact form -->
+                <div class="space-y-2 mb-4">
+                    <div class="text-xs font-semibold text-slate-500 tracking-wider">GET IN TOUCH</div>
+                    <input id="contact-name" type="text" placeholder="Your name" class="w-full px-3 py-2 text-sm border border-slate-200 rounded-xl focus:outline-none focus:border-slate-900 transition-colors">
+                    <input id="contact-email" type="email" placeholder="Email address" class="w-full px-3 py-2 text-sm border border-slate-200 rounded-xl focus:outline-none focus:border-slate-900 transition-colors">
+                    <textarea id="contact-msg" rows="2" placeholder="Interested in a demo, early access, or just want to chat..." class="w-full px-3 py-2 text-sm border border-slate-200 rounded-xl focus:outline-none focus:border-slate-900 resize-none transition-colors"></textarea>
+                    <button onclick="submitContact()" class="w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold rounded-xl transition-colors">
+                        <i class="fa-solid fa-paper-plane mr-1.5"></i> Send Message
+                    </button>
+                </div>
+                <div class="flex items-center gap-x-3">
+                    <a href="https://simplicore.ai" target="_blank" class="flex items-center gap-x-1.5 text-xs text-slate-500 hover:text-slate-800 transition-colors">
+                        <i class="fa-solid fa-globe text-slate-400"></i> simplicore.ai
+                    </a>
+                    <a href="mailto:hello@simplicore.ai" class="flex items-center gap-x-1.5 text-xs text-slate-500 hover:text-slate-800 transition-colors">
+                        <i class="fa-solid fa-envelope text-slate-400"></i> hello@simplicore.ai
+                    </a>
+                    <a href="https://github.com" target="_blank" class="flex items-center gap-x-1.5 text-xs text-slate-500 hover:text-slate-800 transition-colors">
+                        <i class="fa-brands fa-github text-slate-400"></i> GitHub
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom bar -->
+        <!-- Other verticals row -->
+        <div class="mb-6 pt-6 border-t border-slate-100">
+            <div class="text-[10px] font-semibold text-slate-400 tracking-wider mb-3">MORE SWARMFORGE VERTICALS</div>
+            <div class="flex flex-wrap gap-3">
+                <a href="https://simplicore.ai/realtors" target="_blank" class="flex items-center gap-x-2 px-4 py-2 border border-slate-200 rounded-xl hover:border-slate-400 hover:bg-slate-50 transition-all text-xs font-medium text-slate-600">
+                    <i class="fa-solid fa-house text-amber-500"></i> SwarmForge for Realtors
+                    <span class="text-[9px] font-semibold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-full">NEW</span>
+                </a>
+                <div class="flex items-center gap-x-2 px-4 py-2 border border-slate-100 rounded-xl text-xs text-slate-400">
+                    <i class="fa-solid fa-store text-slate-300"></i> SwarmForge for Retail
+                    <span class="text-[9px] font-semibold text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded-full">COMING SOON</span>
+                </div>
+                <div class="flex items-center gap-x-2 px-4 py-2 border border-slate-100 rounded-xl text-xs text-slate-400">
+                    <i class="fa-solid fa-laptop-code text-slate-300"></i> SwarmForge for Freelancers
+                    <span class="text-[9px] font-semibold text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded-full">COMING SOON</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="pt-4 border-t border-slate-100 flex items-center justify-between flex-wrap gap-4">
+            <div class="flex items-center gap-x-3">
+                <div class="w-6 h-6 bg-slate-900 rounded-lg flex items-center justify-center">
+                    <i class="fa-solid fa-robot text-white text-[10px]"></i>
+                </div>
+                <span class="text-xs text-slate-500">SwarmForge AI &mdash; a <strong>SimpliCore.ai</strong> product &copy; 2026</span>
+            </div>
+            <div class="flex items-center gap-x-4">
+                <div class="flex items-center gap-x-1.5 text-[10px] text-slate-400">
+                    <i class="fa-solid fa-shield-halved text-emerald-400"></i> Privacy-first architecture
+                </div>
+                <div class="flex items-center gap-x-1.5 text-[10px] text-slate-400">
+                    <i class="fa-solid fa-lock text-emerald-400"></i> AES-256 encrypted
+                </div>
+                <div class="flex items-center gap-x-1.5 text-[10px] text-slate-400">
+                    <i class="fa-solid fa-building text-emerald-400"></i> Multi-tenant isolated
+                </div>
+                <button onclick="showPrivacyModal()" class="text-[10px] text-slate-400 hover:text-slate-700 underline transition-colors">Privacy Policy</button>
+                <button onclick="showPrivacyModal()" class="text-[10px] text-slate-400 hover:text-slate-700 underline transition-colors">Security</button>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- ══════════════════════════════════════════
+     GOAL PANEL (right slide-in)
+══════════════════════════════════════════ -->
+<div id="goal-overlay" onclick="closeGoalPanel()" class="hidden fixed inset-0 bg-black/30 backdrop-blur-sm z-[80]"></div>
+<div id="goal-panel" class="fixed top-0 right-0 h-full w-full max-w-md bg-white shadow-2xl z-[90] flex flex-col">
+    <div class="px-6 py-5 border-b flex items-center justify-between">
+        <div>
+            <div class="font-display text-lg">New Goal</div>
+            <div class="text-xs text-slate-500">Tell your AI team what to work on next</div>
+        </div>
+        <button onclick="closeGoalPanel()" class="text-slate-400 hover:text-slate-600 text-xl"><i class="fa-solid fa-times"></i></button>
+    </div>
+
+    <div class="flex-1 overflow-y-auto p-6 space-y-5">
+        <!-- Quick goal chips -->
+        <div>
+            <div class="text-xs font-semibold text-slate-500 tracking-wider mb-3">SUGGESTED GOALS</div>
+            <div class="flex flex-wrap gap-2" id="goal-chips">
+                <button onclick="selectGoalChip(this)" class="goal-chip px-3 py-1.5 text-xs border border-slate-300 rounded-full hover:border-slate-900 hover:bg-slate-900 hover:text-white transition-all">Increase direct bookings in March</button>
+                <button onclick="selectGoalChip(this)" class="goal-chip px-3 py-1.5 text-xs border border-slate-300 rounded-full hover:border-slate-900 hover:bg-slate-900 hover:text-white transition-all">Launch a Valentine's weekend package</button>
+                <button onclick="selectGoalChip(this)" class="goal-chip px-3 py-1.5 text-xs border border-slate-300 rounded-full hover:border-slate-900 hover:bg-slate-900 hover:text-white transition-all">Respond to all reviews this week</button>
+                <button onclick="selectGoalChip(this)" class="goal-chip px-3 py-1.5 text-xs border border-slate-300 rounded-full hover:border-slate-900 hover:bg-slate-900 hover:text-white transition-all">Analyse Feb labor vs budget</button>
+                <button onclick="selectGoalChip(this)" class="goal-chip px-3 py-1.5 text-xs border border-slate-300 rounded-full hover:border-slate-900 hover:bg-slate-900 hover:text-white transition-all">Create a spring social campaign</button>
+            </div>
+        </div>
+
+        <!-- Goal input -->
+        <div>
+            <label class="text-xs font-semibold text-slate-500 tracking-wider">GOAL DESCRIPTION</label>
+            <textarea id="goal-text" rows="3" placeholder="E.g. Increase direct bookings by 20% in February through Instagram and email..." class="mt-2 w-full px-4 py-3 border border-slate-300 rounded-2xl text-sm focus:outline-none focus:border-slate-900 resize-none"></textarea>
+        </div>
+
+        <!-- Category -->
+        <div>
+            <label class="text-xs font-semibold text-slate-500 tracking-wider">CATEGORY</label>
+            <div class="mt-2 grid grid-cols-3 gap-2">
+                <button onclick="selectCategory(this, 'Marketing')" class="cat-btn px-3 py-2 text-xs border border-slate-200 rounded-xl hover:border-slate-900 transition-colors text-center">
+                    <i class="fa-solid fa-bullhorn block mb-1 text-blue-500"></i> Marketing
+                </button>
+                <button onclick="selectCategory(this, 'Revenue')" class="cat-btn px-3 py-2 text-xs border border-slate-200 rounded-xl hover:border-slate-900 transition-colors text-center">
+                    <i class="fa-solid fa-dollar-sign block mb-1 text-emerald-500"></i> Revenue
+                </button>
+                <button onclick="selectCategory(this, 'Operations')" class="cat-btn px-3 py-2 text-xs border border-slate-200 rounded-xl hover:border-slate-900 transition-colors text-center">
+                    <i class="fa-solid fa-gears block mb-1 text-slate-500"></i> Operations
+                </button>
+                <button onclick="selectCategory(this, 'Reputation')" class="cat-btn px-3 py-2 text-xs border border-slate-200 rounded-xl hover:border-slate-900 transition-colors text-center">
+                    <i class="fa-solid fa-star block mb-1 text-amber-500"></i> Reputation
+                </button>
+                <button onclick="selectCategory(this, 'Analytics')" class="cat-btn px-3 py-2 text-xs border border-slate-200 rounded-xl hover:border-slate-900 transition-colors text-center">
+                    <i class="fa-solid fa-chart-line block mb-1 text-indigo-500"></i> Analytics
+                </button>
+                <button onclick="selectCategory(this, 'Other')" class="cat-btn px-3 py-2 text-xs border border-slate-200 rounded-xl hover:border-slate-900 transition-colors text-center">
+                    <i class="fa-solid fa-ellipsis block mb-1 text-slate-400"></i> Other
+                </button>
+            </div>
+        </div>
+
+        <!-- Priority -->
+        <div>
+            <label class="text-xs font-semibold text-slate-500 tracking-wider">PRIORITY</label>
+            <div class="mt-2 flex gap-x-2">
+                <button onclick="selectPriority(this,'High')" class="priority-btn flex-1 py-2 text-xs border border-red-200 bg-red-50 text-red-600 rounded-xl hover:border-red-400 transition-colors">🔴 High</button>
+                <button onclick="selectPriority(this,'Medium')" class="priority-btn flex-1 py-2 text-xs border border-amber-200 bg-amber-50 text-amber-600 rounded-xl hover:border-amber-400 transition-colors">🟡 Medium</button>
+                <button onclick="selectPriority(this,'Low')" class="priority-btn flex-1 py-2 text-xs border border-slate-200 bg-slate-50 text-slate-600 rounded-xl hover:border-slate-400 transition-colors">⚪ Low</button>
+            </div>
+        </div>
+
+        <!-- Notes -->
+        <div>
+            <label class="text-xs font-semibold text-slate-500 tracking-wider">ADDITIONAL NOTES (OPTIONAL)</label>
+            <textarea id="goal-notes" rows="2" placeholder="Any constraints, tone guidance, budget limits..." class="mt-2 w-full px-4 py-3 border border-slate-300 rounded-2xl text-sm focus:outline-none focus:border-slate-900 resize-none"></textarea>
+        </div>
+    </div>
+
+    <div class="px-6 py-4 border-t bg-slate-50 flex gap-x-3">
+        <button onclick="closeGoalPanel()" class="flex-1 py-2.5 text-sm font-medium border border-slate-300 rounded-2xl hover:bg-slate-100 transition-colors">Cancel</button>
+        <button onclick="submitGoal()" class="flex-1 py-2.5 text-sm font-semibold bg-slate-900 hover:bg-slate-800 text-white rounded-2xl transition-colors">
+            <i class="fa-solid fa-paper-plane mr-1"></i> Submit to Agents
+        </button>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     DISCOVERY FLOW MODAL (multi-step)
+══════════════════════════════════════════ -->
+<div id="discovery-modal" onclick="if(event.target.id==='discovery-modal') closeDiscovery()"
+     class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
+    <div onclick="event.stopPropagation()" class="demo-modal bg-white w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden flex flex-col" style="max-height:90vh">
+
+        <!-- Discovery header -->
+        <div class="px-7 pt-6 pb-4 border-b">
+            <div class="flex items-center justify-between mb-4">
+                <div>
+                    <div class="font-display text-xl">Business Discovery</div>
+                    <div class="text-xs text-slate-500">Your agents will learn The Meridian's voice, strengths, and opportunities</div>
+                </div>
+                <button onclick="closeDiscovery()" class="text-slate-400 hover:text-slate-600 text-xl"><i class="fa-solid fa-times"></i></button>
+            </div>
+            <!-- Step indicators -->
+            <div class="flex items-center gap-x-2">
+                <div id="disc-step-1" class="disc-step w-7 h-7 rounded-full border-2 border-slate-300 flex items-center justify-center text-xs font-bold text-slate-500">1</div>
+                <div class="flex-1 h-px bg-slate-200"></div>
+                <div id="disc-step-2" class="disc-step w-7 h-7 rounded-full border-2 border-slate-300 flex items-center justify-center text-xs font-bold text-slate-500">2</div>
+                <div class="flex-1 h-px bg-slate-200"></div>
+                <div id="disc-step-3" class="disc-step w-7 h-7 rounded-full border-2 border-slate-300 flex items-center justify-center text-xs font-bold text-slate-500">3</div>
+                <div class="flex-1 h-px bg-slate-200"></div>
+                <div id="disc-step-4" class="disc-step w-7 h-7 rounded-full border-2 border-slate-300 flex items-center justify-center text-xs font-bold text-slate-500">4</div>
+            </div>
+            <div class="flex justify-between text-[9px] text-slate-400 mt-1 px-0.5">
+                <span>Connect Sources</span><span>Your Goals</span><span>AI Analysis</span><span>Agent Plan</span>
+            </div>
+        </div>
+
+        <!-- Step content area -->
+        <div class="flex-1 overflow-y-auto p-7" id="disc-content"></div>
+
+        <!-- Navigation -->
+        <div class="px-7 py-4 border-t bg-slate-50 flex items-center justify-between">
+            <button id="disc-back" onclick="discoveryBack()" class="px-5 py-2.5 text-sm font-medium border border-slate-300 rounded-2xl hover:bg-slate-100 transition-colors hidden">
+                <i class="fa-solid fa-arrow-left mr-1"></i> Back
+            </button>
+            <div class="flex-1"></div>
+            <button id="disc-next" onclick="discoveryNext()" class="px-6 py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold rounded-2xl transition-all">
+                Continue <i class="fa-solid fa-arrow-right ml-1"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     INTEGRATIONS MODAL
+══════════════════════════════════════════ -->
+<div id="integrations-modal" onclick="if(event.target.id==='integrations-modal') closeIntegrations()"
+     class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
+    <div onclick="event.stopPropagation()" class="demo-modal bg-white w-full max-w-xl rounded-3xl shadow-2xl overflow-hidden" style="max-height:88vh">
+        <div class="px-6 py-5 border-b flex items-center justify-between">
+            <div>
+                <div class="font-display text-lg">Integrations</div>
+                <div class="text-xs text-slate-500">Connect your platforms • SwarmForge syncs everything via MCP</div>
+            </div>
+            <button onclick="closeIntegrations()" class="text-slate-400 hover:text-slate-600 text-xl"><i class="fa-solid fa-times"></i></button>
+        </div>
+        <div class="overflow-y-auto p-6 space-y-4" id="integrations-list"></div>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SUBSCRIPTION MODAL
+══════════════════════════════════════════ -->
+<div id="subscription-modal" onclick="if(event.target.id==='subscription-modal') closeSubscription()"
+     class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
+    <div onclick="event.stopPropagation()" class="demo-modal bg-white w-full max-w-3xl rounded-3xl shadow-2xl overflow-hidden" style="max-height:90vh">
+        <div class="px-7 py-5 border-b flex items-center justify-between">
+            <div>
+                <div class="font-display text-xl">Choose Your Plan</div>
+                <div class="text-xs text-slate-500 mt-0.5">Start free. Upgrade as your AI team drives results.</div>
+            </div>
+            <button onclick="closeSubscription()" class="text-slate-400 hover:text-slate-600 text-xl"><i class="fa-solid fa-times"></i></button>
+        </div>
+        <div class="overflow-y-auto p-7">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5" id="pricing-grid"></div>
+            <div class="mt-6 text-center text-xs text-slate-400">All plans include 14-day free trial • Cancel anytime • No setup fees</div>
+        </div>
+    </div>
+</div>
+
+<!-- Standard Approval Modal -->
+<div id="approval-modal" onclick="if(event.target.id==='approval-modal') hideApprovalModal()"
+     class="hidden fixed inset-0 bg-black/40 backdrop-blur-sm z-[100] flex items-center justify-center">
+    <div onclick="event.stopImmediatePropagation()"
+         class="demo-modal bg-white w-full max-w-lg mx-4 rounded-3xl shadow-xl border border-slate-200 overflow-hidden">
+        <div class="px-6 py-5 border-b flex items-center justify-between">
+            <div>
+                <div class="font-semibold text-lg" id="modal-title">Approve Action</div>
+                <div class="text-xs text-slate-500" id="modal-subtitle">Marketing Campaign • High Impact</div>
+            </div>
+            <button onclick="hideApprovalModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-times text-xl"></i></button>
+        </div>
+        <div class="p-6 space-y-5" id="modal-body"></div>
+        <div class="px-6 py-4 bg-slate-50 flex items-center justify-end gap-x-3 border-t">
+            <button onclick="rejectAction()" class="px-5 py-2 text-sm font-medium text-slate-600 hover:bg-slate-200 rounded-2xl transition-colors">Reject / Edit</button>
+            <button onclick="approveAction()" class="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-2xl flex items-center gap-x-2 transition-all">
+                <i class="fa-solid fa-check"></i><span>Approve &amp; Execute</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════ SCRIPTS ══════════════════════════════════════════ -->
+<script>
+
+// ─── SKILLS DATA ───
+let skills = [
+    { id:'marketing',   name:'Marketing & Content',    enabled:true,  tier:'Growth',  description:'Social posts, email campaigns, landing pages', icon:'fa-bullhorn' },
+    { id:'notebook',    name:'Notebook Analysis',       enabled:true,  tier:'Growth',  description:'Excel analysis, cost sheets, opportunity tracking', icon:'fa-file-excel' },
+    { id:'ancillary',   name:'Ancillary Revenue',       enabled:true,  tier:'Growth',  description:'Bundle offers, upsells, spa, F&B, transfers & more', icon:'fa-champagne-glasses' },
+    { id:'ancillary',   name:'Ancillary Revenue',       enabled:true,  tier:'Growth',  icon:'fa-champagne-glasses' },
+    { id:'reputation',  name:'Reputation Management',   enabled:true,  tier:'Growth',  description:'Review responses + sentiment tracking', icon:'fa-star' },
+    { id:'quickbooks',  name:'QuickBooks Sync',         enabled:false, tier:'Coming',  description:'2-way financial sync + journal entries', icon:'fa-book' },
+    { id:'gusto',       name:'Gusto / Payroll',         enabled:false, tier:'Coming',  description:'Labor forecasting + schedule optimization', icon:'fa-users' },
+    { id:'pricing',     name:'Dynamic Pricing',         enabled:false, tier:'Pro',     description:'AI rate optimization based on demand signals', icon:'fa-tags' },
+];
+
+function renderSkills() {
+    const c = document.getElementById('skills-list');
+    c.innerHTML = '';
+    skills.forEach(skill => {
+        const isComing = skill.tier === 'Coming';
+        const div = document.createElement('div');
+        div.className = `flex items-center justify-between p-3 rounded-2xl border ${skill.enabled ? 'border-emerald-200 bg-emerald-50/50' : isComing ? 'border-slate-100 bg-slate-50/50 opacity-70' : 'border-slate-200'}`;
+        div.innerHTML = `
+            <div class="flex items-center gap-x-3">
+                <div class="w-8 h-8 flex-shrink-0 rounded-xl ${skill.enabled ? 'bg-emerald-600' : isComing ? 'bg-slate-300' : 'bg-slate-300'} flex items-center justify-center">
+                    <i class="fa-solid ${skill.icon} text-white text-sm"></i>
+                </div>
+                <div>
+                    <div class="font-medium text-sm">${skill.name}</div>
+                    <div class="text-[10px] text-slate-500">${skill.description}</div>
+                </div>
+            </div>
+            <div class="flex items-center gap-x-2">
+                ${skill.enabled
+                    ? `<span class="text-emerald-600 text-xs font-medium px-2 py-0.5 bg-white rounded-full border border-emerald-200">Active</span>`
+                    : isComing
+                    ? `<span class="text-[10px] font-semibold text-slate-400 px-2 py-0.5 bg-slate-100 rounded-full">Coming Soon</span>`
+                    : `<span class="text-[10px] font-semibold text-violet-600 px-2 py-0.5 bg-violet-50 rounded-full border border-violet-200">${skill.tier}</span>`
+                }
+                ${isComing ? '' : `
+                <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" ${skill.enabled ? 'checked' : ''} onchange="toggleSkill('${skill.id}',this.checked)" class="sr-only peer">
+                    <div class="w-9 h-5 bg-slate-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[1px] after:left-[1px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-600"></div>
+                </label>`}
+            </div>`;
+        c.appendChild(div);
+    });
+}
+
+function toggleSkill(id, on) {
+    const s = skills.find(x => x.id === id);
+    if (!s) return;
+    if (!on && s.enabled) { s.enabled = false; showToast(`${s.name} disabled`,'info'); }
+    else if (on && !s.enabled) {
+        if (s.tier === 'Pro') { showSubscriptionModal(); s.enabled = false; }
+        else { s.enabled = true; showToast(`${s.name} enabled`); }
+    }
+    setTimeout(() => renderSkills(), 250);
+}
+
+// ─── APPROVALS ───
+let pendingApprovals = [
+    { id:1, type:'Marketing', title:'Launch "Winter Escape" Instagram Campaign', impact:'High', estimatedReach:'12.4k', agent:'Marketing Agent', time:'2 hours ago' },
+    { id:4, type:'Ancillary', title:'Send Spa + Champagne Dinner bundle to Rm 204 (Valentina R.)', impact:'High', bundle:'Couples Spa 90min + Champagne Dinner for 2', revenue:'$340', probability:'74%', agent:'Ancillary Agent', time:'1 hour ago' },
+    { id:4, type:'Ancillary', title:'Send Spa + Champagne Dinner bundle to Rm 204 (Valentina R.)', impact:'High', bundle:'Couples Spa 90min + Champagne Dinner for 2', revenue:'$340', probability:'74%', agent:'Ancillary Agent', time:'1 hour ago' },
+    { id:2, type:'Financial', title:'Create QuickBooks journal entries for Jan payouts', impact:'High', amount:'$47,800', agent:'QuickBooks Sync', time:'Yesterday' },
+    { id:3, type:'Notebook', title:'Approve labor cost anomaly recommendation', impact:'Medium', finding:'Housekeeping labor +18% vs forecast', agent:'Notebook Analyst', time:'3 hours ago' },
+];
+let currentApproval = null;
+
+function renderApprovals() {
+    const c = document.getElementById('approvals-list');
+    c.innerHTML = '';
+    if (!pendingApprovals.length) { c.innerHTML = `<div class="text-sm text-slate-500 py-4 text-center">No pending approvals. Great work!</div>`; return; }
+    pendingApprovals.forEach(a => {
+        const div = document.createElement('div');
+        div.className = 'flex items-start justify-between p-4 border border-slate-200 hover:border-slate-300 rounded-2xl cursor-pointer transition-all active:scale-[0.985]';
+        div.onclick = () => showApprovalModal(a);
+        const badge = a.impact === 'High'
+            ? `<span class="px-2.5 py-px text-[10px] font-semibold bg-red-100 text-red-700 rounded">HIGH</span>`
+            : `<span class="px-2.5 py-px text-[10px] font-semibold bg-amber-100 text-amber-700 rounded">MEDIUM</span>`;
+        div.innerHTML = `
+            <div class="flex-1 pr-4">
+                <div class="flex items-center gap-x-2 mb-1 flex-wrap"><span class="font-semibold text-sm">${a.title}</span>${badge}</div>
+                <div class="text-xs text-slate-500">${a.agent} • ${a.time}</div>
+                ${a.finding ? `<div class="text-xs text-amber-600 mt-1">${a.finding}</div>` : ''}
+            </div>
+            <i class="fa-solid fa-chevron-right text-slate-400 mt-1"></i>`;
+        c.appendChild(div);
+    });
+}
+
+function showApprovalModal(a) {
+    currentApproval = a;
+    document.getElementById('modal-title').textContent = a.title;
+    document.getElementById('modal-subtitle').textContent = `${a.type} • ${a.agent}`;
+    let html = '';
+    if (a.type === 'Marketing') {
+        html = `<div class="space-y-4 text-sm"><div class="bg-slate-50 rounded-2xl p-4"><div class="text-xs text-slate-500 mb-1">CAMPAIGN SUMMARY</div><div class="font-medium">Winter Escape Package • 3 posts + Stories + targeted DMs</div><div class="text-xs mt-3 flex justify-between"><span>Est. reach</span><span class="font-semibold">${a.estimatedReach}</span></div><div class="text-xs flex justify-between"><span>Est. direct bookings</span><span class="font-semibold">18–24</span></div></div><div class="text-xs text-slate-600"><span class="font-medium">Human-in-the-Loop: </span>Agent will only post after your approval. You can edit copy before execution.</div></div>`;
+    } else if (a.type === 'Financial') {
+        html = `<div class="space-y-4 text-sm"><div class="bg-slate-50 rounded-2xl p-4 text-xs"><div>Creating 12 journal entries for January OTA payouts + refunds.</div><div class="mt-2 font-mono text-[10px] text-slate-500">Total: <span class="font-semibold text-slate-900">${a.amount}</span></div></div><div class="text-amber-700 text-xs flex items-start gap-x-2"><i class="fa-solid fa-exclamation-triangle mt-0.5"></i><span>This will write directly to your QuickBooks company file.</span></div></div>`;
+    } else if (a.type === 'Ancillary') {
+        html = `<div class="space-y-4 text-sm">
+            <div class="bg-violet-50 border border-violet-200 rounded-2xl p-4">
+                <div class="text-xs font-semibold text-violet-600 tracking-wider mb-2">BUNDLE RECOMMENDATION — ANALYST AGENT</div>
+                <div class="font-semibold mb-1">${a.bundle}</div>
+                <div class="grid grid-cols-2 gap-3 mt-3 text-xs">
+                    <div class="bg-white rounded-xl p-3 border border-violet-100">
+                        <div class="text-slate-400 mb-0.5">Est. Revenue</div>
+                        <div class="font-bold text-emerald-600 text-lg">${a.revenue}</div>
+                    </div>
+                    <div class="bg-white rounded-xl p-3 border border-violet-100">
+                        <div class="text-slate-400 mb-0.5">Uptake Probability</div>
+                        <div class="font-bold text-violet-600 text-lg">${a.probability}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-slate-50 rounded-2xl p-4 text-xs space-y-2">
+                <div class="font-semibold text-slate-700 mb-2">WHY THIS GUEST?</div>
+                <div class="flex items-start gap-x-2"><i class="fa-solid fa-heart text-rose-400 mt-0.5"></i><span>Booking pattern: <strong>Anniversary trip</strong> — 2 guests, 3 nights, checked in yesterday</span></div>
+                <div class="flex items-start gap-x-2"><i class="fa-solid fa-star text-amber-400 mt-0.5"></i><span>Past stay data: Spa used on last visit (Feb 2025), rated 5★</span></div>
+                <div class="flex items-start gap-x-2"><i class="fa-solid fa-chart-bar text-blue-400 mt-0.5"></i><span>Segment: <strong>Couples/Romance</strong> — 74% historical uptake rate for this bundle</span></div>
+                <div class="flex items-start gap-x-2"><i class="fa-solid fa-clock text-slate-400 mt-0.5"></i><span>Optimal send time: <strong>Tonight 6pm</strong> — pre-dinner engagement window</span></div>
+            </div>
+            <div class="bg-slate-50 rounded-2xl p-4 text-xs">
+                <div class="font-semibold text-slate-700 mb-2">OFFER MESSAGE (CREATOR DRAFT)</div>
+                <div class="italic text-slate-600 leading-relaxed">"Good evening Valentina! We hope you're enjoying your stay at The Meridian. As a special touch for your anniversary, we'd love to offer you our Couples Spa Experience + Champagne Dinner for 2 at $340 (save $60). Book before 8pm tonight to secure your preferred time slot. Just reply to this message or call ext. 0."</div>
+            </div>
+            <div class="text-xs text-slate-500 flex items-start gap-x-2"><i class="fa-solid fa-shield-halved text-emerald-500 mt-0.5"></i><span><strong>Human-in-the-Loop:</strong> Message will only be sent after your approval. You can edit the offer, adjust pricing, or change the bundle before it reaches the guest.</span></div>
+        </div>`;
+    } else if (a.type === 'Ancillary') {
+        html = `<div class="space-y-4 text-sm">
+            <div class="bg-violet-50 border border-violet-200 rounded-2xl p-4">
+                <div class="text-xs font-semibold text-violet-600 tracking-wider mb-2">BUNDLE RECOMMENDATION</div>
+                <div class="font-semibold mb-3">\${a.bundle}</div>
+                <div class="grid grid-cols-2 gap-3 text-xs">
+                    <div class="bg-white rounded-xl p-3 border border-violet-100"><div class="text-slate-400 mb-0.5">Est. Revenue</div><div class="font-bold text-emerald-600 text-xl">\${a.revenue}</div></div>
+                    <div class="bg-white rounded-xl p-3 border border-violet-100"><div class="text-slate-400 mb-0.5">Uptake Probability</div><div class="font-bold text-violet-600 text-xl">\${a.probability}</div></div>
+                </div>
+            </div>
+            <div class="bg-slate-50 rounded-2xl p-4 text-xs space-y-2">
+                <div class="font-semibold text-slate-700 mb-2">WHY THIS GUEST?</div>
+                <div class="flex items-start gap-x-2"><i class="fa-solid fa-heart text-rose-400 mt-0.5"></i><span>Anniversary trip - 2 guests, 3 nights, checked in yesterday</span></div>
+                <div class="flex items-start gap-x-2"><i class="fa-solid fa-star text-amber-400 mt-0.5"></i><span>Past stay: Spa used Feb 2025, rated 5 stars</span></div>
+                <div class="flex items-start gap-x-2"><i class="fa-solid fa-chart-bar text-blue-400 mt-0.5"></i><span>Couples/Romance segment: 74% historical uptake</span></div>
+            </div>
+            <div class="bg-slate-50 rounded-2xl p-4 text-xs">
+                <div class="font-semibold text-slate-700 mb-2">OFFER MESSAGE</div>
+                <div class="italic text-slate-600">"Good evening! As a special touch for your anniversary, we'd love to offer our Couples Spa + Champagne Dinner at \$340 (save \$60). Book before 8pm tonight."</div>
+            </div>
+            <div class="text-xs text-slate-500 flex items-start gap-x-2"><i class="fa-solid fa-shield-halved text-emerald-500 mt-0.5"></i><span>Message sends after your approval only.</span></div>
+        </div>`;
+    } else {
+        html = `<div class="text-sm"><div class="bg-amber-50 border border-amber-200 text-amber-700 rounded-2xl p-4 text-xs">\${a.finding || 'Agent recommends the following action.'}<br><br><span class="font-medium">Recommended:</span> Adjust housekeeping schedule for next 2 weeks and notify department leads.</div></div>`;
+    }
+    document.getElementById('modal-body').innerHTML = html;
+    const m = document.getElementById('approval-modal');
+    m.classList.remove('hidden'); m.classList.add('flex');
+}
+function hideApprovalModal() {
+    const m = document.getElementById('approval-modal');
+    m.classList.remove('flex'); m.classList.add('hidden');
+}
+function approveAction() {
+    if (!currentApproval) return;
+    pendingApprovals = pendingApprovals.filter(a => a.id !== currentApproval.id);
+    hideApprovalModal();
+    addActivityLog(`Approved: ${currentApproval.title}`, 'success');
+    renderApprovals();
+    setTimeout(() => { showToast('Action executed. Results logged.'); addActivityLog(`${currentApproval.agent} completed execution`, 'info'); }, 1200);
+}
+function rejectAction() { hideApprovalModal(); showToast('Action rejected. Agent will revise.', 'info'); }
+
+// ─── ACTIVITY LOG ───
+function addActivityLog(msg, type='info') {
+    const c = document.getElementById('activity-log');
+    const e = document.createElement('div');
+    e.className = 'log-entry flex items-start gap-x-3 text-xs py-2 border-b border-slate-100 last:border-none';
+    const icon = type==='success' ? 'fa-check-circle text-emerald-500' : type==='warning' ? 'fa-exclamation-triangle text-amber-500' : 'fa-info-circle text-slate-400';
+    e.innerHTML = `<i class="fa-solid ${icon} mt-0.5"></i><div class="flex-1"><span>${msg}</span><span class="text-[10px] text-slate-400 ml-2">${new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</span></div>`;
+    c.prepend(e);
+    while (c.children.length > 6) c.removeChild(c.lastChild);
+}
+function initActivityLog() {
+    const logs = [
+        { m:'Notebook analyzed January cost sheet', t:'info' },
+        { m:'Ancillary Agent identified 4 bundle opportunities across upcoming bookings', t:'success' },
+        { m:'Ancillary Agent identified 4 bundle opportunities across upcoming bookings', t:'success' },
+        { m:'Marketing agent proposed 3 new campaigns', t:'info' },
+        { m:'Reputation agent responded to 4 new reviews', t:'success' },
+        { m:'Scout detected Valentine weekend demand surge (+340%)', t:'warning' },
+        { m:'Master Supervisor optimized daily agent schedule', t:'info' },
+    ];
+    logs.forEach(l => addActivityLog(l.m, l.t));
+}
+
+// ─── NOTEBOOK ───
+function simulateFileUpload() {
+    const i = document.createElement('input'); i.type='file'; i.accept='.xlsx,.csv';
+    i.onchange = function() {
+        if (i.files.length) {
+            showToast(`"${i.files[0].name}" uploaded`);
+            setTimeout(() => { showToast('Notebook is analysing...','info'); setTimeout(() => { addActivityLog('Notebook processed uploaded cost sheet','success'); showToast('Analysis complete. One insight needs your review.'); }, 1800); }, 900);
+        }
+    };
+    i.click();
+}
+function runPrebuiltAnalysis() {
+    showToast('Running Labor Cost Analysis...');
+    setTimeout(() => {
+        pendingApprovals.unshift({ id:Date.now(), type:'Notebook', title:'Labor Cost Analysis — February 2026', impact:'Medium', finding:'Housekeeping labor +18% above forecast. 3 days exceeded budget.', agent:'Notebook Analyst', time:'Just now' });
+        renderApprovals();
+        showToast('Analysis ready. Review in Pending Approvals.');
+        addActivityLog('Notebook completed labor cost analysis','success');
+    }, 2200);
+}
+
+// ─── OTA DATA ───
+const otaPlatforms = [
+    { name:'Booking.com', icon:'fa-globe', color:'blue', status:'connected', rooms:18, note:'MCP Beta' },
+    { name:'MakeMyTrip', icon:'fa-plane', color:'orange', status:'connected', rooms:6, note:'MCP Beta' },
+    { name:'Expedia', icon:'fa-map-location-dot', color:'yellow', status:'pending', rooms:0, note:'Connect now' },
+    { name:'Airbnb', icon:'fa-house', color:'rose', status:'disconnected', rooms:0, note:'OAuth ready' },
+];
+const colorMap = { blue:'bg-blue-100 text-blue-600 border-blue-200', orange:'bg-orange-100 text-orange-600 border-orange-200', yellow:'bg-yellow-100 text-yellow-600 border-yellow-200', rose:'bg-rose-100 text-rose-600 border-rose-200' };
+
+function renderOTAGrid() {
+    const g = document.getElementById('ota-grid');
+    if (!g) return;
+    g.innerHTML = '';
+    otaPlatforms.forEach(p => {
+        const div = document.createElement('div');
+        div.className = `p-4 border rounded-2xl cursor-pointer hover:shadow-sm transition-all ${p.status==='connected' ? 'border-emerald-200 bg-emerald-50/30' : 'border-slate-200 bg-white'}`;
+        div.onclick = () => showIntegrationsPanel();
+        const statusEl = p.status==='connected'
+            ? `<div class="flex items-center gap-x-1 text-emerald-600"><div class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></div><span class="text-[10px] font-semibold">Live</span></div>`
+            : p.status==='pending'
+            ? `<span class="text-[10px] font-semibold text-amber-600">Pending</span>`
+            : `<span class="text-[10px] font-semibold text-slate-400">Connect</span>`;
+        div.innerHTML = `
+            <div class="flex items-start justify-between mb-3">
+                <div class="w-9 h-9 rounded-xl border ${colorMap[p.color]} flex items-center justify-center"><i class="fa-solid ${p.icon} text-sm"></i></div>
+                ${statusEl}
+            </div>
+            <div class="font-semibold text-sm">${p.name}</div>
+            <div class="text-[10px] text-slate-500 mt-0.5">${p.status==='connected' ? `${p.rooms} rooms synced` : p.note}</div>
+            <div class="mt-2 text-[9px] font-semibold text-violet-600 bg-violet-50 px-2 py-0.5 rounded-full inline-block">${p.note}</div>`;
+        g.appendChild(div);
+    });
+}
+
+// ─── DISCOVERY FLOW ───
+let discStep = 1;
+const discSteps = {
+    1: () => `
+        <div class="space-y-5">
+            <div>
+                <div class="font-semibold text-lg mb-1">Connect your accounts</div>
+                <div class="text-sm text-slate-500">Your agents read your existing presence to understand your brand voice, strengths, and opportunities. All connections use OAuth — we never store your password.</div>
+            </div>
+            <div class="space-y-3">
+                <div class="flex items-center justify-between p-4 border border-slate-200 rounded-2xl hover:border-pink-300 transition-colors cursor-pointer" onclick="simulateOAuth(this,'Instagram','fa-instagram','text-pink-500')">
+                    <div class="flex items-center gap-x-3"><div class="w-10 h-10 bg-gradient-to-br from-pink-500 to-violet-600 rounded-xl flex items-center justify-center"><i class="fa-brands fa-instagram text-white text-lg"></i></div><div><div class="font-semibold text-sm">Instagram</div><div class="text-xs text-slate-500">Posts, stories, engagement analytics</div></div></div>
+                    <span id="oauth-instagram" class="text-xs font-semibold text-slate-400 border border-slate-300 px-3 py-1 rounded-xl hover:border-slate-600 transition-colors">Connect</span>
+                </div>
+                <div class="flex items-center justify-between p-4 border border-slate-200 rounded-2xl hover:border-blue-300 transition-colors cursor-pointer" onclick="simulateOAuth(this,'Facebook','fa-facebook','text-blue-600')">
+                    <div class="flex items-center gap-x-3"><div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center"><i class="fa-brands fa-facebook text-white text-lg"></i></div><div><div class="font-semibold text-sm">Facebook Business</div><div class="text-xs text-slate-500">Page insights, reviews, ad data</div></div></div>
+                    <span id="oauth-facebook" class="text-xs font-semibold text-slate-400 border border-slate-300 px-3 py-1 rounded-xl hover:border-slate-600 transition-colors">Connect</span>
+                </div>
+                <div class="border border-dashed border-slate-300 rounded-2xl p-4">
+                    <div class="text-sm font-semibold text-slate-700 mb-2"><i class="fa-solid fa-upload text-slate-400 mr-2"></i>Or upload marketing materials</div>
+                    <div class="text-xs text-slate-500 mb-3">PDFs, images, past campaigns, brand guidelines. Agents extract your tone and visual style.</div>
+                    <button onclick="showToast('File picker open — upload screenshots or PDFs','info')" class="text-xs px-4 py-2 border border-slate-300 rounded-xl hover:bg-slate-50 transition-colors">
+                        <i class="fa-solid fa-paperclip mr-1"></i> Upload Screenshots / PDFs
+                    </button>
+                </div>
+            </div>
+        </div>`,
+    2: () => `
+        <div class="space-y-5">
+            <div>
+                <div class="font-semibold text-lg mb-1">What do you want to achieve?</div>
+                <div class="text-sm text-slate-500">Your agents will tailor their work around these goals. You can always add more later.</div>
+            </div>
+            <div class="flex flex-wrap gap-2">
+                ${['Increase direct bookings','Reduce OTA dependence','Grow Instagram followers','Cut labor overtime costs','Improve review ratings','Launch seasonal packages','Upsell F&B / experiences','Improve financial visibility'].map(g =>
+                    `<button onclick="toggleGoalTag(this)" class="goal-tag px-3 py-1.5 text-xs border border-slate-300 rounded-full hover:border-slate-900 hover:bg-slate-900 hover:text-white transition-all">${g}</button>`
+                ).join('')}
+            </div>
+            <div>
+                <label class="text-xs font-semibold text-slate-500 tracking-wider">ADD A CUSTOM GOAL</label>
+                <textarea rows="2" placeholder="E.g. We want to drive more corporate group bookings for Q2..." class="mt-2 w-full px-4 py-3 border border-slate-300 rounded-2xl text-sm focus:outline-none focus:border-slate-900 resize-none"></textarea>
+            </div>
+            <div>
+                <label class="text-xs font-semibold text-slate-500 tracking-wider">ANYTHING ELSE AGENTS SHOULD KNOW?</label>
+                <textarea rows="2" placeholder="E.g. We never discount more than 15%. Our brand voice is warm but professional..." class="mt-2 w-full px-4 py-3 border border-slate-300 rounded-2xl text-sm focus:outline-none focus:border-slate-900 resize-none"></textarea>
+            </div>
+        </div>`,
+    3: () => `
+        <div class="space-y-4">
+            <div>
+                <div class="font-semibold text-lg mb-1">Agents are learning your business...</div>
+                <div class="text-sm text-slate-500">Scout and Analyst are reviewing your connected accounts and uploaded materials.</div>
+            </div>
+            <div class="space-y-3" id="disc-scan-log">
+                <div class="flex items-center gap-x-3 p-3 bg-emerald-50 border border-emerald-200 rounded-2xl text-sm"><i class="fa-solid fa-check-circle text-emerald-500"></i><span>Instagram: 847 posts analysed • Dominant tone: <strong>warm, aspirational</strong></span></div>
+                <div class="flex items-center gap-x-3 p-3 bg-emerald-50 border border-emerald-200 rounded-2xl text-sm"><i class="fa-solid fa-check-circle text-emerald-500"></i><span>Facebook: 4.6★ avg rating • 312 reviews scanned</span></div>
+                <div class="flex items-center gap-x-3 p-3 bg-blue-50 border border-blue-200 rounded-2xl text-sm disc-spin"><i class="fa-solid fa-spinner fa-spin text-blue-500"></i><span>Scanning competitor pricing in San Francisco boutique segment...</span></div>
+            </div>
+            <!-- Business Profile card -->
+            <div class="bg-slate-900 text-white rounded-2xl p-5 mt-2">
+                <div class="text-xs font-semibold text-slate-400 tracking-wider mb-3">BUSINESS PROFILE — DISCOVERED</div>
+                <div class="grid grid-cols-2 gap-3 text-sm">
+                    <div><div class="text-slate-400 text-xs">Brand Voice</div><div class="font-semibold mt-0.5">Warm · Boutique · Local</div></div>
+                    <div><div class="text-slate-400 text-xs">Top Guest Segment</div><div class="font-semibold mt-0.5">Couples · Business travellers</div></div>
+                    <div><div class="text-slate-400 text-xs">Strongest Channel</div><div class="font-semibold mt-0.5">Instagram (3.2k followers)</div></div>
+                    <div><div class="text-slate-400 text-xs">Review Sentiment</div><div class="font-semibold mt-0.5">92% positive (location ★★★★★)</div></div>
+                </div>
+            </div>
+        </div>`,
+    4: () => `
+        <div class="space-y-5">
+            <div>
+                <div class="font-semibold text-lg mb-1">Your Agent Plan is ready</div>
+                <div class="text-sm text-slate-500">Based on your goals and business profile, here's what your Growth plan activates — and what's available when you're ready to scale.</div>
+            </div>
+            <!-- Enabled agents -->
+            <div>
+                <div class="text-xs font-semibold text-emerald-600 tracking-wider mb-2">ENABLED ON GROWTH PLAN</div>
+                <div class="space-y-2">
+                    ${[
+                        { name:'Scout Agent', desc:'Monitors OTA demand, competitor pricing, social trends daily', icon:'fa-binoculars', color:'emerald' },
+                        { name:'Creator Agent', desc:'Drafts Instagram posts, email campaigns in your brand voice', icon:'fa-pen-nib', color:'blue' },
+                        { name:'Analyst Agent', desc:'Reviews your Notebook uploads and surfaces cost anomalies', icon:'fa-chart-line', color:'indigo' },
+                        { name:'Reputation Agent', desc:'Drafts review responses for your approval across platforms', icon:'fa-star', color:'amber' },
+                    ].map(a => `
+                        <div class="flex items-center gap-x-3 p-3 border border-emerald-200 bg-emerald-50/40 rounded-2xl">
+                            <div class="w-8 h-8 bg-${a.color}-600 rounded-xl flex items-center justify-center flex-shrink-0"><i class="fa-solid ${a.icon} text-white text-xs"></i></div>
+                            <div><div class="font-semibold text-sm">${a.name}</div><div class="text-xs text-slate-500">${a.desc}</div></div>
+                            <i class="fa-solid fa-check-circle text-emerald-500 ml-auto"></i>
+                        </div>`).join('')}
+                </div>
+            </div>
+            <!-- Locked agents -->
+            <div>
+                <div class="text-xs font-semibold text-slate-400 tracking-wider mb-2">UNLOCK WITH PRO / COMING SOON</div>
+                <div class="space-y-2">
+                    ${[
+                        { name:'Dynamic Pricing Agent', desc:'AI-driven rate optimization based on live demand signals', tier:'Pro' },
+                        { name:'QuickBooks Sync Agent', desc:'Auto-reconcile OTA payouts and create journal entries', tier:'Coming' },
+                        { name:'Payroll & Labor Agent', desc:'Forecast labor needs and flag overtime risk', tier:'Coming' },
+                    ].map(a => `
+                        <div class="flex items-center gap-x-3 p-3 border border-slate-200 bg-slate-50 rounded-2xl opacity-70">
+                            <div class="w-8 h-8 bg-slate-300 rounded-xl flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-lock text-white text-xs"></i></div>
+                            <div><div class="font-semibold text-sm text-slate-600">${a.name}</div><div class="text-xs text-slate-400">${a.desc}</div></div>
+                            <span class="ml-auto text-[10px] font-bold px-2 py-0.5 ${a.tier==='Pro' ? 'bg-violet-100 text-violet-600' : 'bg-slate-200 text-slate-500'} rounded-full whitespace-nowrap">${a.tier==='Coming' ? 'Coming Soon' : 'Pro'}</span>
+                        </div>`).join('')}
+                </div>
+            </div>
+            <div class="bg-slate-900 text-white rounded-2xl p-4 flex items-center justify-between">
+                <div><div class="font-semibold">Ready to activate your legion?</div><div class="text-xs text-slate-400 mt-0.5">Agents will start working immediately after you confirm.</div></div>
+                <button onclick="closeDiscovery(); showToast('Legion activated! Agents are now running.')" class="px-5 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-white text-sm font-semibold rounded-2xl transition-colors whitespace-nowrap ml-4">
+                    Activate <i class="fa-solid fa-bolt ml-1"></i>
+                </button>
+            </div>
+        </div>`
+};
+
+function runDiscoveryFlow() {
+    discStep = 1;
+    const m = document.getElementById('discovery-modal');
+    m.classList.remove('hidden'); m.classList.add('flex');
+    renderDiscStep();
+}
+function closeDiscovery() {
+    const m = document.getElementById('discovery-modal');
+    m.classList.remove('flex'); m.classList.add('hidden');
+}
+function renderDiscStep() {
+    document.getElementById('disc-content').innerHTML = discSteps[discStep]();
+    // Update step indicators
+    for (let i=1; i<=4; i++) {
+        const el = document.getElementById(`disc-step-${i}`);
+        el.className = 'disc-step w-7 h-7 rounded-full border-2 flex items-center justify-center text-xs font-bold';
+        if (i < discStep) { el.classList.add('done'); el.innerHTML = '<i class="fa-solid fa-check text-[10px]"></i>'; }
+        else if (i === discStep) { el.classList.add('active'); el.textContent = i; }
+        else { el.classList.add('border-slate-300','text-slate-500'); el.textContent = i; }
+    }
+    document.getElementById('disc-back').classList.toggle('hidden', discStep === 1);
+    const nextBtn = document.getElementById('disc-next');
+    nextBtn.textContent = discStep === 4 ? 'Close' : 'Continue →';
+    if (discStep === 4) nextBtn.onclick = closeDiscovery;
+    else nextBtn.onclick = discoveryNext;
+}
+function discoveryNext() { if (discStep < 4) { discStep++; renderDiscStep(); } }
+function discoveryBack() { if (discStep > 1) { discStep--; renderDiscStep(); } }
+function simulateOAuth(row, platform, icon, colorClass) {
+    const btn = document.getElementById(`oauth-${platform.toLowerCase()}`);
+    if (!btn || btn.textContent === 'Connected') return;
+    btn.textContent = 'Connecting...';
+    btn.className = 'text-xs font-semibold text-slate-400 px-3 py-1 rounded-xl';
+    setTimeout(() => {
+        btn.textContent = 'Connected';
+        btn.className = 'text-xs font-semibold text-emerald-600 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-xl';
+        row.classList.add('border-emerald-300','bg-emerald-50/30');
+    }, 1200);
+}
+function toggleGoalTag(btn) {
+    btn.classList.toggle('bg-slate-900');
+    btn.classList.toggle('text-white');
+    btn.classList.toggle('border-slate-900');
+}
+
+// ─── GOAL PANEL ───
+let selectedCategory = '', selectedPriority = '';
+function openGoalPanel() {
+    document.getElementById('goal-overlay').classList.remove('hidden');
+    document.getElementById('goal-panel').classList.add('open');
+}
+function closeGoalPanel() {
+    document.getElementById('goal-overlay').classList.add('hidden');
+    document.getElementById('goal-panel').classList.remove('open');
+}
+function selectGoalChip(btn) {
+    document.getElementById('goal-text').value = btn.textContent;
+    document.querySelectorAll('.goal-chip').forEach(b => b.classList.remove('bg-slate-900','text-white','border-slate-900'));
+    btn.classList.add('bg-slate-900','text-white','border-slate-900');
+}
+function selectCategory(btn, cat) {
+    selectedCategory = cat;
+    document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('border-slate-900','bg-slate-900','text-white'));
+    btn.classList.add('border-slate-900','bg-slate-900','text-white');
+}
+function selectPriority(btn, p) {
+    selectedPriority = p;
+    document.querySelectorAll('.priority-btn').forEach(b => b.classList.remove('ring-2','ring-slate-900'));
+    btn.classList.add('ring-2','ring-slate-900');
+}
+function submitGoal() {
+    const txt = document.getElementById('goal-text').value.trim();
+    if (!txt) { showToast('Please describe a goal first','info'); return; }
+    closeGoalPanel();
+    showToast('Goal submitted! Master Supervisor is planning...');
+    setTimeout(() => {
+        pendingApprovals.unshift({ id:Date.now(), type:'Planning', title:txt, impact:'Medium', agent:'Master Supervisor', time:'Just now' });
+        renderApprovals();
+        addActivityLog(`New goal created: ${txt}`, 'info');
+    }, 1400);
+}
+
+// ─── INTEGRATIONS MODAL ───
+const integrations = [
+    { name:'Instagram', icon:'fa-instagram', iconType:'brands', color:'from-pink-500 to-violet-600', status:'connected', desc:'OAuth connected • posts + insights read access', note:'Social Intelligence' },
+    { name:'Facebook Business', icon:'fa-facebook', iconType:'brands', color:'bg-blue-600', status:'connected', desc:'Page insights, reviews, ad performance', note:'Social Intelligence' },
+    { name:'Booking.com', icon:'fa-globe', iconType:'solid', color:'bg-blue-500', status:'connected', desc:'Live via MCP Beta • 18 rooms synced', note:'OTA / MCP' },
+    { name:'MakeMyTrip', icon:'fa-plane', iconType:'solid', color:'bg-orange-500', status:'connected', desc:'Live via MCP Beta • 6 rooms synced', note:'OTA / MCP' },
+    { name:'Expedia', icon:'fa-map-location-dot', iconType:'solid', color:'bg-yellow-500', status:'pending', desc:'OAuth flow ready — click to connect', note:'OTA' },
+    { name:'Airbnb', icon:'fa-house', iconType:'solid', color:'bg-rose-500', status:'disconnected', desc:'Connect to sync listings and reviews', note:'OTA' },
+    { name:'QuickBooks Online', icon:'fa-book', iconType:'solid', color:'bg-green-600', status:'coming', desc:'2-way financial sync — coming soon', note:'Finance' },
+    { name:'Gusto Payroll', icon:'fa-users', iconType:'solid', color:'bg-teal-600', status:'coming', desc:'Labor forecasting integration — coming soon', note:'HR / Payroll' },
+];
+function showIntegrationsPanel() {
+    const list = document.getElementById('integrations-list');
+    list.innerHTML = '';
+    const groups = {};
+    integrations.forEach(i => { if (!groups[i.note]) groups[i.note] = []; groups[i.note].push(i); });
+    Object.entries(groups).forEach(([group, items]) => {
+        const header = document.createElement('div');
+        header.className = 'text-[10px] font-semibold text-slate-400 tracking-wider mb-2 mt-2';
+        header.textContent = group.toUpperCase();
+        list.appendChild(header);
+        items.forEach(itg => {
+            const div = document.createElement('div');
+            div.className = `flex items-center justify-between p-4 border rounded-2xl ${itg.status==='connected'?'border-emerald-200 bg-emerald-50/30':itg.status==='coming'?'border-slate-100 opacity-60':'border-slate-200'}`;
+            const iconBg = itg.iconType==='brands'
+                ? `<div class="w-10 h-10 bg-gradient-to-br ${itg.color} rounded-xl flex items-center justify-center"><i class="fa-brands ${itg.icon} text-white text-lg"></i></div>`
+                : `<div class="w-10 h-10 ${itg.color} rounded-xl flex items-center justify-center"><i class="fa-solid ${itg.icon} text-white text-base"></i></div>`;
+            const statusEl = itg.status==='connected'
+                ? `<div class="flex items-center gap-x-1 text-emerald-600 text-xs font-semibold"><div class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></div> Live</div>`
+                : itg.status==='coming'
+                ? `<span class="text-[10px] font-semibold text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">Coming Soon</span>`
+                : itg.status==='pending'
+                ? `<button onclick="showToast('Opening OAuth for ${itg.name}...','info')" class="text-xs font-semibold text-blue-600 border border-blue-300 px-3 py-1 rounded-xl hover:bg-blue-50 transition-colors">Connect</button>`
+                : `<button onclick="showToast('Opening OAuth for ${itg.name}...','info')" class="text-xs font-semibold text-slate-600 border border-slate-300 px-3 py-1 rounded-xl hover:bg-slate-50 transition-colors">Connect</button>`;
+            div.innerHTML = `<div class="flex items-center gap-x-3">${iconBg}<div><div class="font-semibold text-sm">${itg.name}</div><div class="text-xs text-slate-500">${itg.desc}</div></div></div>${statusEl}`;
+            list.appendChild(div);
+        });
+    });
+    const m = document.getElementById('integrations-modal');
+    m.classList.remove('hidden'); m.classList.add('flex');
+}
+function closeIntegrations() {
+    const m = document.getElementById('integrations-modal');
+    m.classList.remove('flex'); m.classList.add('hidden');
+}
+
+// ─── SUBSCRIPTION MODAL ───
+const plans = [
+    {
+        name:'Starter', price:'$149', period:'/mo', badge:'', color:'slate', current:false,
+        desc:'Test the leverage. Zero risk.',
+        skills:['Discovery & Social Intelligence','Basic Notebook Analysis','Reputation Monitoring','Core Telemetry Dashboard'],
+        locked:['Marketing & Content','Dynamic Pricing','QuickBooks Sync','Payroll & Labor'],
+        cta:'Start Free Trial'
+    },
+    {
+        name:'Growth', price:'$349', period:'/mo', badge:'CURRENT PLAN', color:'emerald', current:true,
+        desc:'For hotels ready to grow direct bookings.',
+        skills:['Everything in Starter','Marketing & Content Agent','Full Notebook Analysis','Reputation + Review Responses','OTA MCP Integrations (Beta)'],
+        locked:['Dynamic Pricing','QuickBooks Sync','Payroll & Labor'],
+        cta:'Current Plan'
+    },
+    {
+        name:'Pro', price:'$599', period:'/mo', badge:'MOST POWERFUL', color:'violet', current:false,
+        desc:'Full operational leverage for ambitious hotels.',
+        skills:['Everything in Growth','Dynamic Pricing Agent','Super-Swarm Access','Priority Compute','Dedicated Onboarding'],
+        locked:['QuickBooks Sync (Coming)','Gusto Payroll (Coming)'],
+        cta:'Upgrade to Pro'
+    },
+];
+function showSubscriptionModal() {
+    const g = document.getElementById('pricing-grid');
+    g.innerHTML = '';
+    plans.forEach(p => {
+        const div = document.createElement('div');
+        div.className = `border rounded-3xl p-6 flex flex-col relative ${p.current ? 'border-emerald-400 shadow-lg shadow-emerald-100' : p.color==='violet' ? 'border-violet-300 bg-gradient-to-b from-violet-50 to-white' : 'border-slate-200'}`;
+        if (p.badge) {
+            div.innerHTML += `<div class="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 text-[10px] font-bold rounded-full ${p.color==='violet' ? 'bg-violet-600 text-white' : 'bg-emerald-600 text-white'}">${p.badge}</div>`;
+        }
+        div.innerHTML += `
+            <div class="mb-4">
+                <div class="font-display text-xl mb-1">${p.name}</div>
+                <div class="text-3xl font-bold">${p.price}<span class="text-sm font-normal text-slate-500">${p.period}</span></div>
+                <div class="text-xs text-slate-500 mt-1">${p.desc}</div>
+            </div>
+            <ul class="space-y-2 mb-4 flex-1">
+                ${p.skills.map(s => `<li class="flex items-start gap-x-2 text-xs"><i class="fa-solid fa-check-circle text-emerald-500 mt-0.5 flex-shrink-0"></i><span>${s}</span></li>`).join('')}
+                ${p.locked.map(s => `<li class="flex items-start gap-x-2 text-xs opacity-40"><i class="fa-solid fa-lock mt-0.5 flex-shrink-0"></i><span>${s}</span></li>`).join('')}
+            </ul>
+            <button onclick="${p.current ? 'closeSubscription()' : "showToast('Redirecting to checkout...','info'); closeSubscription()"}" 
+                    class="w-full py-2.5 text-sm font-semibold rounded-2xl transition-all ${p.current ? 'bg-slate-100 text-slate-600 cursor-default' : p.color==='violet' ? 'bg-violet-600 hover:bg-violet-700 text-white' : 'bg-slate-900 hover:bg-slate-800 text-white'}">
+                ${p.cta}
+            </button>`;
+        g.appendChild(div);
+    });
+    const m = document.getElementById('subscription-modal');
+    m.classList.remove('hidden'); m.classList.add('flex');
+}
+function closeSubscription() {
+    const m = document.getElementById('subscription-modal');
+    m.classList.remove('flex'); m.classList.add('hidden');
+}
+
+// ─── MISC ───
+function showApprovalGateDemo() {
+    showApprovalModal(pendingApprovals[0] || { id:99, type:'Marketing', title:'Post "Spring in SF" Instagram Reel', impact:'High', estimatedReach:'9.8k', agent:'Creator Agent', time:'Just now' });
+}
+
+function showTelemetryModal() {
+    const modal = document.createElement('div');
+    modal.className = 'fixed inset-0 bg-black/40 flex items-center justify-center z-[200]';
+    modal.innerHTML = `
+        <div onclick="event.stopPropagation()" class="bg-white w-full max-w-2xl mx-4 rounded-3xl overflow-hidden">
+            <div class="px-6 py-4 border-b flex justify-between items-center">
+                <div class="font-semibold">Telemetry & Observability</div>
+                <button onclick="this.closest('.fixed').remove()" class="text-xl leading-none text-slate-400">&times;</button>
+            </div>
+            <div class="p-6">
+                <div class="grid grid-cols-3 gap-4 mb-6">
+                    <div class="bg-slate-50 rounded-2xl p-4"><div class="text-xs text-slate-500">Total LLM Calls (7d)</div><div class="text-3xl font-semibold mt-1">1,842</div></div>
+                    <div class="bg-slate-50 rounded-2xl p-4"><div class="text-xs text-slate-500">Avg Cost per Action</div><div class="text-3xl font-semibold mt-1">$0.041</div></div>
+                    <div class="bg-slate-50 rounded-2xl p-4"><div class="text-xs text-slate-500">Human Approvals</div><div class="text-3xl font-semibold mt-1">94%</div></div>
+                </div>
+                <div class="text-xs font-medium text-slate-600 mb-2">Agent Cost Breakdown (7d)</div>
+                <div class="h-40"><canvas id="costChart"></canvas></div>
+            </div>
+        </div>`;
+    document.body.appendChild(modal);
+    modal.onclick = e => { if (e.target === modal) modal.remove(); };
+    setTimeout(() => {
+        const ctx = document.getElementById('costChart');
+        if (ctx) new Chart(ctx, {
+            type:'bar',
+            data:{ labels:['Scout','Creator','Analyst','Executor','Reputation'], datasets:[{ label:'Cost ($)', data:[8.2,14.4,6.1,9.8,3.1], backgroundColor:'#0F172A', borderRadius:6 }] },
+            options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{y:{beginAtZero:true}} }
+        });
+    }, 300);
+}
+
+function showSkillsModal() { showSubscriptionModal(); }
+
+function showToast(msg, type='success') {
+    const t = document.createElement('div');
+    t.className = `fixed bottom-6 left-1/2 -translate-x-1/2 px-5 py-3 rounded-2xl shadow-xl text-sm flex items-center gap-x-2 z-[300] ${type==='success'?'bg-emerald-600 text-white':'bg-slate-800 text-white'}`;
+    t.innerHTML = `<span>${msg}</span>`;
+    document.body.appendChild(t);
+    setTimeout(() => { t.style.transition='all 0.3s ease'; t.style.opacity='0'; setTimeout(()=>t.remove(),200); }, 2400);
+}
+
+function showProfileMenu() {
+    const m = document.createElement('div');
+    m.className = 'fixed right-8 top-20 bg-white border border-slate-200 shadow-xl rounded-2xl w-56 py-2 text-sm z-[300]';
+    m.innerHTML = `
+        <div class="px-4 py-2 text-xs text-slate-500">Signed in as</div>
+        <div class="px-4 pb-2 font-medium">Priya Sharma • General Manager</div>
+        <div class="border-t my-1"></div>
+        <div class="px-4 py-2 hover:bg-slate-50 cursor-pointer">Account Settings</div>
+        <div onclick="closeProfileOpenSub()" class="px-4 py-2 hover:bg-slate-50 cursor-pointer">Billing &amp; Subscription</div>
+        <div class="px-4 py-2 hover:bg-slate-50 cursor-pointer">Team Access</div>
+        <div class="border-t my-1"></div>
+        <div onclick="window.location.reload()" class="px-4 py-2 text-red-600 hover:bg-red-50 cursor-pointer">Sign out</div>`;
+    document.body.appendChild(m);
+    function closeProfileOpenSub() { m.remove(); showSubscriptionModal(); }
+    setTimeout(() => {
+        document.addEventListener('click', function h(e) { if (!m.contains(e.target)) { m.remove(); document.removeEventListener('click',h); } }, { once:true });
+    }, 10);
+}
+
+function initializeDemo() {
+    renderSkills();
+    renderApprovals();
+    initActivityLog();
+    renderOTAGrid();
+    setTimeout(() => addActivityLog('Master Supervisor optimized daily agent schedule','info'), 4500);
+    console.log('%c[SwarmForge Demo v2] All new flows active — Discovery, Goal Panel, Integrations, Subscription, Agent Loop.', 'color:#64748b');
+}
+
+
+
+// ── MASTER AGENT CHAT ──
+
+// ── MASTER AGENT CHAT ──
+var chatOpen = false, chatHistory = [], anthropicKey = '', isChatBusy = false;
+
+var SYSTEM_PROMPT = "You are the Master Agent for SwarmForge AI, an AI operating system for The Meridian Hotel, a boutique 48-room hotel in San Francisco managed by Priya Sharma (General Manager). You supervise: Scout Agent (OTA demand, competitor pricing, trends), Creator Agent (content and campaigns in warm boutique brand voice), Analyst Agent (cost sheets, P&Ls, anomalies), Executor Agent (executes approved actions), Reputation Agent (review monitoring and responses). Current context: Occupancy MTD 78% (+12%), Revenue MTD $184,200 (+8%), 7 pending approvals (3 high priority), 142 agent actions in 7 days (94% auto-approved), Growth plan $349/mo, connected to Instagram and Facebook via OAuth, Booking.com (MCP, 18 rooms) and MakeMyTrip (MCP, 6 rooms). Key insight: housekeeping labor +18% above January forecast, Scout flagged 340% Valentine weekend demand surge. Personality: sharp concise chief of staff. Always mention which sub-agent handles a task. Always say high-impact actions go to Pending Approvals before executing. Max 3 short paragraphs. Bold key numbers and agent names.";
+
+function toggleChat() {
+    chatOpen = !chatOpen;
+    var panel = document.getElementById('chat-panel');
+    panel.style.transform = chatOpen ? 'translateX(0)' : 'translateX(100%)';
+    document.getElementById('chat-fab-icon').className = chatOpen ? 'fa-solid fa-times text-xl' : 'fa-solid fa-robot text-xl';
+    if (chatOpen && chatHistory.length === 0) renderWelcome();
+}
+
+function renderWelcome() {
+    appendMsg('agent', `Good morning, Priya. I have reviewed overnight activity across all your accounts.
+
+You have **7 pending approvals** - 3 high priority, including the Winter Escape Instagram campaign. Scout also flagged a **340% demand surge** for Valentine weekend with no package currently running.
+
+What would you like to tackle first?`);
+}
+
+function saveApiKey() {
+    var v = document.getElementById('api-key-input').value.trim();
+    if (!v.startsWith('sk-ant-')) { showToast('Invalid key - should start with sk-ant-', 'info'); return; }
+    anthropicKey = v;
+    var banner = document.getElementById('api-key-banner');
+    banner.className = 'px-4 py-2.5 bg-emerald-50 border-b border-emerald-200 flex-shrink-0';
+    banner.innerHTML = '<div class="flex items-center gap-x-2 text-xs text-emerald-700 font-medium"><i class="fa-solid fa-check-circle text-emerald-500"></i> API key active - live Claude responses enabled <button onclick="resetApiKey()" class="ml-auto text-[10px] text-slate-400 hover:text-slate-600">Change</button></div>';
+    showToast('API key saved - Master Agent is fully live!');
+}
+
+function resetApiKey() {
+    anthropicKey = '';
+    var banner = document.getElementById('api-key-banner');
+    banner.className = 'px-4 py-3 bg-amber-50 border-b border-amber-200 flex-shrink-0';
+    banner.innerHTML = '<div class="text-xs font-semibold text-amber-700 mb-1.5"><i class="fa-solid fa-key mr-1"></i> Add API Key for live AI responses</div><div class="flex gap-x-2"><input id="api-key-input" type="password" placeholder="sk-ant-..." class="flex-1 px-3 py-1.5 text-xs border border-amber-300 rounded-xl focus:outline-none focus:border-amber-500 bg-white"><button onclick="saveApiKey()" class="px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white text-xs font-semibold rounded-xl transition-colors">Save</button></div><div class="text-[10px] text-amber-600 mt-1.5">Stored in memory only.</div>';
+}
+
+function sendSuggestion(btn) {
+    document.getElementById('chat-input').value = btn.textContent;
+    document.getElementById('chat-suggestions').style.display = 'none';
+    sendChatMessage();
+}
+
+function handleChatKey(e) {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendChatMessage(); }
+}
+
+function autoResizeTA(el) {
+    el.style.height = 'auto';
+    el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+}
+
+function sendChatMessage() {
+    if (isChatBusy) return;
+    var inp = document.getElementById('chat-input');
+    var text = inp.value.trim();
+    if (!text) return;
+    document.getElementById('chat-suggestions').style.display = 'none';
+    appendMsg('user', text);
+    chatHistory.push({ role: 'user', content: text });
+    inp.value = ''; inp.style.height = 'auto';
+    showTyping(true); isChatBusy = true;
+    if (anthropicKey) {
+        liveCall().finally(function() { isChatBusy = false; showTyping(false); });
+    } else {
+        setTimeout(function() { simulatedCall(text); isChatBusy = false; showTyping(false); }, 1000 + Math.random() * 800);
+    }
+}
+
+function liveCall() {
+    return fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'x-api-key': anthropicKey,
+            'anthropic-version': '2023-06-01',
+            'anthropic-dangerous-direct-browser-access': 'true'
+        },
+        body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1024, system: SYSTEM_PROMPT, messages: chatHistory })
+    }).then(function(res) {
+        if (!res.ok) return res.json().then(function(e) { throw new Error(e.error && e.error.message ? e.error.message : 'API error ' + res.status); });
+        return res.json();
+    }).then(function(data) {
+        var reply = data.content && data.content[0] ? data.content[0].text : 'No response generated.';
+        chatHistory.push({ role: 'assistant', content: reply });
+        appendMsg('agent', reply);
+        if (reply.toLowerCase().indexOf('pending approval') > -1) pulseApprovals();
+    }).catch(function(e) {
+        appendMsg('error', 'API error: ' + e.message);
+    });
+}
+
+function simulatedCall(text) {
+    var t = text.toLowerCase();
+    var reply;
+    if (t.indexOf('valentine') > -1 || t.indexOf('campaign') > -1) {
+    reply = `On it - routing to **Creator Agent** now.
+
+Creator will draft 3 Instagram posts, a Story sequence, and a landing page for the Valentine package. Given the **340% demand surge** Scout detected for Feb 14-16, timing is perfect.
+
+Everything lands in **Pending Approvals** for your review before anything goes live.`;
+        setTimeout(function() {
+            pendingApprovals.unshift({ id: Date.now(), type: 'Marketing', title: "Valentine Weekend Package - Campaign Draft Ready", impact: 'High', estimatedReach: '8.2k', agent: 'Creator Agent', time: 'Just now' });
+            renderApprovals();
+            addActivityLog("Creator Agent drafted Valentine campaign", 'success');
+        }, 2000);
+    } else if (t.indexOf('labor') > -1 || t.indexOf('cost') > -1 || t.indexOf('analys') > -1) {
+    reply = `**Analyst Agent** has been tracking this. Housekeeping labor is **+18% above January forecast** across 3 specific weekend check-out days.
+
+The schedule rebalancing proposal is already in your **Pending Approvals**. Analyst estimates **$840 in avoidable overtime** if you approve the schedule change today.`;
+    } else if (t.indexOf('priority') > -1 || t.indexOf('today') > -1 || t.indexOf('focus') > -1) {
+    reply = `Your top 3 right now:
+
+**1. Valentine demand gap** - Scout flagged 340% surge, no package is running. Biggest revenue opportunity this week.
+**2. Winter Escape campaign** - Creator has it ready in Pending Approvals.
+**3. Labor anomaly** - Analyst flagged +18% overage. A schedule tweak today saves $840 this month.
+
+Which do you want me to action first?`;
+    } else if (t.indexOf('ota') > -1 || t.indexOf('booking') > -1 || t.indexOf('channel') > -1) {
+    reply = `**Booking.com** is your highest volume channel (18 rooms via MCP) but commission is eating ~18% per booking. **MakeMyTrip** drives fewer rooms but at stronger ADR.
+
+Shifting even 20% of Booking.com guests to direct bookings recovers roughly **$1,800/month** in commission. Want me to have Creator Agent queue up a direct booking campaign?`;
+    } else if (t.indexOf('cancel') > -1) {
+    reply = `Scout shows most cancellations happen **48-72 hours before arrival** - guests finding better OTA deals last-minute. Your free cancellation window may be too generous for peak dates.
+
+I can draft two proposals for your review: tighten policy on peak dates, or run a pre-arrival upsell sequence 72h before check-in. Both go to **Pending Approvals** before anything changes.`;
+    } else if (t.indexOf('review') > -1 || t.indexOf('reputation') > -1) {
+    reply = `**Reputation Agent** scanned all platforms this morning. You have 4 new reviews - 3 positive, 1 neutral mentioning slow check-in. Draft responses for all 4 are in **Pending Approvals**.
+
+Your location score is your strongest asset - guests mention it in 67% of reviews. Worth leaning into in your marketing copy.`;
+    } else {
+    reply = `Understood. Scout, Creator, Analyst, and Reputation Agent are all active and running.
+
+Is there a specific area you want me to drill into - revenue, operations, marketing, or guest reputation? I can route the right sub-agent and surface results in **Pending Approvals**.`;
+    }
+    chatHistory.push({ role: 'assistant', content: reply });
+    appendMsg('agent', reply);
+    if (reply.indexOf('Pending Approvals') > -1) pulseApprovals();
+}
+
+function appendMsg(role, text) {
+    var c = document.getElementById('chat-messages');
+    var d = document.createElement('div');
+    if (role === 'user') {
+        d.className = 'flex justify-end';
+        d.innerHTML = '<div class="max-w-xs bg-slate-900 text-white px-4 py-3 rounded-2xl rounded-br-sm text-sm leading-relaxed">' + esc(text) + '</div>';
+    } else if (role === 'error') {
+        d.className = 'flex justify-center';
+        d.innerHTML = '<div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-2xl text-xs text-center"><i class="fa-solid fa-exclamation-circle mr-1"></i>' + esc(text) + '</div>';
+    } else {
+        d.className = 'flex items-start gap-x-2';
+        d.innerHTML = '<div class="w-7 h-7 bg-slate-900 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5"><i class="fa-solid fa-robot text-white text-[10px]"></i></div><div class="bg-slate-100 px-4 py-3 rounded-2xl rounded-bl-sm text-sm leading-relaxed text-slate-800" style="max-width:85%">' + fmt(text) + '</div>';
+    }
+    c.appendChild(d);
+    c.scrollTop = c.scrollHeight;
+}
+
+function fmt(t) {
+    return esc(t)
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\n\n/g, '<br><br>')
+    .replace(/\n/g, '<br>');
+}
+function esc(t) {
+    return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function showTyping(on) {
+    document.getElementById('chat-typing').classList.toggle('hidden', !on);
+    if (on) { var c = document.getElementById('chat-messages'); c.scrollTop = c.scrollHeight; }
+}
+
+function pulseApprovals() {
+    var el = document.getElementById('approvals-list');
+    if (!el) return;
+    el.style.outline = '2px solid #10b981';
+    el.style.borderRadius = '12px';
+    setTimeout(function() { el.style.outline = 'none'; }, 2200);
+}
+
+function clearChat() {
+    chatHistory = [];
+    document.getElementById('chat-messages').innerHTML = '';
+    document.getElementById('chat-suggestions').style.display = '';
+    renderWelcome();
+}
+
+
+// ── PRIVACY & SAFE MODE ──
+function showPrivacyModal() {
+    var m = document.createElement('div');
+    m.className = 'fixed inset-0 bg-black/50 backdrop-blur-sm z-[200] flex items-center justify-center p-4';
+    m.innerHTML = `
+    <div onclick="event.stopPropagation()" class="bg-white w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden" style="max-height:88vh">
+        <div class="px-7 py-5 bg-slate-900 flex items-center justify-between">
+            <div class="flex items-center gap-x-3">
+                <div class="w-9 h-9 bg-slate-700 rounded-xl flex items-center justify-center"><i class="fa-solid fa-shield-halved text-emerald-400 text-lg"></i></div>
+                <div>
+                    <div class="font-display text-white text-lg">Privacy & Security Architecture</div>
+                    <div class="text-xs text-slate-400">How SwarmForge protects your hotel data</div>
+                </div>
+            </div>
+            <button onclick="this.closest('.fixed').remove()" class="text-slate-400 hover:text-white text-xl">&times;</button>
+        </div>
+        <div class="overflow-y-auto p-7 space-y-6">
+            <!-- Tenant isolation -->
+            <div class="flex items-start gap-x-4 p-4 bg-emerald-50 border border-emerald-200 rounded-2xl">
+                <div class="w-10 h-10 bg-emerald-600 rounded-xl flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-building text-white"></i></div>
+                <div>
+                    <div class="font-semibold mb-1">Multi-Tenant UUID Isolation</div>
+                    <div class="text-sm text-slate-600">Every hotel gets a unique UUID namespace. Your data — files, agent memory, analysis results — is stored in isolated partitions. No cross-tenant queries are possible by architecture, not just policy.</div>
+                    <div class="mt-2 font-mono text-[10px] text-emerald-700 bg-white px-3 py-1.5 rounded-lg border border-emerald-200">tenant_id: 9f4e2a1b-c3d7-4f8e-a012-meridian-hotel</div>
+                </div>
+            </div>
+            <!-- Encryption -->
+            <div class="flex items-start gap-x-4 p-4 bg-blue-50 border border-blue-200 rounded-2xl">
+                <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-lock text-white"></i></div>
+                <div>
+                    <div class="font-semibold mb-1">End-to-End Encryption</div>
+                    <div class="text-sm text-slate-600">All data encrypted at rest with AES-256. All data in transit protected with TLS 1.3. Credentials (OTA API keys, OAuth tokens) stored in encrypted vaults — never in plain text, never in logs.</div>
+                    <div class="flex gap-x-3 mt-2">
+                        <span class="text-[10px] font-semibold px-2 py-1 bg-white border border-blue-200 rounded-lg text-blue-700">AES-256 at rest</span>
+                        <span class="text-[10px] font-semibold px-2 py-1 bg-white border border-blue-200 rounded-lg text-blue-700">TLS 1.3 in transit</span>
+                        <span class="text-[10px] font-semibold px-2 py-1 bg-white border border-blue-200 rounded-lg text-blue-700">Encrypted credential vault</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Safe Mode -->
+            <div class="flex items-start gap-x-4 p-4 bg-violet-50 border border-violet-200 rounded-2xl">
+                <div class="w-10 h-10 bg-violet-600 rounded-xl flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-user-shield text-white"></i></div>
+                <div>
+                    <div class="font-semibold mb-1">Safe Mode — PII Stripping</div>
+                    <div class="text-sm text-slate-600">When Safe Mode is ON (default), any uploaded document is scanned for PII — guest names, email addresses, payment card data, passport numbers — before being passed to the AI. PII is redacted locally; the LLM only sees anonymised data.</div>
+                    <div class="mt-2 flex items-center gap-x-2 text-xs">
+                        <span class="px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg font-medium">Safe Mode ON</span>
+                        <span class="text-slate-400">→ PII stripped before AI processing</span>
+                    </div>
+                    <div class="mt-1 flex items-center gap-x-2 text-xs">
+                        <span class="px-2 py-1 bg-amber-100 text-amber-700 rounded-lg font-medium">Full Mode</span>
+                        <span class="text-slate-400">→ Full context sent, richer analysis, your choice</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Malware scan -->
+            <div class="flex items-start gap-x-4 p-4 bg-amber-50 border border-amber-200 rounded-2xl">
+                <div class="w-10 h-10 bg-amber-500 rounded-xl flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-virus-slash text-white"></i></div>
+                <div>
+                    <div class="font-semibold mb-1">File Upload Security</div>
+                    <div class="text-sm text-slate-600">Every uploaded file is scanned for malware and viruses before storage. File types are validated against an allowlist. Files exceeding size limits are rejected before touching the server.</div>
+                    <div class="flex gap-x-2 mt-2 flex-wrap">
+                        <span class="text-[10px] font-semibold px-2 py-1 bg-white border border-amber-200 rounded-lg text-amber-700">Malware scan on upload</span>
+                        <span class="text-[10px] font-semibold px-2 py-1 bg-white border border-amber-200 rounded-lg text-amber-700">File type allowlist</span>
+                        <span class="text-[10px] font-semibold px-2 py-1 bg-white border border-amber-200 rounded-lg text-amber-700">25MB size limit</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Audit trail -->
+            <div class="flex items-start gap-x-4 p-4 bg-slate-50 border border-slate-200 rounded-2xl">
+                <div class="w-10 h-10 bg-slate-700 rounded-xl flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-scroll text-white"></i></div>
+                <div>
+                    <div class="font-semibold mb-1">Full Audit Trail</div>
+                    <div class="text-sm text-slate-600">Every agent action, approval decision, and data access is logged with timestamp, agent ID, input context, and outcome. You can inspect exactly what ran, when, and why — forever. No black boxes.</div>
+                </div>
+            </div>
+            <!-- No model training -->
+            <div class="flex items-center gap-x-3 p-4 bg-slate-900 rounded-2xl">
+                <i class="fa-solid fa-ban text-red-400 text-xl flex-shrink-0"></i>
+                <div class="text-sm text-white"><strong>Your data never trains our models.</strong> SwarmForge operates under a strict no-training policy. Your hotel data, guest information, and business insights are never used to improve any AI model — ours or third-party.</div>
+            </div>
+        </div>
+    </div>`;
+    document.body.appendChild(m);
+    m.onclick = function(e) { if (e.target === m) m.remove(); };
+}
+
+function toggleSafeMode(on) {
+    var banner = document.getElementById('safe-mode-banner');
+    if (banner) {
+        if (on) {
+            banner.className = 'flex items-center gap-x-2 px-3 py-1.5 bg-emerald-50 border border-emerald-200 rounded-xl mb-3';
+            banner.innerHTML = '<i class="fa-solid fa-shield-halved text-emerald-500 text-xs"></i><span class="text-[10px] text-emerald-700 font-medium">Safe Mode ON — PII stripped before AI processing. Your raw data never leaves your tenant.</span>';
+        } else {
+            banner.className = 'flex items-center gap-x-2 px-3 py-1.5 bg-amber-50 border border-amber-200 rounded-xl mb-3';
+            banner.innerHTML = '<i class="fa-solid fa-triangle-exclamation text-amber-500 text-xs"></i><span class="text-[10px] text-amber-700 font-medium">Full Mode — complete document context sent to AI for richer analysis. PII may be included.</span>';
+        }
+    }
+    showToast(on ? 'Safe Mode enabled — PII will be stripped' : 'Full Mode enabled — richer analysis, handle with care', on ? 'success' : 'info');
+}
+
+
+
+// Enhance simulateFileUpload with PII scan animation
+var _origUpload = simulateFileUpload;
+simulateFileUpload = function() {
+    var i = document.createElement('input');
+    i.type = 'file'; i.accept = '.xlsx,.csv,.pdf';
+    i.onchange = function() {
+        if (!i.files.length) return;
+        var fname = i.files[0].name;
+        var scanEl = document.getElementById('pii-scan-result');
+        if (scanEl) {
+            scanEl.className = 'mb-3 flex items-center gap-x-2 px-3 py-2 bg-blue-50 border border-blue-200 rounded-xl text-xs text-blue-700';
+            scanEl.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-blue-500"></i><span>Scanning "' + fname + '" for malware and PII...</span>';
+        }
+        var safeMode = document.getElementById('safe-mode-toggle') && document.getElementById('safe-mode-toggle').checked;
+        setTimeout(function() {
+            if (scanEl) {
+                if (safeMode) {
+                    scanEl.className = 'mb-3 flex items-center gap-x-2 px-3 py-2 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-emerald-700';
+                    scanEl.innerHTML = '<i class="fa-solid fa-check-circle text-emerald-500"></i><span><strong>Clean &amp; Safe</strong> — No malware detected. 2 PII fields redacted (guest names). File ready for AI analysis.</span>';
+                } else {
+                    scanEl.className = 'mb-3 flex items-center gap-x-2 px-3 py-2 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-700';
+                    scanEl.innerHTML = '<i class="fa-solid fa-triangle-exclamation text-amber-500"></i><span><strong>Clean, Full Mode</strong> — No malware. 2 PII fields detected but retained (Full Mode). AI will see complete context.</span>';
+                }
+            }
+            showToast('"' + fname + '" uploaded and scanned');
+            setTimeout(function() {
+                showToast('Notebook is analysing...', 'info');
+                setTimeout(function() {
+                    addActivityLog('Notebook processed "' + fname + '" — ' + (safeMode ? 'PII redacted, ' : '') + 'analysis ready', 'success');
+                    showToast('Analysis complete. Check Pending Approvals.');
+                }, 1800);
+            }, 800);
+        }, 1600);
+    };
+    i.click();
+};
+
+function submitContact() {
+    var name = document.getElementById('contact-name') ? document.getElementById('contact-name').value.trim() : '';
+    var email = document.getElementById('contact-email') ? document.getElementById('contact-email').value.trim() : '';
+    if (!name || !email) { showToast('Please enter your name and email', 'info'); return; }
+    if (document.getElementById('contact-name')) document.getElementById('contact-name').value = '';
+    if (document.getElementById('contact-email')) document.getElementById('contact-email').value = '';
+    if (document.getElementById('contact-msg')) document.getElementById('contact-msg').value = '';
+    showToast('Message sent! We will be in touch within 24 hours.');
+}
+
+
+
+// ── ANCILLARY REVENUE ──
+var ancillaryServices = [
+    { name:'Couples Spa 90min', category:'Spa & Wellness', price:220, icon:'fa-spa', color:'rose' },
+    { name:'Champagne Dinner for 2', category:'Food & Beverage', price:180, icon:'fa-champagne-glasses', color:'amber' },
+    { name:'Airport Transfer', category:'Transport', price:85, icon:'fa-car', color:'blue' },
+    { name:'Yoga Class (private)', category:'Fitness', price:65, icon:'fa-person-running', color:'green' },
+    { name:'SF Jazz Show Tickets', category:'Experiences', price:120, icon:'fa-masks-theater', color:'violet' },
+    { name:'In-Room Breakfast', category:'Food & Beverage', price:45, icon:'fa-mug-hot', color:'orange' },
+    { name:'Welcome Wine Amenity', category:'Complimentary', price:0, icon:'fa-wine-bottle', color:'slate' },
+];
+
+function showAncillaryServicesModal() {
+    var m = document.createElement('div');
+    m.className = 'fixed inset-0 bg-black/50 backdrop-blur-sm z-[200] flex items-center justify-center p-4';
+    m.innerHTML = `
+    <div onclick="event.stopPropagation()" class="bg-white w-full max-w-xl rounded-3xl shadow-2xl overflow-hidden" style="max-height:88vh">
+        <div class="px-6 py-5 border-b flex items-center justify-between">
+            <div>
+                <div class="font-display text-lg">Ancillary Services Catalogue</div>
+                <div class="text-xs text-slate-500 mt-0.5">Configure what your agents can bundle and offer to guests</div>
+            </div>
+            <button onclick="this.closest('.fixed').remove()" class="text-slate-400 hover:text-slate-600 text-xl">&times;</button>
+        </div>
+        <div class="overflow-y-auto p-6">
+            <div class="space-y-2 mb-5">
+                ${ancillaryServices.map(function(s) {
+                    return '<div class="flex items-center justify-between p-3 border border-slate-200 rounded-2xl hover:border-slate-300 transition-colors">' +
+                        '<div class="flex items-center gap-x-3">' +
+                            '<div class="w-9 h-9 bg-'+s.color+'-100 rounded-xl flex items-center justify-center flex-shrink-0"><i class="fa-solid '+s.icon+' text-'+s.color+'-500 text-sm"></i></div>' +
+                            '<div><div class="font-medium text-sm">'+s.name+'</div><div class="text-[10px] text-slate-400">'+s.category+'</div></div>' +
+                        '</div>' +
+                        '<div class="flex items-center gap-x-3">' +
+                            '<div class="font-semibold text-sm text-emerald-600">'+(s.price ? '$'+s.price : 'Complimentary')+'</div>' +
+                            '<label class="relative inline-flex items-center cursor-pointer"><input type="checkbox" checked class="sr-only peer"><div class="w-8 h-4 bg-slate-200 rounded-full peer peer-checked:after:translate-x-full after:content-[\'\'] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-emerald-500"></div></label>' +
+                        '</div>' +
+                    '</div>';
+                }).join('')}
+            </div>
+            <div class="border border-dashed border-slate-300 rounded-2xl p-4">
+                <div class="text-xs font-semibold text-slate-600 mb-3">ADD NEW SERVICE</div>
+                <div class="grid grid-cols-2 gap-2 mb-3">
+                    <input type="text" placeholder="Service name" class="px-3 py-2 text-xs border border-slate-200 rounded-xl focus:outline-none focus:border-slate-900">
+                    <input type="number" placeholder="Price ($)" class="px-3 py-2 text-xs border border-slate-200 rounded-xl focus:outline-none focus:border-slate-900">
+                    <input type="text" placeholder="Category" class="px-3 py-2 text-xs border border-slate-200 rounded-xl focus:outline-none focus:border-slate-900">
+                    <select class="px-3 py-2 text-xs border border-slate-200 rounded-xl focus:outline-none focus:border-slate-900">
+                        <option>Couples/Romance</option><option>Business</option><option>Family</option><option>Wellness</option><option>All guests</option>
+                    </select>
+                </div>
+                <button onclick="showToast('Service added to catalogue — agents will now include it in bundle analysis'); this.closest('.fixed').remove();" class="w-full py-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold rounded-xl transition-colors">Add Service</button>
+            </div>
+        </div>
+    </div>`;
+    document.body.appendChild(m);
+    m.onclick = function(e) { if (e.target===m) m.remove(); };
+}
+
+function runAncillaryAnalysis() {
+    showToast('Ancillary Agent scanning upcoming bookings...', 'info');
+    setTimeout(function() {
+        addActivityLog('Ancillary Agent analysed 12 upcoming bookings — 4 bundle opportunities identified', 'success');
+        showToast('Analysis complete — 4 new opportunities ready for your review');
+    }, 2200);
+}
+
+window.onload = initializeDemo;
+</script>
+
+
+
+<!-- ══════════════════════════════════════════
+     MASTER AGENT CHAT — Floating Button + Side Panel
+══════════════════════════════════════════ -->
+
+<!-- Floating chat button -->
+<button id="chat-fab" onclick="toggleChat()"
+    class="fixed bottom-6 right-6 z-[200] w-14 h-14 bg-slate-900 hover:bg-slate-700 text-white rounded-2xl shadow-2xl flex items-center justify-center transition-all active:scale-95 group">
+    <i id="chat-fab-icon" class="fa-solid fa-robot text-xl"></i>
+    <div class="absolute -top-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full border-2 border-white animate-pulse"></div>
+    <div class="absolute bottom-16 right-0 bg-slate-900 text-white text-xs font-medium px-3 py-1.5 rounded-xl whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+        Ask Master Agent
+    </div>
+</button>
+
+<!-- Chat Side Panel -->
+<div id="chat-panel" class="fixed top-0 right-0 h-full w-full max-w-md bg-white shadow-2xl z-[190] flex flex-col border-l border-slate-200" style="transform:translateX(100%);transition:transform 0.3s cubic-bezier(0.4,0,0.2,1);">
+
+    <!-- Header -->
+    <div class="px-5 py-4 bg-slate-900 flex items-center justify-between flex-shrink-0">
+        <div class="flex items-center gap-x-3">
+            <div class="w-9 h-9 bg-slate-700 rounded-xl flex items-center justify-center">
+                <i class="fa-solid fa-robot text-white"></i>
+            </div>
+            <div>
+                <div class="font-semibold text-white text-sm">Master Agent</div>
+                <div class="flex items-center gap-x-1.5">
+                    <div class="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></div>
+                    <span class="text-[10px] text-slate-400">Online &bull; Supervising your legion</span>
+                </div>
+            </div>
+        </div>
+        <div class="flex items-center gap-x-2">
+            <button onclick="clearChat()" class="text-slate-400 hover:text-white text-xs px-2 py-1 rounded-lg hover:bg-slate-700 transition-colors" title="Clear chat">
+                <i class="fa-solid fa-trash-can text-xs"></i>
+            </button>
+            <button onclick="toggleChat()" class="text-slate-400 hover:text-white transition-colors">
+                <i class="fa-solid fa-times text-lg"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- API Key Banner -->
+    <div id="api-key-banner" class="px-4 py-3 bg-amber-50 border-b border-amber-200 flex-shrink-0">
+        <div class="text-xs font-semibold text-amber-700 mb-1.5"><i class="fa-solid fa-key mr-1"></i> Add API Key for live AI responses</div>
+        <div class="flex gap-x-2">
+            <input id="api-key-input" type="password" placeholder="sk-ant-..."
+                class="flex-1 px-3 py-1.5 text-xs border border-amber-300 rounded-xl focus:outline-none focus:border-amber-500 bg-white">
+            <button onclick="saveApiKey()" class="px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white text-xs font-semibold rounded-xl transition-colors">Save</button>
+        </div>
+        <div class="text-[10px] text-amber-600 mt-1.5">Stored in memory only. Without key, demo uses smart simulated responses.</div>
+    </div>
+
+    <!-- Suggested prompts -->
+    <div id="chat-suggestions" class="px-4 py-3 border-b border-slate-100 flex-shrink-0">
+        <div class="text-[10px] font-semibold text-slate-400 tracking-wider mb-2">SUGGESTED</div>
+        <div class="flex flex-wrap gap-1.5">
+            <button onclick="sendSuggestion(this)" class="px-3 py-1.5 text-xs border border-slate-200 rounded-full hover:border-slate-900 hover:bg-slate-900 hover:text-white transition-all">What is my top priority today?</button>
+            <button onclick="sendSuggestion(this)" class="px-3 py-1.5 text-xs border border-slate-200 rounded-full hover:border-slate-900 hover:bg-slate-900 hover:text-white transition-all">Draft a Valentine campaign</button>
+            <button onclick="sendSuggestion(this)" class="px-3 py-1.5 text-xs border border-slate-200 rounded-full hover:border-slate-900 hover:bg-slate-900 hover:text-white transition-all">Analyse my labor costs</button>
+            <button onclick="sendSuggestion(this)" class="px-3 py-1.5 text-xs border border-slate-200 rounded-full hover:border-slate-900 hover:bg-slate-900 hover:text-white transition-all">Which OTAs should I focus on?</button>
+            <button onclick="sendSuggestion(this)" class="px-3 py-1.5 text-xs border border-slate-200 rounded-full hover:border-slate-900 hover:bg-slate-900 hover:text-white transition-all">How to reduce cancellations?</button>
+        </div>
+    </div>
+
+    <!-- Messages -->
+    <div id="chat-messages" class="flex-1 overflow-y-auto px-4 py-4 space-y-4"></div>
+
+    <!-- Typing indicator -->
+    <div id="chat-typing" class="hidden px-4 pb-2 flex-shrink-0">
+        <div class="flex items-center gap-x-2">
+            <div class="w-7 h-7 bg-slate-900 rounded-xl flex items-center justify-center flex-shrink-0">
+                <i class="fa-solid fa-robot text-white text-[10px]"></i>
+            </div>
+            <div class="bg-slate-100 rounded-2xl rounded-bl-sm px-4 py-3 flex items-center gap-x-1">
+                <div class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style="animation-delay:0ms"></div>
+                <div class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style="animation-delay:150ms"></div>
+                <div class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style="animation-delay:300ms"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Input -->
+    <div class="px-4 py-4 border-t border-slate-200 bg-slate-50 flex-shrink-0">
+        <div class="flex items-end gap-x-2">
+            <textarea id="chat-input" rows="1" placeholder="Ask your Master Agent anything..."
+                onkeydown="handleChatKey(event)"
+                oninput="autoResizeTA(this)"
+                class="flex-1 px-4 py-3 border border-slate-300 rounded-2xl text-sm focus:outline-none focus:border-slate-900 resize-none bg-white"
+                style="max-height:120px"></textarea>
+            <button onclick="sendChatMessage()"
+                class="w-10 h-10 bg-slate-900 hover:bg-slate-700 text-white rounded-xl flex items-center justify-center transition-all active:scale-95 flex-shrink-0">
+                <i class="fa-solid fa-paper-plane text-sm"></i>
+            </button>
+        </div>
+        <div class="text-[10px] text-slate-400 mt-2 text-center">Powered by Claude Sonnet &bull; Human-in-the-loop always</div>
+    </div>
+</div>
+
+
+</body>
+</html>

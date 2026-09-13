@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SwarmForgeAI — Multi-Agent Operations for Hospitality</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #08111f;
+      --panel: rgba(15, 23, 42, 0.9);
+      --panel-2: rgba(12, 18, 33, 0.92);
+      --text: #e5eefb;
+      --muted: #94a3b8;
+      --line: rgba(148, 163, 184, 0.18);
+      --blue: #38bdf8;
+      --violet: #818cf8;
+      --green: #34d399;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(56,189,248,0.14), transparent 30%),
+        radial-gradient(circle at top right, rgba(129,140,248,0.14), transparent 28%),
+        linear-gradient(180deg, #030712 0%, #08111f 55%, #030712 100%);
+    }
+    .wrap { max-width: 1180px; margin: 0 auto; padding: 28px 20px 72px; }
+    .nav { display:flex; justify-content:space-between; align-items:center; gap:16px; margin-bottom: 52px; }
+    .brand { font-size: 22px; font-weight: 800; letter-spacing: -0.04em; }
+    .brand span { color: var(--blue); }
+    .nav-links { display:flex; gap:12px; flex-wrap:wrap; }
+    .nav-links a, .btn {
+      text-decoration:none; color:var(--text); border:1px solid var(--line); padding:11px 16px; border-radius:999px; font-weight:600; font-size:14px;
+      background: rgba(15, 23, 42, 0.48);
+    }
+    .btn-primary { background: linear-gradient(135deg, var(--blue), #2563eb); border: none; }
+    .hero { display:grid; grid-template-columns: 1.05fr 0.95fr; gap: 28px; align-items: stretch; }
+    .card {
+      background: linear-gradient(180deg, var(--panel), var(--panel-2));
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      padding: 34px;
+      box-shadow: 0 22px 60px rgba(0,0,0,0.28);
+    }
+    .eyebrow { color: #93c5fd; text-transform: uppercase; letter-spacing: 0.2em; font-size: 12px; margin-bottom: 14px; }
+    h1 { font-size: 52px; line-height: 1.02; letter-spacing: -0.05em; margin: 0 0 18px; }
+    .sub { font-size: 18px; line-height: 1.7; color: #c7d7ee; margin-bottom: 28px; max-width: 58ch; }
+    .cta-row { display:flex; gap:12px; flex-wrap:wrap; margin-bottom: 24px; }
+    .note { color: var(--muted); font-size: 14px; line-height: 1.7; }
+    .mini-grid { display:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+    .mini {
+      border: 1px solid rgba(148, 163, 184, 0.16);
+      border-radius: 18px;
+      padding: 18px;
+      background: rgba(15, 23, 42, 0.42);
+    }
+    .mini h3 { margin: 0 0 8px; font-size: 16px; }
+    .mini p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.6; }
+    .section { margin-top: 28px; }
+    .section h2 { font-size: 28px; letter-spacing: -0.04em; margin: 0 0 16px; }
+    .list { display:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+    .list .mini strong { display:block; margin-bottom: 8px; }
+    .footer { margin-top: 42px; color: var(--muted); font-size: 13px; }
+    @media (max-width: 920px) {
+      .hero, .list { grid-template-columns: 1fr; }
+      h1 { font-size: 40px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="nav">
+      <div class="brand">SwarmForge<span>AI</span></div>
+      <div class="nav-links">
+        <a href="https://simplicore.ai">SimpliCoreAI</a>
+        <a href="/login" class="btn-primary">Login</a>
+      </div>
+    </div>
+
+    <div class="hero">
+      <div class="card">
+        <div class="eyebrow">Hospitality-first operator AI</div>
+        <h1>Multi-agent operations for independent hotels.</h1>
+        <div class="sub">
+          SwarmForgeAI gives small hospitality teams an AI operating layer for revenue, marketing, guest experience, approvals, and business insight—without hiding what the system is doing. It is built on the PersGraph runtime, which can spin up accountable multi-agent workflows for coordinated development and operations.
+        </div>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="/login">Sign in to protected demo</a>
+          <a class="btn" href="https://simplicore.ai">View platform</a>
+        </div>
+        <div class="note">
+          This public page introduces the product. The actual operator experience is protected behind login and is not directly exposed from the root route.
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="mini-grid">
+          <div class="mini">
+            <h3>Scout Agent</h3>
+            <p>Spots pricing, demand, and competitive changes before your team misses them.</p>
+          </div>
+          <div class="mini">
+            <h3>Creator Agent</h3>
+            <p>Drafts campaigns, offers, and property marketing aligned with your brand voice.</p>
+          </div>
+          <div class="mini">
+            <h3>Analyst Agent</h3>
+            <p>Turns hotel ops, revenue, and cost data into clear recommendations.</p>
+          </div>
+          <div class="mini">
+            <h3>Executor Agent</h3>
+            <p>Prepares approved actions and keeps sensitive steps reviewable.</p>
+          </div>
+        </div>
+        <div class="section">
+          <h2>Why it matters</h2>
+          <div class="note">
+            Independent hotels have the guest relationships and local character, but not always the tooling or headcount. SwarmForgeAI is meant to act like an accountable AI chief-of-staff layer, not a black box.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>What this first version is optimizing for</h2>
+      <div class="list">
+        <div class="mini"><strong>Visibility</strong><p>Operators should see what agents did, what they recommend, and what still needs approval.</p></div>
+        <div class="mini"><strong>Trust</strong><p>High-impact steps should be reviewable rather than silently automated.</p></div>
+        <div class="mini"><strong>Hospitality fit</strong><p>The first workflows should map to real hotel pain: occupancy, campaigns, labor, guest experience, and ancillary revenue.</p></div>
+        <div class="mini"><strong>Platform path</strong><p>The hospitality surface is first, not final. The product can later expand into other small-business verticals.</p></div>
+      </div>
+    </div>
+
+    <div class="footer">SwarmForgeAI is a SimpliCoreAI product.</div>
+  </div>
+</body>
+</html>
