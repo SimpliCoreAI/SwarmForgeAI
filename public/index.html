@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="color-scheme" content="light dark" />
-  <meta name="theme-color" content="#f1efe9" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#e9e5dd" media="(prefers-color-scheme: light)" />
   <meta name="theme-color" content="#08111a" media="(prefers-color-scheme: dark)" />
   <link rel="icon" href="data:," />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -14,12 +14,12 @@
   <style>
     :root {
       color-scheme: light dark;
-      --bg: #f1efe9;
-      --surface: #fbfaf7;
-      --surface-2: #e8e5de;
+      --bg: #e9e5dd;
+      --surface: #fffdf9;
+      --surface-2: #ded8ce;
       --ink: #101a28;
-      --muted: #59636c;
-      --line: #d2ccc1;
+      --muted: #535e68;
+      --line: #c6bdaf;
       --accent: #a7844c;
       --accent-ink: #101a28;
       --lime: #c4ad74;
@@ -132,7 +132,7 @@
       overflow: hidden;
       pointer-events: none;
       color: var(--teal);
-      opacity: .22;
+      opacity: .27;
     }
     .hero-ambience svg {
       width: 100%;
@@ -259,11 +259,11 @@
     .panel-heading h2 { font-size: 25px; line-height: 1.1; margin-top: 3px; }
     .date-pill { background: var(--surface-2); border-radius: 999px; padding: 6px 9px; font-size: 10px; font-weight: 700; color: var(--muted); white-space: nowrap; }
     .metric-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; margin-bottom: 13px; }
-    .metric { background: var(--surface-2); border-radius: 13px; padding: 12px; }
+    .metric { background: var(--surface-2); border: 1px solid color-mix(in srgb, var(--line) 72%, transparent); border-radius: 13px; padding: 12px; box-shadow: 0 5px 14px rgba(16, 26, 40, .045); }
     .metric label { display: block; font-size: 9px; color: var(--muted); font-weight: 700; }
     .metric strong { display: block; font-family: "Cormorant Garamond", serif; font-size: 24px; line-height: 1.15; margin-top: 5px; }
     .metric em { display: block; font-style: normal; color: var(--teal); font-size: 9px; font-weight: 700; margin-top: 3px; }
-    .brief-card { border: 1px solid var(--line); border-radius: 17px; padding: 15px; margin-bottom: 10px; background: var(--surface); }
+    .brief-card { border: 1px solid var(--line); border-radius: 17px; padding: 15px; margin-bottom: 10px; background: var(--surface); box-shadow: 0 5px 16px rgba(16, 26, 40, .045); }
     .brief-card.alert { border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); background: color-mix(in srgb, var(--accent) 6%, var(--surface)); }
     .brief-title { display: flex; align-items: center; gap: 9px; margin-bottom: 7px; }
     .brief-title span { width: 9px; height: 9px; border-radius: 50%; background: var(--lime); flex: 0 0 auto; }
