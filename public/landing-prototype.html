@@ -122,6 +122,31 @@
     .hero {
       padding: 82px 0 112px;
       position: relative;
+      overflow: hidden;
+      isolation: isolate;
+    }
+    .hero-ambience {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+      pointer-events: none;
+      color: var(--teal);
+      opacity: .22;
+    }
+    .hero-ambience svg {
+      width: 100%;
+      height: 100%;
+      min-width: 1120px;
+      transform: translateX(max(-240px, calc((100vw - 1600px) / 2)));
+    }
+    .hero-ambience .warm-field { fill: var(--accent); opacity: .16; }
+    .hero-ambience .architecture { fill: none; stroke: currentColor; stroke-width: 1.35; vector-effect: non-scaling-stroke; }
+    .hero-ambience .fine-line { fill: none; stroke: currentColor; stroke-width: .75; opacity: .65; vector-effect: non-scaling-stroke; }
+    .hero-ambience .floor-line { fill: none; stroke: var(--accent); stroke-width: 1; opacity: .72; vector-effect: non-scaling-stroke; }
+    @media (prefers-color-scheme: dark) {
+      .hero-ambience { opacity: .16; }
+      .hero-ambience .warm-field { opacity: .11; }
     }
     .hero::before {
       content: "";
@@ -136,6 +161,8 @@
       pointer-events: none;
     }
     .hero-grid {
+      position: relative;
+      z-index: 1;
       display: grid;
       grid-template-columns: minmax(0, .88fr) minmax(520px, 1.12fr);
       gap: 76px;
@@ -566,6 +593,17 @@
 
   <main>
     <section class="hero">
+      <div class="hero-ambience" aria-hidden="true">
+        <svg viewBox="0 0 1600 760" preserveAspectRatio="xMidYMid slice" focusable="false">
+          <rect class="warm-field" x="1040" y="36" width="430" height="650" rx="215" />
+          <path class="architecture" d="M-20 714V294C-20 139 102 40 252 40s272 99 272 254v420M444 714V286c0-146 118-246 264-246s264 100 264 246v428M914 714V286c0-146 118-246 264-246s264 100 264 246v428M1362 714V320c0-117 93-202 218-202" />
+          <path class="fine-line" d="M38 714V310C38 186 132 102 252 102s214 84 214 208v404M508 714V302c0-119 87-202 200-202s200 83 200 202v412M978 714V302c0-119 87-202 200-202s200 83 200 202v412" />
+          <path class="architecture" d="M-20 520H1442M-20 714H1600" />
+          <path class="floor-line" d="M252 520 72 760M708 520 588 760M1178 520 1268 760M1442 520 1598 678" />
+          <path class="fine-line" d="M117 520c34-84 80-133 135-147 56 15 100 64 135 147M598 520c25-59 61-95 110-110 49 15 85 51 110 110M1074 520c28-68 63-107 104-120 41 13 76 52 104 120" />
+          <path class="fine-line" d="M96 714c30-75 41-152 34-232m0 0c-48 16-81 48-99 94m99-94c42 18 70 53 83 104m-83-104c7-56 30-101 70-135m-70 135c-18-48-52-82-101-103" />
+        </svg>
+      </div>
       <div class="wrap hero-grid">
         <div class="hero-copy">
           <div class="eyebrow">Independent hotel operations</div>
