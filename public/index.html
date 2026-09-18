@@ -365,6 +365,38 @@
     .policy-line small { display: block; font-size: 9px; color: var(--muted); margin-top: 3px; }
     .check { width: 20px; height: 20px; border-radius: 50%; background: var(--lime); color: #1c2b20; display: grid; place-items: center; font-size: 11px; font-weight: 900; }
 
+
+  .pricing { background: var(--bg); }
+  .tier-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+  .tier-card {
+    position: relative;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 30px 28px 32px;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg);
+  }
+  .tier-card.featured { border-color: var(--accent); box-shadow: var(--shadow-panel, 0 18px 50px rgba(0,0,0,.12)); }
+  .tier-badge {
+    position: absolute; top: -13px; left: 50%; transform: translateX(-50%);
+    background: var(--ink); color: var(--bg);
+    font: 700 11px/1 "Manrope", sans-serif; letter-spacing: .08em; text-transform: uppercase;
+    padding: 8px 14px; border-radius: 999px; white-space: nowrap;
+  }
+  .tier-card h3 { font-size: 26px; margin-bottom: 6px; }
+  .tier-rooms { color: var(--accent); font-weight: 700; font-size: 15px; margin-bottom: 18px; }
+  .tier-list { list-style: none; margin: 0 0 24px; padding: 0; flex: 1; }
+  .tier-list li { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; color: var(--muted); padding: 7px 0; border-top: 1px solid var(--line); }
+  .tier-list li:first-child { border-top: 0; }
+  .tier-list .tick { color: var(--accent); font-weight: 800; }
+  .tier-list li.locked { opacity: .45; }
+  .tier-list li.locked .tick { color: var(--muted); }
+  .tier-cta { display: block; text-align: center; margin-top: auto; }
+  .tier-note { margin-top: 26px; text-align: center; color: var(--muted); font-size: 13px; }
+  @media (max-width: 980px) { .tier-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 760px) { .tier-grid { grid-template-columns: 1fr; } }
+
     .cta-section { padding-top: 50px; }
     .cta-block {
       background: var(--accent);
@@ -579,6 +611,7 @@
         <a href="#workflow">How it works</a>
         <a href="#operations">Operations</a>
         <a href="#trust">Trust</a>
+        <a href="#pricing">Pricing</a>
         <a href="#contact">Contact</a>
       </div>
       <div class="nav-actions">
@@ -779,6 +812,56 @@
         </aside>
       </div>
     </section>
+
+<section class="pricing" id="pricing">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-index">03 / SUBSCRIPTION</span>
+      <div>
+        <h2>One tier per property size. Nothing to configure.</h2>
+        <p>Your subscription follows your hotel: rooms set the tier, and seats, document analysis and WhatsApp monitoring scale with it. Tier changes are handled by our team — no self-serve billing to babysit.</p>
+      </div>
+    </div>
+    <div class="tier-grid">
+      <article class="tier-card">
+        <h3>Starter</h3>
+        <div class="tier-rooms">Up to 20 rooms</div>
+        <ul class="tier-list">
+          <li><span class="tick">✓</span><span>3 team seats — GM, manager, staff</span></li>
+          <li><span class="tick">✓</span><span>10 reservation documents analyzed / month</span></li>
+          <li><span class="tick">✓</span><span>500 WhatsApp guests monitored / month <em>(soft cap — messaging is never cut off mid-stay)</em></span></li>
+          <li class="locked"><span class="tick">—</span><span>Ancillary upsell module</span></li>
+        </ul>
+        <a class="button tier-cta" href="#contact">Contact us <span aria-hidden="true">→</span></a>
+      </article>
+      <article class="tier-card featured">
+        <span class="tier-badge">Most hotels</span>
+        <h3>Growth</h3>
+        <div class="tier-rooms">Up to 35 rooms</div>
+        <ul class="tier-list">
+          <li><span class="tick">✓</span><span>10 team seats</span></li>
+          <li><span class="tick">✓</span><span>30 reservation documents analyzed / month</span></li>
+          <li><span class="tick">✓</span><span>1,000 WhatsApp guests monitored / month <em>(soft cap)</em></span></li>
+          <li><span class="tick">✓</span><span>Ancillary upsell module — turn operations into revenue</span></li>
+        </ul>
+        <a class="button tier-cta" href="#contact">Contact us <span aria-hidden="true">→</span></a>
+      </article>
+      <article class="tier-card">
+        <h3>Scale</h3>
+        <div class="tier-rooms">36+ rooms</div>
+        <ul class="tier-list">
+          <li><span class="tick">✓</span><span>Unlimited team seats</span></li>
+          <li><span class="tick">✓</span><span>100 reservation documents analyzed / month</span></li>
+          <li><span class="tick">✓</span><span>3,000 WhatsApp guests monitored / month <em>(soft cap)</em></span></li>
+          <li><span class="tick">✓</span><span>Ancillary upsell module</span></li>
+          <li><span class="tick">✓</span><span>Priority onboarding</span></li>
+        </ul>
+        <a class="button tier-cta" href="#contact">Contact us <span aria-hidden="true">→</span></a>
+      </article>
+    </div>
+    <p class="tier-note">Prices in ₹ — final pricing is set with your pilot. WhatsApp guest counts are a soft limit: we notify and offer an upgrade, we never interrupt an active stay.</p>
+  </div>
+</section>
 
     <section class="cta-section">
       <div class="wrap">
