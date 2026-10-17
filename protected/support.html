@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#102235">
+  <title>SwarmForge Help Center</title>
+  <meta name="description" content="Search setup guides, operational workflows, troubleshooting, and metrics for every SwarmForge role.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{color-scheme:light;--navy:#102235;--navy-2:#1d3448;--teal:#2e6975;--gold:#c99a4a;--ink:#172b3b;--muted:#617280;--line:#dbe3e7;--paper:#f4f7f7;--card:#fff;--soft:#eaf1f1;--shadow:0 12px 32px rgba(16,34,53,.08)}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:"DM Sans",sans-serif;line-height:1.6}a{color:var(--teal)}button,input{font:inherit}button,a{touch-action:manipulation}.shell{min-height:100vh}.topbar{height:68px;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 max(24px,calc((100vw - 1240px)/2));border-bottom:3px solid var(--gold)}.brand{display:flex;align-items:center;gap:12px;color:#fff;text-decoration:none}.brand-mark{height:40px;width:40px;border-radius:10px;background:#fff;display:grid;place-items:center;overflow:hidden;flex:none}.brand-mark img{display:block;width:100%;height:100%;object-fit:contain}.brand strong{font:800 16px Manrope,sans-serif;letter-spacing:-.03em}.brand small{display:block;color:#b9c8d1;font-size:10px;letter-spacing:.14em;text-transform:uppercase}.back-link{color:#fff;text-decoration:none;font-size:13px;font-weight:700;border:1px solid #516478;border-radius:8px;padding:8px 12px}.back-link:hover,.back-link:focus-visible{background:#243c52;outline:2px solid #fff;outline-offset:2px}.layout{max-width:1240px;margin:0 auto;padding:34px 24px 64px}.intro{display:grid;grid-template-columns:1fr auto;align-items:end;gap:24px;margin:0 0 26px}.eyebrow{color:var(--teal);font:800 11px Manrope,sans-serif;letter-spacing:.16em;text-transform:uppercase}.intro h1{font:800 clamp(30px,4vw,46px)/1.12 Manrope,sans-serif;letter-spacing:-.045em;color:var(--navy);max-width:740px;margin:8px 0}.intro p{color:var(--muted);margin:0;max-width:690px}.callout{background:var(--soft);border:1px solid #d3e3e3;border-radius:12px;padding:12px 16px;color:#35515d;font-size:12px;max-width:240px}.callout strong{display:block;font:800 11px Manrope,sans-serif;color:var(--navy);margin-bottom:3px}.search-panel{background:var(--navy);border-radius:18px;padding:18px;box-shadow:var(--shadow);margin-bottom:22px}.search-wrap{display:flex;align-items:center;gap:12px;background:#fff;border-radius:11px;padding:0 15px;min-height:54px}.search-wrap svg{width:20px;height:20px;flex:none;color:var(--teal)}.search-wrap input{width:100%;border:0;outline:0;color:var(--ink);font-size:15px;background:transparent}.search-wrap input::placeholder{color:#84919a}.filter-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:14px}.filter-label{font-size:11px;color:#bfccd3;font-weight:700;margin-right:4px}.filter-chip{border:1px solid #526779;background:transparent;color:#e7edf0;border-radius:999px;padding:7px 12px;font-size:12px;font-weight:700;cursor:pointer}.filter-chip:hover,.filter-chip:focus-visible{border-color:#fff;outline:2px solid #fff;outline-offset:2px}.filter-chip[aria-pressed=true]{background:var(--gold);border-color:var(--gold);color:var(--navy)}.results-line{display:flex;justify-content:space-between;gap:12px;align-items:center;margin:18px 0 10px;color:var(--muted);font-size:12px}.results-line strong{color:var(--navy)}.reset{border:0;background:none;color:var(--teal);font-size:12px;font-weight:800;text-decoration:underline;cursor:pointer}.guide-list{display:grid;gap:11px}.guide-card{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 3px 12px rgba(16,34,53,.035);overflow:hidden;scroll-margin-top:84px}.guide-card[hidden]{display:none}.guide-card[open]{border-color:#acc9cb;box-shadow:var(--shadow)}.guide-card summary{display:grid;grid-template-columns:minmax(115px,150px) minmax(210px,.8fr) minmax(220px,1.5fr) auto 20px;align-items:center;gap:14px;padding:17px 20px;cursor:pointer;list-style:none}.guide-card summary::-webkit-details-marker{display:none}.guide-card summary:focus-visible{outline:3px solid var(--gold);outline-offset:-3px}.guide-category{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--teal);font-weight:800}.guide-title{font:800 14px/1.35 Manrope,sans-serif;color:var(--navy)}.guide-description{font-size:12px;color:var(--muted);line-height:1.45}.guide-tags{display:flex;gap:5px;flex-wrap:wrap}.guide-tags span{font-size:9px;color:#49606e;background:#edf2f4;border-radius:99px;padding:4px 7px;white-space:nowrap;font-weight:700}.guide-chevron{font-size:20px;color:var(--teal);font-weight:500;transition:transform .2s}.guide-card[open] .guide-chevron{transform:rotate(45deg)}.guide-content{border-top:1px solid var(--line);padding:22px clamp(18px,4vw,40px) 32px;max-width:980px;margin:0 auto}.guide-content h3{font:800 18px/1.3 Manrope,sans-serif;color:var(--navy);margin:26px 0 10px;letter-spacing:-.02em}.guide-content h4{font:800 14px Manrope,sans-serif;color:var(--navy-2);margin:20px 0 7px}.guide-content p{margin:9px 0;color:#3f505b;font-size:13px}.guide-content ul,.guide-content ol{padding-left:23px;color:#3f505b;font-size:13px}.guide-content li{margin:6px 0;padding-left:2px}.guide-content li::marker{color:var(--teal)}.guide-content strong{color:var(--navy)}.guide-content code{font-family:ui-monospace,monospace;background:#edf2f4;color:#314b5b;padding:2px 5px;border-radius:4px;font-size:.92em}.guide-content hr{border:0;border-top:1px solid var(--line);margin:22px 0}.guide-content a{font-weight:700;text-decoration-thickness:1px;text-underline-offset:3px}.table-scroll{overflow:auto;margin:14px 0;border:1px solid var(--line);border-radius:9px}.guide-content table{border-collapse:collapse;min-width:550px;width:100%;font-size:12px}.guide-content th,.guide-content td{text-align:left;vertical-align:top;padding:9px 11px;border-bottom:1px solid var(--line)}.guide-content th{background:#edf3f4;color:var(--navy);font-weight:800}.guide-content tr:last-child td{border-bottom:0}.empty{display:none;text-align:center;padding:36px 20px;background:#fff;border:1px dashed #b8c7cc;border-radius:14px;color:var(--muted)}.empty.visible{display:block}.footer{border-top:1px solid var(--line);margin-top:30px;padding:20px 4px;color:var(--muted);font-size:11px;display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap}.footer a{font-weight:700}.contact-card{display:flex;gap:12px;align-items:center;justify-content:space-between;background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-top:22px}.contact-card strong{font:800 13px Manrope,sans-serif;color:var(--navy)}.contact-card p{margin:3px 0 0;color:var(--muted);font-size:12px}.contact-button{flex:none;background:var(--teal);color:#fff;text-decoration:none;font-size:12px;font-weight:800;border-radius:8px;padding:10px 13px}.contact-button:hover,.contact-button:focus-visible{background:#1f515c;outline:3px solid #a6c4c7;outline-offset:2px}
+    @media(max-width:900px){.guide-card summary{grid-template-columns:1fr auto;gap:7px 12px}.guide-category{grid-column:1}.guide-title{grid-column:1}.guide-description{grid-column:1}.guide-tags{grid-column:1}.guide-chevron{grid-column:2;grid-row:1/5}.intro{grid-template-columns:1fr}.callout{max-width:none}.topbar{padding:0 20px}}
+    @media(max-width:560px){.layout{padding:24px 14px 44px}.topbar{height:60px;padding:0 14px}.back-link{font-size:11px;padding:7px 9px}.brand strong{font-size:14px}.search-panel{padding:13px;border-radius:14px}.filter-row{gap:6px}.filter-chip{padding:7px 9px;font-size:11px}.guide-card summary{padding:15px}.guide-content{padding:18px 16px 25px}.contact-card{align-items:flex-start;flex-direction:column}.contact-button{width:100%;text-align:center}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition:none!important}}
+    @media print{.topbar,.search-panel,.contact-card,.footer{display:none}.layout{max-width:none;padding:0}.guide-card{break-inside:avoid}.guide-card:not([open]) .guide-content{display:none}}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/app" aria-label="SwarmForge operations home">
+      <span class="brand-mark" aria-hidden="true"><img src="/support-logo" alt=""></span>
+      <span><strong>SwarmForge</strong><small>Help center</small></span>
+    </a>
+    <a class="back-link" href="/app">← Back to operations</a>
+  </header>
+  <main class="layout">
+    <section class="intro" aria-labelledby="page-title">
+      <div><div class="eyebrow">Operations knowledge base</div><h1 id="page-title">Get a clear answer and get back to the hotel.</h1><p>Find setup instructions, daily workflows, role guidance, troubleshooting, and the exact definitions behind your metrics.</p></div>
+      <aside class="callout"><strong>Approval-gated by design</strong>Agents draft and recommend. A person approves anything guest-facing, financial, or reputation-sensitive.</aside>
+    </section>
+    <section class="search-panel" aria-label="Find a help article">
+      <label class="search-wrap" for="helpSearch">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8" fill="none" stroke="currentColor" stroke-width="2"/><path d="m16 16 5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <input id="helpSearch" type="search" placeholder="Search WhatsApp, approvals, health score…" autocomplete="off">
+      </label>
+      <div class="filter-row" role="group" aria-label="Filter articles by persona">
+        <span class="filter-label">Show guidance for</span>
+        <button class="filter-chip" type="button" data-role="all" aria-pressed="true">Everyone</button>
+        <button class="filter-chip" type="button" data-role="gm" aria-pressed="false">General Manager</button>
+        <button class="filter-chip" type="button" data-role="manager" aria-pressed="false">Manager</button>
+        <button class="filter-chip" type="button" data-role="staff" aria-pressed="false">Staff</button>
+        <button class="filter-chip" type="button" data-role="owner" aria-pressed="false">Owner</button>
+        <button class="filter-chip" type="button" data-role="ops" aria-pressed="false">Platform Ops</button>
+      </div>
+    </section>
+    <div class="results-line"><span id="resultCount" aria-live="polite"></span><button class="reset" id="clearFilters" type="button">Clear search and filters</button></div>
+    <section class="guide-list" id="guideList" aria-label="Help articles">
+<details class="guide-card" id="welcome-to-swarmforge" data-personas="all" data-category="basics">
+  <summary>
+    <span class="guide-category">Basics</span>
+    <span class="guide-title">Welcome to SwarmForge</span>
+    <span class="guide-description">Start here: what SwarmForge does, how approvals work, and where each persona should begin.</span>
+    <span class="guide-tags"><span>All roles</span></span>
+    <span class="guide-chevron" aria-hidden="true">+</span>
+  </summary>
+  <div class="guide-content"><h3>What it is</h3>
+<p>SwarmForge is an AI operations layer for independent hotels. It doesn't replace your PMS — it sits on top of it and runs the daily operating rhythm: guest messaging, tasks, goals, approvals, and reports, with a team of AI agents doing the heavy lifting.</p>
+<p>The core idea is <strong>approval-gated AI</strong>: the AI drafts, proposes, and prepares — a human always approves. Nothing guest-facing goes out without a person saying yes.</p>
+<h3>Key concepts</h3>
+<ul><li><strong>AI desks</strong> — specialist agents (reputation, revenue, maintenance, and more) that work your goals in the background and bring you decisions, not raw data.</li><li><strong>Ticks</strong> — the unit of AI work. Each hotel gets a weekly tick budget (e.g. 2 ticks/week for opportunity scans). Ticks keep AI costs predictable.</li><li><strong>AI budget</strong> — a daily cap per hotel on AI spending. If a wave of agent work can't fit the budget, it waits instead of failing halfway.</li><li><strong>Approval gates</strong> — routine work flows to staff, money and reputation decisions flow to the GM. You set the tiers.</li></ul>
+<h3>Who it's for</h3>
+<ul><li><strong>Independent hotels and small groups</strong> (the product is built around properties like a 20–60 room hotel).</li><li><strong>General Managers</strong> who want leverage, not another dashboard to babysit.</li><li><strong>Owners</strong> who want portfolio visibility without asking the GM for reports.</li></ul>
+<h3>How to use this help center</h3>
+<ul><li><strong>New to SwarmForge?</strong> Start with <a href="#roles-personas">Roles &amp; personas</a> and the <a href="#hotel-setup-guide">Hotel setup guide</a>.</li><li><strong>Running daily operations?</strong> See <a href="#daily-operations">Daily operations</a>.</li><li><strong>Setting up guest messaging?</strong> See <a href="#whatsapp-setup-configuration">WhatsApp setup</a>.</li><li><strong>An owner or platform operator?</strong> See <a href="#owner-view-ops-console">Owner view &amp; Ops console</a>.</li></ul>
+<h3>Getting help</h3>
+<ul><li>Ask your SwarmForge onboarding contact, or email admin@simplicore.ai and name the help article you already tried.</li><li>Inside the app, look for the <strong>?</strong> icons — every complex screen has contextual hints.</li></ul>
+<hr></div>
+</details>
+<details class="guide-card" id="roles-personas" data-personas="all" data-category="getting-started">
+  <summary>
+    <span class="guide-category">Getting started</span>
+    <span class="guide-title">Roles &amp; personas</span>
+    <span class="guide-description">Understand GM, manager, staff, owner, and platform-operator access.</span>
+    <span class="guide-tags"><span>All roles</span></span>
+    <span class="guide-chevron" aria-hidden="true">+</span>
+  </summary>
+  <div class="guide-content"><h3>What it is</h3>
+<p>SwarmForge has five roles. Each sees exactly what it needs — and nothing it shouldn't. Guest identity (names, phone numbers, message contents) is visible <strong>only to the GM</strong>.</p>
+<h3>The roles</h3>
+<h4>General Manager (GM)</h4>
+<ul><li>Full access to everything: all sections, approvals, guest identity, reports, setup.</li><li>The only role that can change team members' roles.</li><li><strong>Business case:</strong> the GM is the single throat to choke — every money, reputation, and exception decision lands here, and nowhere else.</li></ul>
+<h4>Manager</h4>
+<ul><li>Sees operations with <strong>room numbers only</strong> — never guest names or phone numbers.</li><li>Can approve Tier-2 items (section-level decisions) and manage tasks in their section.</li><li><strong>Business case:</strong> lets a floor manager run housekeeping or F&amp;B for a shift without exposing guest PII.</li></ul>
+<h4>Staff</h4>
+<ul><li>Sees only their assigned tasks and requests they raised themselves.</li><li>In WhatsApp, sends AI-drafted replies for their section after review.</li><li><strong>Business case:</strong> a receptionist can handle the day's check-ins and guest chats without seeing revenue data or other sections' work.</li></ul>
+<h4>Owner</h4>
+<ul><li>Sees <strong>aggregates and statistics only</strong> — revenue, occupancy, health scores. Never guest names, phones, or message contents.</li><li>Can assign goals to a hotel; they land on the GM's board with an "Assigned by owner" badge.</li><li><strong>Business case:</strong> a portfolio owner checks all properties on Monday morning without a single phone call.</li></ul>
+<h4>Ops (platform operator)</h4>
+<ul><li>Provisions hotels, manages subscriptions, monitors sync health, and holds kill switches.</li><li>Every ops action is written to an append-only audit log.</li></ul>
+<h3>How to use effectively</h3>
+<ol><li><strong>Start minimal.</strong> Give the GM account first, then add one manager and the front-desk staff who'll actually send WhatsApp replies.</li><li><strong>Match roles to shifts.</strong> The person on the reception desk gets the Staff role with the Reception section — not Manager.</li><li><strong>Review quarterly.</strong> In Setup → Team, check the seat list whenever someone joins or leaves. Remove leavers the same day.</li><li><strong>Never share logins.</strong> The audit log records who approved what — shared logins destroy that accountability.</li></ol>
+<h3>Setting up personas (how-to)</h3>
+<ol><li>As GM, go to <strong>Setup → Team</strong>.</li><li>Click <strong>Invite</strong>, enter the person's email, and pick their role (GM / Manager / Staff).</li><li>They receive an invitation and set their own password.</li><li>To change someone's role later: Setup → Team → edit the member. <strong>Only the GM can do this</strong> — this is the guardrail against self-granted access.</li></ol>
+<hr></div>
+</details>
+<details class="guide-card" id="hotel-setup-guide" data-personas="gm ops" data-category="getting-started">
+  <summary>
+    <span class="guide-category">Getting started</span>
+    <span class="guide-title">Hotel setup guide</span>
+    <span class="guide-description">Set up a property, import reservation data, configure policies, and launch a first goal.</span>
+    <span class="guide-tags"><span>Gm</span><span>Platform Ops</span></span>
+    <span class="guide-chevron" aria-hidden="true">+</span>
+  </summary>
+  <div class="guide-content"><h3>What it is</h3>
+<p>Hotel setup is a 10-tab checklist in <strong>Setup</strong> that takes a property from "account created" to "running daily operations." Work through the tabs in order — each one unlocks the next layer of the product.</p>
+<h3>The 10 tabs</h3>
+<h4>1. Subscription (Plans)</h4>
+<p>Confirms your tier and limits: room count, seats, documents/month, WhatsApp guests/month, and whether ancillary revenue is enabled. If you're near a cap, you'll see an upgrade nudge — WhatsApp guest messaging is never cut off mid-stay (it's a soft cap; the GM just gets notified).</p>
+<h4>2. Property identity</h4>
+<p>Hotel name, address, room count, and brand basics. The room count syncs to your subscription tier.</p>
+<h4>3. Website</h4>
+<p>Coming soon — this will hold your public booking-site settings.</p>
+<h4>4. PMS import</h4>
+<p>Connect your reservation data. Today this is a <strong>CSV upload</strong> (reservations and rooms); an <strong>eZee API sync</strong> is on the roadmap. Upload freshness matters — revenue reports and owner views show how stale the data is, so re-upload on a rhythm (weekly at minimum). <strong>Business case:</strong> every revenue, occupancy, and channel report in the product is only as fresh as this import.</p>
+<h4>5. Sellable extras</h4>
+<p>Define the ancillary services you sell beyond rooms — airport transfers, laundry, spa slots, late checkout. These power the Services section and upsell suggestions.</p>
+<h4>6. Rules</h4>
+<p>Operating rules the AI desks and staff follow: check-in/check-out times, quiet hours, comp policies, escalation paths.</p>
+<h4>7. Policies &amp; documents</h4>
+<p>Upload policy documents (cancellation, pet policy, ID requirements). The AI references these when drafting guest replies so answers stay consistent.</p>
+<h4>8. Team</h4>
+<p>Invite staff by email and assign roles. See <a href="#roles-personas">Roles &amp; personas</a>.</p>
+<h4>9. WhatsApp</h4>
+<p>Connect your business number, configure the section inbox (Reception, Housekeeping, F&amp;B), set per-section SLA targets and staff assignments, and generate the guest opt-in QR code. Full walkthrough in <a href="#whatsapp-setup-configuration">WhatsApp setup</a>.</p>
+<h4>10. First goal</h4>
+<p>Create your first AI goal so the desks have something to work on from day one. Good starters: "Lift review score above 4.5" or "Cut response time under 5 minutes."</p>
+<h3>How to use effectively</h3>
+<ul><li><strong>Do it in one sitting with the GM present.</strong> Identity, rules, and WhatsApp config all need GM decisions — don't start without them.</li><li><strong>Import PMS data before inviting staff.</strong> Empty reports confuse people; a week of reservation history makes every screen come alive.</li><li><strong>Set the First goal to something visible in 30 days.</strong> Early wins build trust in the AI desks.</li></ul>
+<hr></div>
+</details>
+<details class="guide-card" id="daily-operations" data-personas="gm manager staff" data-category="hotel-operations">
+  <summary>
+    <span class="guide-category">Hotel operations</span>
+    <span class="guide-title">Daily operations</span>
+    <span class="guide-description">Work the daily brief, guest inbox, task board, requests, approvals, and guest spend.</span>
+    <span class="guide-tags"><span>Gm</span><span>Manager</span><span>Staff</span></span>
+    <span class="guide-chevron" aria-hidden="true">+</span>
+  </summary>
+  <div class="guide-content"><h3>Home</h3>
+<p><strong>What it is:</strong> the GM's morning view — today's arrivals/departures, occupancy, the decision queue (items waiting on you), and FYI cards.</p>
+<p><strong>Business case:</strong> replaces the 8 AM walkaround-and-ask. One screen answers "what needs me today?"</p>
+<p><strong>Use it effectively:</strong> clear the decision queue first, then scan FYI cards. If the Home feels crowded, tell us — we keep trimming it.</p>
+<h3>WhatsApp section inbox</h3>
+<p><strong>What it is:</strong> guest chats routed into three sections — <strong>Reception, Housekeeping, F&amp;B / Room Service</strong>. The AI drafts a reply; <strong>staff always press send</strong>. Guests see room numbers only on the staff side; guest identity stays GM-only.</p>
+<p><strong>Business case:</strong> one phone number for the whole hotel, but every message lands with the right team, with a draft reply already written and an SLA clock running.</p>
+<p><strong>Use it effectively:</strong></p>
+<ul><li>Keep routing ON only for sections that are staffed — an unstaffed section with routing on is worse than routing off.</li><li>Set honest SLA targets (e.g. Reception 5 min, Housekeeping 15 min). The AI measures against them.</li><li>Staff: always read the draft before sending. The AI is good; it's not you.</li></ul>
+<h3>Tasks</h3>
+<p><strong>What it is:</strong> the hotel's task board — create, assign, and track work from open → in progress → done, grouped by category (including maintenance).</p>
+<p><strong>Business case:</strong> the leaking tap in 204 stops living in someone's head and starts living on a board with an owner and a due date.</p>
+<p><strong>Use it effectively:</strong> every task needs an owner and a due date. A task with neither is a wish.</p>
+<h3>Requests</h3>
+<p><strong>What it is:</strong> requests staff raise that need a decision — a comp, a late checkout, a rate exception.</p>
+<p><strong>Business case:</strong> stops hallway decisions. The request, the context, and the approval live in one place with an audit trail.</p>
+<h3>Approvals</h3>
+<p><strong>What it is:</strong> the pending-decision queue, grouped by type. Approvals are <strong>tiered</strong> so the GM doesn't gate routine work:</p>
+<ul><li><strong>Tier 1 — routine:</strong> staff or the AI handles it (e.g. standard late checkout within policy).</li><li><strong>Tier 2 — section:</strong> the manager approves (e.g. a housekeeping comp).</li><li><strong>Tier 3 — GM:</strong> money, reputation, and exceptions (e.g. large comps, review responses).</li></ul>
+<p><strong>Business case:</strong> the GM approves 10 things a day instead of 100 — and the 10 are the ones that matter.</p>
+<p><strong>Use it effectively:</strong> push as much as safely possible into Tier 1 and 2. Review the tier boundaries monthly — if the GM queue is always full, the tiers are too tight.</p>
+<h3>Guest spend</h3>
+<p><strong>What it is:</strong> bill-photo capture and manual charge entry (F&amp;B, extras). The GM sees guest identity + spend; managers see room-number-only; staff see nothing.</p>
+<p><strong>Business case:</strong> every charge gets captured at the point of sale with photo evidence — no more "we forgot to add the coffees."</p>
+<p><strong>Use it effectively:</strong> make photo capture the habit, not the exception. Set your comp-approval threshold (default ₹2,000, GM-only setting) — comps and voids above it need approval; legitimate big charges are never blocked.</p>
+<hr></div>
+</details>
+<details class="guide-card" id="ai-goals-opportunities-the-daily-brief" data-personas="gm owner" data-category="hotel-operations">
+  <summary>
+    <span class="guide-category">Hotel operations</span>
+    <span class="guide-title">AI goals, opportunities &amp; the daily brief</span>
+    <span class="guide-description">Set measurable goals, review AI suggestions, and scan the morning brief.</span>
+    <span class="guide-tags"><span>Gm</span><span>Owner</span></span>
+    <span class="guide-chevron" aria-hidden="true">+</span>
+  </summary>
+  <div class="guide-content"><h3>Goals</h3>
+<p><strong>What it is:</strong> objectives you set ("Hold review score above 4.5", "Grow ancillary revenue 15%") that AI <strong>desks</strong> work in the background. Each desk is a specialist agent that gathers evidence, drafts actions, and brings you decisions to approve.</p>
+<p><strong>Business case:</strong> a GM can't watch reviews, rates, maintenance, and upsells simultaneously. Desks can — and they only interrupt you when there's a decision.</p>
+<p><strong>Use it effectively:</strong></p>
+<ul><li>Write goals with a number and a date: "Cut average response time under 5 minutes by month-end" beats "improve service."</li><li>Use the <strong>New goal composer</strong> — title, description, target, KPI — and preview which desks will pick it up before saving.</li><li>Cap active goals at 3–5. Ten goals means no goal.</li></ul>
+<h3>Opportunities</h3>
+<p><strong>What it is:</strong> a weekly AI scan that surfaces suggestion cards — revenue you might be leaving on the table, cost leaks, review risks. Each card can be turned into a goal with one click (which then follows the normal approval flow).</p>
+<p><strong>Business case:</strong> the "I didn't know we could do that" engine. Independent hotels rarely have a revenue manager; this is the closest thing.</p>
+<p><strong>Use it effectively:</strong></p>
+<ul><li>The scan runs on <strong>2 ticks per week per hotel</strong> (max 8 cards/week) — it's deliberately throttled so suggestions stay high-signal.</li><li>Give feedback on cards (useful / not useful). The scan learns what matters to your property.</li><li>Suggestions never execute automatically. "Turn into goal" is always your call.</li></ul>
+<h3>Daily brief</h3>
+<p><strong>What it is:</strong> a morning briefing generated from overnight activity — arrivals, departures, open tasks, SLA breaches, review mentions, and what each desk did while you slept.</p>
+<p><strong>Business case:</strong> the 5-minute read that replaces 30 minutes of asking around.</p>
+<p><strong>Use it effectively:</strong> read it before the Home screen. If something in the brief needs action, it links straight to the task, approval, or chat.</p>
+<h3>Completed (archive)</h3>
+<p><strong>What it is:</strong> a read-only archive of finished tasks and signed-off goals.</p>
+<p><strong>Business case:</strong> proof of work — for the GM's own review, for the owner, or for "when did we fix the boiler?" six months later. The GM can reopen an item if it regresses.</p>
+<hr></div>
+</details>
+<details class="guide-card" id="services-ancillary-revenue" data-personas="gm manager" data-category="hotel-operations">
+  <summary>
+    <span class="guide-category">Hotel operations</span>
+    <span class="guide-title">Services &amp; ancillary revenue</span>
+    <span class="guide-description">Configure sellable extras and review ancillary activity.</span>
+    <span class="guide-tags"><span>Gm</span><span>Manager</span></span>
+    <span class="guide-chevron" aria-hidden="true">+</span>
+  </summary>
+  <div class="guide-content"><h3>What it is</h3>
+<p>The catalog of everything the hotel sells beyond the room — airport transfers, laundry, spa, late checkout, F&amp;B extras — plus charge entry and capture statistics.</p>
+<p><strong>Business case:</strong> rooms have fixed inventory; ancillaries are where margin grows. Most independent hotels under-sell them simply because there's no system tracking them.</p>
+<h3>How to use effectively</h3>
+<ol><li><strong>Build the catalog first</strong> (Setup → Sellable extras). Every item needs a name, price, and the team that fulfills it.</li><li><strong>Enter charges at the point of sale.</strong> F&amp;B and extras should hit the system the moment they're served — see <a href="#daily-operations">Guest spend</a>.</li><li><strong>Watch the capture stats weekly.</strong> Which extras sell, which don't, and which rooms never buy anything — that's your upsell plan.</li><li><strong>Tie extras to the guest journey.</strong> Late checkout offered at check-in converts; offered never doesn't.</li></ol>
+<h3>Notes</h3>
+<ul><li>Ancillary features are enabled on Growth and Scale tiers (not Starter).</li><li>Local-business offers to guests (partner restaurants, experiences) are a separate planned feature — hotel ancillaries always get priority in guest messaging.</li></ul>
+<hr></div>
+</details>
+<details class="guide-card" id="reports-analytics" data-personas="gm owner" data-category="reports-insights">
+  <summary>
+    <span class="guide-category">Reports &amp; insights</span>
+    <span class="guide-title">Reports &amp; analytics</span>
+    <span class="guide-description">Read revenue, task timing, health, and data-freshness reports.</span>
+    <span class="guide-tags"><span>Gm</span><span>Owner</span></span>
+    <span class="guide-chevron" aria-hidden="true">+</span>
+  </summary>
+  <div class="guide-content"><h3>What it is</h3>
+<p>Reports turn your reservation data and operational activity into numbers you can act on. Everything is computed from data already in the system — no separate BI tool needed.</p>
+<h3>Available reports</h3>
+<h4>Revenue</h4>
+<p>Earnings, bookings, ADR (average daily rate), occupancy, and channel split (direct vs OTA). Filter by date range. <strong>Business case:</strong> "Are we making more money than last month, and why?" — answered in one screen.</p>
+<h4>Timings</h4>
+<p>Response times, resolution times, and SLA compliance per section. <strong>Business case:</strong> proves whether the WhatsApp inbox is actually faster than the front-desk phone — and where the bottlenecks are.</p>
+<h4>Hotel health score</h4>
+<p>A deterministic score from operational signals (occupancy, SLA compliance, review trends, task completion), with an AI-written narrative explaining it. <strong>Business case:</strong> one number for "how are we doing," with the story behind it.</p>
+<h3>Data freshness</h3>
+<p>Every report shows <strong>how fresh its data is</strong>. Reservation data comes from your PMS import (Setup → PMS import) — if the last upload was 3 weeks ago, the reports say so. Keep imports on a weekly rhythm, or connect the eZee API sync when available.</p>
+<h3>How to use effectively</h3>
+<ul><li><strong>Monday routine:</strong> revenue + health score, 10 minutes. That's the week-in-review.</li><li><strong>Monthly:</strong> channel split. If OTA share is climbing, that's a direct-booking problem to fix.</li><li><strong>Never screenshot a stale report into a decision.</strong> Check the freshness badge first.</li></ul>
+<hr></div>
+</details>
+<details class="guide-card" id="owner-view-ops-console" data-personas="owner ops" data-category="reports-insights">
+  <summary>
+    <span class="guide-category">Reports &amp; insights</span>
+    <span class="guide-title">Owner view &amp; Ops console</span>
+    <span class="guide-description">Review portfolio health as an owner or manage hotel provisioning and platform operations.</span>
+    <span class="guide-tags"><span>Owner</span><span>Platform Ops</span></span>
+    <span class="guide-chevron" aria-hidden="true">+</span>
+  </summary>
+  <div class="guide-content"><h3>Owner view</h3>
+<p><strong>What it is:</strong> a portfolio dashboard at <code>/owner</code> for hotel owners — revenue, bookings, ADR, occupancy, channel data, and health scores across their properties.</p>
+<p><strong>Privacy by design:</strong> owners see <strong>aggregates and statistics only</strong> — never guest names, phone numbers, message contents, or identity. Every owner–hotel link is operator-verified (recorded with who verified it and when); there is no self-service hotel claiming.</p>
+<p><strong>Business case:</strong> the Monday-morning portfolio check without calling a single GM.</p>
+<p><strong>Features:</strong></p>
+<ul><li>Per-hotel health scores with AI narratives.</li><li>Revenue and occupancy from reservation data, with <strong>upload-freshness</strong> shown per hotel (stale data is visible, not hidden).</li><li><strong>Owner-assigned goals:</strong> an owner can assign a goal to a hotel; it lands on the GM's board with an "Assigned by owner" badge.</li></ul>
+<p><strong>Use it effectively:</strong> sort by freshness first — a hotel with 3-week-old data needs a nudge before its numbers mean anything.</p>
+<h3>Ops console</h3>
+<p><strong>What it is:</strong> the platform operator's back office at <code>/ops</code> — hotel provisioning, subscription management, sync monitoring, and safety controls.</p>
+<p><strong>Features:</strong></p>
+<ul><li><strong>Provisioning:</strong> create the hotel, the GM account, and the tier. The GM gets a temp password (shown once) and must change it at first login.</li><li><strong>Hotel disable:</strong> a full soft stop — logins rejected, sessions killed, scheduled work skipped, WhatsApp in/out stopped. Data untouched; re-enable restores everything.</li><li><strong>Kill switches:</strong> per-hotel WhatsApp routing toggle, AI pause for billing issues.</li><li><strong>Audit logs:</strong> every ops action (logins, approvals, deletions, disables) in an append-only log kept indefinitely. Hotel actions are separately visible to that hotel's GM.</li><li><strong>AI budget caps:</strong> per-hotel daily AI spend limits; waves of agent work reserve budget atomically so a run either fully launches or cleanly waits.</li></ul>
+<p><strong>Use it effectively:</strong> destructive actions (disable/delete) require the ops action password and a confirmation — they're irreversible by design. Kill switches are reversible and need no password.</p>
+<hr></div>
+</details>
+<details class="guide-card" id="whatsapp-setup-configuration" data-personas="gm manager staff ops" data-category="setup-integrations">
+  <summary>
+    <span class="guide-category">Setup &amp; integrations</span>
+    <span class="guide-title">WhatsApp setup &amp; configuration</span>
+    <span class="guide-description">Connect a business number, route sections, set SLAs, and configure guest opt-in.</span>
+    <span class="guide-tags"><span>Gm</span><span>Manager</span><span>Staff</span><span>Platform Ops</span></span>
+    <span class="guide-chevron" aria-hidden="true">+</span>
+  </summary>
+  <div class="guide-content"><h3>What it is</h3>
+<p>SwarmForge runs guest messaging on WhatsApp through Meta's official Cloud API — one business number per hotel, with a section-routed inbox (Reception, Housekeeping, F&amp;B / Room Service). The AI drafts replies; staff always send.</p>
+<h3>Setup steps</h3>
+<h4>1. Business number</h4>
+<p>Each hotel needs a <strong>dedicated business phone number</strong>. Important: registering a number with WhatsApp Business <strong>disconnects it from the WhatsApp phone/desktop apps</strong> — plan for a second number if the front desk relies on the app today.</p>
+<h4>2. Meta onboarding</h4>
+<ul><li>A WhatsApp Business Account (WABA) holds all hotel numbers.</li><li>Each <strong>display name</strong> needs Meta approval; business verification happens once at the account level.</li><li>Your ops team completes Meta setup and stores the API token server-side — tokens are never entered in the app UI.</li></ul>
+<h4>3. Connect in SwarmForge</h4>
+<p>In <strong>Setup → WhatsApp</strong> (GM only):</p>
+<ul><li>Enter the hotel's Meta phone number ID.</li><li>Turn <strong>routing</strong> on/off per hotel (ships OFF — enable when staff are ready).</li><li>Set per-section <strong>SLA targets</strong> and <strong>staff assignments</strong>.</li><li>Generate the <strong>guest opt-in QR code</strong> for the front desk.</li></ul>
+<h4>4. Guest opt-in</h4>
+<p>Guests opt in by scanning the QR at check-in. Consent is logged with timestamp and source; guests can revoke with STOP at any time. Rules: no messages after checkout, max 1–2 guest messages per day, no bill integration (settled at front desk).</p>
+<h4>5. Message templates</h4>
+<p>Proactive messages (booking confirmations, check-in instructions) use Meta-approved templates. Your ops team manages template approval.</p>
+<h3>Business case</h3>
+<p>Guests already live on WhatsApp. One hotel number with the right team answering in minutes — with AI-drafted replies — beats a front-desk phone that rings out, and every conversation is logged against the stay.</p>
+<h3>How to use effectively</h3>
+<ul><li><strong>Staff the sections before enabling routing.</strong> An SLA clock running on an empty section just creates breaches.</li><li><strong>Keep the human in the loop.</strong> The AI drafts; staff send. Skim every draft — tone matters.</li><li><strong>Broadcast is separate.</strong> Bulk/announcement messaging is a planned separate feature, not part of the inbox.</li></ul>
+<hr></div>
+</details>
+<details class="guide-card" id="billing-ticks-ai-budget" data-personas="gm owner ops" data-category="account-billing">
+  <summary>
+    <span class="guide-category">Account &amp; billing</span>
+    <span class="guide-title">Billing, ticks &amp; AI budget</span>
+    <span class="guide-description">Understand subscription limits, AI ticks, budget pauses, and failed payments.</span>
+    <span class="guide-tags"><span>Gm</span><span>Owner</span><span>Platform Ops</span></span>
+    <span class="guide-chevron" aria-hidden="true">+</span>
+  </summary>
+  <div class="guide-content"><h3>Subscription tiers</h3>
+<div class="table-scroll"><table><thead><tr><th scope="col"></th><th scope="col">Starter</th><th scope="col">Growth</th><th scope="col">Scale</th></tr></thead><tbody><tr><td>Rooms</td><td>up to 20</td><td>up to 35</td><td>36+</td></tr><tr><td>Seats</td><td>3</td><td>10</td><td>unlimited</td></tr><tr><td>Documents / month</td><td>10</td><td>30</td><td>100</td></tr><tr><td>WhatsApp guests / month</td><td>500</td><td>1,000</td><td>3,000</td></tr><tr><td>Ancillary revenue</td><td>—</td><td>✓</td><td>✓</td></tr></tbody></table></div>
+<p>Pricing is <strong>"Contact us"</strong> — talk to sales. Billing is manual (invoice / bank transfer); tier changes are operator-applied and audit-logged.</p>
+<p><strong>Business case:</strong> you pay for the size you are. The WhatsApp guest allowance is a <strong>soft cap</strong> — if you exceed it, the GM gets a notification and an upgrade nudge. Guest messaging is never interrupted mid-stay.</p>
+<h3>Ticks</h3>
+<p><strong>What they are:</strong> the unit of AI work. The clearest example: the <strong>opportunities scan runs on 2 ticks per week per hotel</strong> (producing at most 8 suggestion cards). Ticks make AI consumption predictable — you always know what a week of AI costs.</p>
+<h3>AI budget</h3>
+<p><strong>What it is:</strong> a daily cap on AI spend per hotel. Agent work runs in <strong>waves</strong> — before a wave launches, the whole wave's budget is reserved atomically. Either every desk in the wave runs, or the run waits cleanly (briefs are kept). You'll see "Low AI budget — desks couldn't run. Briefs retained." if a wave is ever starved.</p>
+<p><strong>Business case:</strong> no surprise AI bills, and no half-finished agent work.</p>
+<h3>How to know your token cost</h3>
+<ul><li><strong>Setup → Subscription</strong> shows your tier, usage vs caps, and upgrade nudges.</li><li>Per-hotel AI/token metering is tracked internally — ask ops or support for a usage breakdown any time.</li><li>If you're on a pilot, your onboarding contact will share metering with you proactively.</li></ul>
+<h3>Dunning (failed payments)</h3>
+<ul><li><strong>Day 0:</strong> account flagged (amber), you're notified.</li><li><strong>Day 7:</strong> AI features pause until payment resumes.</li><li><strong>Day 14:</strong> subscription ends locally. Your hotel data, logins, and WhatsApp history remain intact — nothing is deleted.</li></ul>
+<hr></div>
+</details>
+<details class="guide-card" id="faq-troubleshooting" data-personas="all" data-category="troubleshooting">
+  <summary>
+    <span class="guide-category">Troubleshooting</span>
+    <span class="guide-title">FAQ &amp; troubleshooting</span>
+    <span class="guide-description">Find quick fixes for access, WhatsApp, reports, AI features, and billing.</span>
+    <span class="guide-tags"><span>All roles</span></span>
+    <span class="guide-chevron" aria-hidden="true">+</span>
+  </summary>
+  <div class="guide-content"><h3>Login &amp; access</h3>
+<p><strong>I can't log in.</strong> Check you're on the right domain (app vs demo). If you were provisioned by ops, use the temp password from your invite — you'll be forced to change it on first login. Still stuck? Ask your GM to confirm your account is active in Setup → Team.</p>
+<p><strong>I see a different hotel's data / wrong role.</strong> Roles are GM-managed (Setup → Team). Only the GM can change roles. If your access looks wrong, ask your GM — support can't reassign roles for you.</p>
+<h3>WhatsApp</h3>
+<p><strong>Guest messages aren't arriving.</strong> Check Setup → WhatsApp: is routing ON for the hotel? Is the Meta phone number ID set? Is the section staffed and assigned? Routing ships OFF — it must be deliberately enabled.</p>
+<p><strong>The AI draft looks wrong.</strong> Edit before sending — staff always send. If drafts are consistently off, check Setup → Policies &amp; documents (the AI drafts from your policies) and Rules.</p>
+<p><strong>A guest says STOP but still gets messages.</strong> Consent revocation is immediate in the system. If a message was already queued before the STOP, it may still deliver once. Report repeats to support.</p>
+<h3>Data &amp; reports</h3>
+<p><strong>Reports look stale.</strong> Check the freshness badge on the report. Reservation data comes from Setup → PMS import — re-upload your CSV (weekly rhythm recommended).</p>
+<p><strong>My CSV upload failed.</strong> Files over 1MB are rejected, as are iPhone HEIC photos and Word docs for bill evidence (use PNG/JPG/PDF). Check the error message — it tells you which rule tripped.</p>
+<h3>AI features</h3>
+<p><strong>"Low AI budget — desks couldn't run."</strong> The hotel hit its daily AI cap. Briefs are retained and the wave will run after the cap resets (or ask ops about raising it).</p>
+<p><strong>Opportunity cards stopped appearing.</strong> The scan runs weekly on 2 ticks/hotel. If the hotel's tick or AI budget is exhausted, the scan waits. Check Setup → Subscription for usage vs caps.</p>
+<h3>Billing</h3>
+<p><strong>What happens if we miss a payment?</strong> Day 0: flagged, you're notified. Day 7: AI pauses. Day 14: subscription ends locally — data, logins, and WhatsApp history are kept.</p>
+<h3>Still stuck?</h3>
+<p>Email admin@simplicore.ai and mention which help article you already followed — it gets you to the right person faster.</p>
+<hr></div>
+</details>
+<details class="guide-card" id="how-metrics-are-calculated" data-personas="gm manager staff owner" data-category="reports-insights">
+  <summary>
+    <span class="guide-category">Reports &amp; insights</span>
+    <span class="guide-title">How metrics are calculated</span>
+    <span class="guide-description">See the formulas, freshness rules, and role visibility behind SwarmForge metrics.</span>
+    <span class="guide-tags"><span>Gm</span><span>Manager</span><span>Staff</span><span>Owner</span></span>
+    <span class="guide-chevron" aria-hidden="true">+</span>
+  </summary>
+  <div class="guide-content"><p>Every number in SwarmForge is measured from your hotel's own data — never modeled, never borrowed from industry benchmarks. This article documents exactly how each metric is computed, grouped by who sees it. If a number isn't listed here, SwarmForge doesn't compute it.</p>
+<h3>For owners</h3>
+<h4>Health score (0–100)</h4>
+<p>Each hotel gets one score, recomputed daily.</p>
+<ul><li><strong>Formula:</strong> every factor produces a sub-score from 0–100; the hotel score is the weighted average of the factors that have data. If no factor has data, the score is 50 (neutral).</li><li><strong>The seven factors and their weights:</strong></li></ul>
+<div class="table-scroll"><table><thead><tr><th scope="col">Factor</th><th scope="col">Weight</th><th scope="col">What it measures</th></tr></thead><tbody><tr><td>Approval responsiveness</td><td>20%</td><td>Pending approvals: how many, and their average age in hours</td></tr><tr><td>SLA health</td><td>20%</td><td>Share of tasks past their due time</td></tr><tr><td>Issue-resolution time</td><td>15%</td><td>Average hours from task creation to completion (last 7 days)</td></tr><tr><td>Occupancy</td><td>15%</td><td>This week's room-nights vs the prior four-week average</td></tr><tr><td>AI handling rate</td><td>10%</td><td>Share of guest messages drafted by AI vs sent by staff (last 7 days)</td></tr><tr><td>Goal progress</td><td>10%</td><td>Share of goal-linked tasks done or awaiting approval (last 30 days)</td></tr><tr><td>GM engagement</td><td>10%</td><td>Recency of the GM's own activity in the system</td></tr></tbody></table></div>
+<ul><li><strong>Bands:</strong> 85+ Thriving · 70–84 Healthy · 50–69 Needs attention · below 50 At risk.</li><li><strong>Freshness cap:</strong> the score trusts your bookings data. If bookings were never uploaded — or are 14+ days old — the score caps at 69; 7–13 days old caps at 84. Under 7 days, no cap.</li><li><strong>Trend arrow:</strong> compares today's score with the previous scored day. Moves under 3 points show as flat.</li><li><strong>History:</strong> 90 days of daily scores are kept, so trends are real history, not estimates.</li><li>The written summary under the score is <strong>AI-generated</strong> from these same factors.</li></ul>
+<h4>Return on AI</h4>
+<p>Available for this month, the last 30 days, or year to date.</p>
+<ul><li><strong>Incremental revenue:</strong> charges stamped to an AI offer when the upsell is fulfilled, summed from your ledger. Measured, never modeled. It reads ₹0 until staff post AI-offer charges from the app.</li><li><strong>AI cost:</strong> settled AI spend for the period, metered in USD. Ticks only — subscription fees are excluded. For the multiple, USD is converted at a fixed ₹94/USD display rate.</li><li><strong>Multiple:</strong> incremental revenue ÷ AI cost, shown like "3.2×". If AI cost is zero it shows "—", never infinity. The portfolio multiple is computed from portfolio totals.</li><li><strong>Lever cards</strong> (each names the feature driving it): Ancillary uplift = incremental revenue (AI upsell offers over WhatsApp) · Response quality = average first-response minutes (WhatsApp section inbox + AI drafts) · Recovered revenue = <em>count</em> of acted-on revenue opportunities — a count, never rupees · AI cost (AI desks, tick-metered).</li><li><strong>Labor saved</strong> is Coming Soon. No modeled numbers appear anywhere.</li><li><strong>Baselines:</strong> each hotel's first 30 days on SwarmForge. Trends compare the selected period against the previous equivalent period.</li></ul>
+<h4>Revenue stats</h4>
+<p>Per hotel: <strong>Earnings</strong> = sum of reservation amounts · <strong>Bookings</strong> = count · <strong>ADR</strong> = earnings ÷ room nights · <strong>Occupancy</strong> = room nights ÷ (rooms × days), capped at 100% · <strong>Direct share</strong> = direct bookings ÷ total bookings. A freshness badge shows how old the bookings upload is ("Data today", "Stale · 9 d ago", "No upload yet").</p>
+<h4>Goal progress</h4>
+<p>Owner-assigned goals land on the GM's board automatically. Progress reads <strong>"N of M tasks done"</strong> — linked hotel tasks in done/verified status. If there are no linked tasks yet, it shows nothing rather than a guess.</p>
+<h3>For GMs</h3>
+<h4>Daily Brief</h4>
+<p>Covers the window since you last opened the brief, up to 24 hours back. Sections: approvals waiting (newest first), approvals you decided, tasks completed, guest requests resolved, arrivals and checkouts, anomalies (overdue and blocked tasks), top spenders and revenue at risk (by outstanding balance — GM only), trailing-24h ancillary revenue by category, a 30-day ancillary chart, and year-so-far totals. Each section is independent: if one fails to load, the rest still render.</p>
+<h4>Tasks</h4>
+<p>Lifecycle: proposed → open → in progress → done → verified (blocked and rejected are side states). <strong>Overdue</strong> = past its due time and not done/verified. Maintenance requests at or above your cost threshold (default ₹2,000, you set it) need your approval; below it a manager can approve; housekeeping requests open immediately. The <strong>Timings</strong> tab (GM only) shows approval wait, work time, and total time per task kind, derived from task history.</p>
+<h4>Guest tiers &amp; SLAs</h4>
+<ul><li><strong>Silver:</strong> 1+ stays · <strong>Gold:</strong> 2+ stays · <strong>Diamond:</strong> suite stay or high spend (default ₹25,000) · <strong>Platinum:</strong> manual assignment only — never automatic.</li><li><strong>Routing:</strong> Platinum → you + the department · Diamond/Gold → manager + staff · Silver → staff.</li><li><strong>Priority:</strong> safety keywords (fire, smoke, gas leak, medical, emergency…) always escalate immediately, regardless of tier. Otherwise Platinum complaints and requests are top priority; everything else steps down by tier.</li><li><strong>SLAs:</strong> urgent 2 min · standard 10 min · routine 15 min (you can edit these in Setup). Unacknowledged urgent messages escalate one level up after 5 minutes.</li><li>Any role may assign tiers; every change is audit-logged. Muting a guest silences notifications only — messages still arrive.</li></ul>
+<h4>AI usage (ticks)</h4>
+<ul><li><strong>One tick</strong> = one run of the main AI agent. Specialist desks draw from the AI budget without consuming ticks.</li><li><strong>Allowances:</strong> Starter 4 ticks/day · Growth 12/day · Scale 36/day; monthly AI budgets of $5 / $25 / $80. Prices: $3 per million prompt tokens, $15 per million completion tokens.</li><li>At the limit the AI <strong>pauses politely</strong> instead of spending — nothing fails halfway. /ops can grant top-up credit instantly ($1–$500).</li><li>Usage vs allowance is visible in the app header — <strong>GM only</strong>. If AI is paused for a billing issue, logins, data, and guest WhatsApp messaging keep working.</li></ul>
+<h3>For managers</h3>
+<p>You see the same operations metrics as the GM — task board, brief sections, room-readiness exceptions, ancillary performance — with three deliberate limits:</p>
+<ol><li><strong>No guest identity.</strong> Names, phone numbers, and message contents are GM-only. Spend shows as room-number totals.</li><li><strong>No request-timings tab and no team management.</strong> Those are GM-only.</li><li><strong>Approvals:</strong> you resolve routine sub-threshold items; anything at or above the GM's cost threshold routes to the GM.</li></ol>
+<p>You can verify completed tasks and work your assigned WhatsApp sections. The AI usage chip and budget figures are not shown to managers.</p>
+<h3>For staff</h3>
+<p>Staff see <strong>their own work only</strong> — no dashboard metrics, no spend browsing, no approvals:</p>
+<ul><li>Assigned tasks (you move the status on your own tasks; you can't verify or block others').</li><li>WhatsApp sections you're assigned to (room numbers only, never guest identity).</li><li>F&amp;B charge posting with a bill photo.</li></ul>
+<p>There are no per-staff scores or rankings in the hotel app. (Per-staff productivity stats are a Coming Soon item on the owner's Team tab — nothing is fabricated in the meantime.)</p>
+<h3>What SwarmForge does not compute</h3>
+<p>To be explicit — these do <strong>not</strong> exist as metrics, even if the words appear in passing:</p>
+<ul><li>Upsell attach rate and ancillary revenue per occupied room (no formula exists yet)</li><li>Room-readiness risk scores</li><li>Approval aging or SLA metrics on the approval queue</li><li>Per-staff productivity scores</li><li>Modeled labor savings or industry-benchmark comparisons presented as your data</li></ul>
+<p>If it's not measured from your ledger, your tasks, or your messages, it doesn't appear as a number.</p></div>
+</details>
+    </section>
+    <div class="empty" id="emptyState">No guide matches that search. Try another term or clear the persona filter.</div>
+    <section class="contact-card" aria-label="Contact support"><div><strong>Still stuck?</strong><p>Contact your onboarding representative or send us the article title and a short description of what you tried.</p></div><a class="contact-button" href="mailto:admin@simplicore.ai?subject=SwarmForge%20support%20request">Contact SwarmForge</a></section>
+    <footer class="footer"><span>SwarmForge Help Center · hospitality operations</span><span>Guidance reflects the current help articles. If your screen differs, follow your GM’s hotel policy and contact your onboarding representative.</span></footer>
+  </main>
+  <script>
+    const searchInput=document.getElementById('helpSearch');
+    const roleButtons=[...document.querySelectorAll('.filter-chip')];
+    const cards=[...document.querySelectorAll('.guide-card')];
+    const resultCount=document.getElementById('resultCount');
+    const emptyState=document.getElementById('emptyState');
+    let activeRole='all';
+    function applyFilters(){
+      const query=searchInput.value.trim().toLocaleLowerCase();
+      let count=0;
+      cards.forEach(card=>{
+        const personas=card.dataset.personas.split(' ');
+        const roleMatch=activeRole==='all'||personas.includes('all')||personas.includes(activeRole);
+        const searchMatch=!query||card.textContent.toLocaleLowerCase().includes(query);
+        const show=roleMatch&&searchMatch;
+        card.hidden=!show;
+        if(!show)card.open=false;
+        if(show)count++;
+      });
+      resultCount.innerHTML=`<strong>${count}</strong> ${count===1?'guide':'guides'}${activeRole==='all'?'':` for ${activeRole==='gm'?'General Manager':activeRole==='ops'?'Platform Ops':activeRole[0].toUpperCase()+activeRole.slice(1)}`}`;
+      emptyState.classList.toggle('visible',count===0);
+    }
+    roleButtons.forEach(button=>button.addEventListener('click',()=>{
+      activeRole=button.dataset.role;
+      roleButtons.forEach(item=>item.setAttribute('aria-pressed',String(item===button)));
+      applyFilters();
+    }));
+    searchInput.addEventListener('input',applyFilters);
+    document.getElementById('clearFilters').addEventListener('click',()=>{
+      searchInput.value='';activeRole='all';
+      roleButtons.forEach(item=>item.setAttribute('aria-pressed',String(item.dataset.role==='all')));
+      applyFilters();searchInput.focus();
+    });
+    cards.forEach(card=>card.addEventListener('toggle',()=>{
+      if(card.open)cards.forEach(other=>{if(other!==card)other.open=false;});
+    }));
+    const initial=location.hash.slice(1);
+    if(initial){const target=document.getElementById(initial);if(target?.matches('.guide-card'))target.open=true;}
+    applyFilters();
+  </script>
+</body>
+</html>

@@ -6,7 +6,7 @@ import os
 from pathlib import Path
 
 from dotenv import load_dotenv
-from flask import Flask, redirect, render_template_string, request, session, url_for, abort
+from flask import Flask, redirect, render_template_string, request, session, url_for, abort, send_file
 
 load_dotenv()
 
@@ -158,6 +158,24 @@ def login():
 def logout():
     session.clear()
     return redirect(url_for("index"), code=303)
+
+
+@app.route("/support")
+@login_required
+def support_center():
+    support_path = BASE_DIR / "protected" / "support.html"
+    if not support_path.exists():
+        abort(404)
+    return support_path.read_text(encoding="utf-8")
+
+
+@app.route("/support-logo")
+@login_required
+def support_logo():
+    logo_path = BASE_DIR / "protected" / "assets" / "swarmforge-logo.jpg"
+    if not logo_path.exists():
+        abort(404)
+    return send_file(logo_path, mimetype="image/jpeg", conditional=True)
 
 
 @app.route("/app")
