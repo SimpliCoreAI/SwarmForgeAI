@@ -197,6 +197,40 @@ def legacy_demo_redirect():
     return redirect(url_for("app_demo"), code=302)
 
 
+BLOG_PAGES = {
+    "index": "index.html",
+    "agent-booking-channel": "agent-booking-channel.html",
+    "trust-layer": "trust-layer.html",
+    "ai-desk": "ai-desk.html",
+}
+
+
+def blog_html(slug):
+    filename = BLOG_PAGES.get(slug)
+    if not filename:
+        abort(404)
+    path = BASE_DIR / "public" / "blog" / filename
+    if not path.is_file():
+        abort(404)
+    return path.read_text(encoding="utf-8")
+
+
+@app.route("/blog")
+def blog_index_redirect():
+    return redirect("/blog/", code=302)
+
+
+@app.route("/blog/")
+def blog_index():
+    return blog_html("index")
+
+
+@app.route("/blog/<page>")
+def blog_page(page):
+    slug = page[:-5] if page.endswith(".html") else page
+    return blog_html(slug)
+
+
 if __name__ == "__main__":
     port = int(os.getenv("PORT", "8877"))
     print(f"SwarmForgeAI server starting on http://0.0.0.0:{port}")
