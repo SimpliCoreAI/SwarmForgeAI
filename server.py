@@ -204,6 +204,13 @@ BLOG_PAGES = {
     "ai-desk": "ai-desk.html",
 }
 
+SUITE_PAGES = {
+    "morning-brief": "morning-brief.html",
+    "approvals-desk": "approvals-desk.html",
+    "weekly-opportunities": "weekly-opportunities.html",
+    "owner-view": "owner-view.html",
+}
+
 
 def blog_html(slug):
     filename = BLOG_PAGES.get(slug)
@@ -229,6 +236,27 @@ def blog_index():
 def blog_page(page):
     slug = page[:-5] if page.endswith(".html") else page
     return blog_html(slug)
+
+
+def suite_html(slug):
+    filename = SUITE_PAGES.get(slug)
+    if not filename:
+        abort(404)
+    path = BASE_DIR / "public" / "suite" / filename
+    if not path.is_file():
+        abort(404)
+    return path.read_text(encoding="utf-8")
+
+
+@app.route("/suite")
+def suite_index_redirect():
+    return redirect("/#suite", code=302)
+
+
+@app.route("/suite/<page>")
+def suite_page(page):
+    slug = page[:-5] if page.endswith(".html") else page
+    return suite_html(slug)
 
 
 if __name__ == "__main__":
