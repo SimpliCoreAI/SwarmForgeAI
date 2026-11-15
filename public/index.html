@@ -6,12 +6,47 @@
   <meta name="color-scheme" content="light dark" />
   <meta name="theme-color" content="#e9e5dd" media="(prefers-color-scheme: light)" />
   <meta name="theme-color" content="#08111a" media="(prefers-color-scheme: dark)" />
-  <link rel="icon" href="data:," />
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" href="/assets/icon-192.png" />
+  <link rel="apple-touch-icon" href="/assets/icon-192.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <title>SwarmForge — An AI team for independent hotels</title>
-  <meta name="description" content="SwarmForge is an AI operating layer for independent hotels. It proposes the next move. A person approves anything that spends money or reaches a guest. Owners see the portfolio without the guest list." />
+  <title>SwarmForge: AI ops desk and suite for independent hotels</title>
+  <meta name="description" content="SwarmForge OS runs your hotel desk on WhatsApp. GuestLoop brings past guests back. StoreLoop tracks service orders and stock. AI proposes, your team approves." />
+  <link rel="canonical" href="https://swarmforge.simplicore.ai/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="SwarmForge" />
+  <meta property="og:url" content="https://swarmforge.simplicore.ai/" />
+  <meta property="og:title" content="SwarmForge: AI ops desk and suite for independent hotels" />
+  <meta property="og:description" content="SwarmForge OS runs your hotel desk on WhatsApp. GuestLoop brings past guests back. StoreLoop tracks service orders and stock. AI proposes, your team approves." />
+  <meta property="og:image" content="https://swarmforge.simplicore.ai/assets/og-swarmforge.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="SwarmForge: AI ops desk and suite for independent hotels" />
+  <meta name="twitter:description" content="SwarmForge OS runs your hotel desk on WhatsApp. GuestLoop brings past guests back. StoreLoop tracks service orders and stock. AI proposes, your team approves." />
+  <meta name="twitter:image" content="https://swarmforge.simplicore.ai/assets/og-swarmforge.png" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "name": "SimpliCore AI",
+        "url": "https://simplicore.ai/",
+        "email": "admin@simplicore.ai"
+      },
+      {
+        "@type": "SoftwareApplication",
+        "name": "SwarmForge",
+        "url": "https://swarmforge.simplicore.ai/",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "description": "An AI suite for independent hotels: SwarmForge OS, GuestLoop and StoreLoop. AI proposes, a person approves.",
+        "publisher": { "@type": "Organization", "name": "SimpliCore AI" }
+      }
+    ]
+  }
+  </script>
   <style>
     :root {
       color-scheme: light dark;
@@ -589,6 +624,26 @@
       html { scroll-behavior: auto; }
       *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
     }
+
+    /* Suite, GuestLoop and StoreLoop sections */
+    .badge { display: inline-block; margin-left: 8px; padding: 3px 9px; border: 1px solid currentColor; border-radius: 99px; font-size: 10px; letter-spacing: .08em; vertical-align: middle; opacity: .85; }
+    .suite-card .more { margin-top: 18px; font-size: 13px; font-weight: 700; text-decoration: none; }
+    .suite-card .more:hover, .suite-card .more:focus-visible { text-decoration: underline; }
+    .suite-foot { margin: 24px 0 0; color: var(--muted); font-size: 14px; }
+    .split-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+    .feature-panel { background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 28px; box-shadow: var(--shadow-small); }
+    .feature-panel h3 { margin: 0 0 14px; font-family: "Cormorant Garamond", serif; font-size: 30px; line-height: 1.05; }
+    .feature-list { margin: 0; padding-left: 18px; color: var(--muted); }
+    .feature-list li { margin: 8px 0; }
+    .feature-list b { color: var(--ink); }
+    .not-line { margin: 18px 0 0; padding-left: 12px; border-left: 3px solid var(--accent); color: var(--muted); font-size: 14px; }
+    .panel-cta { margin-top: 20px; }
+    .tag-later { margin-left: 6px; padding: 2px 7px; border: 1px solid currentColor; border-radius: 99px; font-size: 10px; }
+    .india-line { margin-top: -6px; font-size: 14px; color: var(--muted); }
+    .form-field select { width: 100%; border: 0; border-bottom: 1px solid color-mix(in srgb, var(--bg) 28%, transparent); border-radius: 0; padding: 12px 0; background: transparent; color: var(--bg); font: 500 14px/1.45 "Manrope", sans-serif; }
+    .form-field select:focus { outline: none; border-bottom-color: var(--lime); }
+    .form-field select option { color: #101a28; background: #fffdf9; }
+    @media (max-width: 860px) { .split-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
@@ -596,8 +651,10 @@
   <header class="topbar">
     <nav class="nav wrap" aria-label="Primary navigation">
       <div class="nav-links" id="navLinks">
+        <a href="#suite">Suite</a>
+        <a href="/guestloop">GuestLoop</a>
+        <a href="/storeloop">StoreLoop</a>
         <a href="#workflow">How it works</a>
-        <a href="#owners">For owners</a>
         <a href="#trust">Trust</a>
         <a href="/blog/">Vision</a>
         <a href="#contact">Contact</a>
@@ -607,7 +664,7 @@
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
         </button>
         <a class="button ghost" href="https://app.swarmforge.simplicore.ai">Sign in</a>
-        <a class="button primary" href="https://app.swarmforge.simplicore.ai">Start with one hotel</a>
+        <a class="button primary" href="#contact">Book a walkthrough</a>
       </div>
     </nav>
   </header>
@@ -629,18 +686,19 @@
         <div class="hero-copy">
           <div class="eyebrow">AI for independent hotels</div>
           <h1>See the pulse of your hotel. Act on what <em>matters.</em></h1>
-          <p>SwarmForge is an AI team for one hotel. It reads the morning, guest messages, and the week ahead, then proposes the next move. A person approves anything that spends money or reaches a guest.</p>
+          <p>SwarmForge is an AI suite for independent hotels. SwarmForge OS runs the guest desk on WhatsApp. GuestLoop brings past guests back. StoreLoop keeps service orders and stores in order. AI proposes the next move, and a person approves anything that spends money or reaches a guest.</p>
+          <p class="india-line">Built for independent hotels in India, starting with 25 to 50 rooms.</p>
           <div class="hero-actions">
-            <a class="button accent" href="https://app.swarmforge.simplicore.ai">
-              Create an account
+            <a class="button accent" href="#contact">
+              Book a walkthrough
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
-            <a class="button" href="#workflow">See the operating loop</a>
+            <a class="button" href="#suite">See the suite</a>
           </div>
           <div class="proof-line" aria-label="Product principles">
             <span><i></i>Human in the loop</span>
-            <span><i></i>Owner view</span>
-            <span><i></i>Weekly opportunities</span>
+            <span><i></i>WhatsApp first</span>
+            <span><i></i>Not a PMS</span>
           </div>
         </div>
 
@@ -656,8 +714,8 @@
               <div class="app-tabs" role="tablist" aria-label="Product preview tabs">
                 <button class="tab-button active" data-panel="brief" role="tab" aria-selected="true">Daily brief</button>
                 <button class="tab-button" data-panel="guest" role="tab" aria-selected="false">Guest services</button>
+                <button class="tab-button" data-panel="orders" role="tab" aria-selected="false">Service orders</button>
                 <button class="tab-button" data-panel="maintenance" role="tab" aria-selected="false">Maintenance</button>
-                <button class="tab-button" data-panel="housekeeping" role="tab" aria-selected="false">Housekeeping</button>
               </div>
               <div class="app-main">
                 <div class="panel active" id="brief" role="tabpanel">
@@ -672,7 +730,7 @@
                   </div>
                   <div class="brief-card alert">
                     <div class="brief-title"><span></span><strong>Late checkout request</strong><time>Room 204</time></div>
-                    <p>A returning guest asked to stay until 2 pm. Housekeeping capacity and tomorrow's arrival have already been checked.</p>
+                    <p>A returning guest asked to stay until 2 pm. The desk checked the policy and the open tasks for that room.</p>
                     <div class="brief-actions" aria-label="Illustrative decision options"><span class="mini-button approve">Approve</span><span class="mini-button">Review context</span></div>
                   </div>
                   <div class="brief-card">
@@ -699,12 +757,12 @@
                   </div>
                 </div>
 
-                <div class="panel" id="housekeeping" role="tabpanel">
-                  <div class="panel-heading"><div><small>HOUSEKEEPING</small><h2>Turnaround at a glance</h2></div><span class="date-pill">Room linked</span></div>
+                <div class="panel" id="orders" role="tabpanel">
+                  <div class="panel-heading"><div><small>SERVICE ORDERS</small><h2>Every order on the desk</h2></div><span class="date-pill">Illustrative</span></div>
                   <div class="task-list">
-                    <div class="task-item"><span class="room">105</span><div><strong>Extra linen</strong><small>Guest request · assigned</small></div><span class="status">Open</span></div>
-                    <div class="task-item"><span class="room">216</span><div><strong>Priority turnover</strong><small>Arrival due this afternoon</small></div><span class="status warn">Due soon</span></div>
-                    <div class="task-item"><span class="room">308</span><div><strong>Deep clean</strong><small>Completed by Meena</small></div><span class="status">Done</span></div>
+                    <div class="task-item"><span class="room">204</span><div><strong>In-room dining, 2 items</strong><small>SLA timer running · charge ready to post</small></div><span class="status">On time</span></div>
+                    <div class="task-item"><span class="room">118</span><div><strong>Laundry pickup</strong><small>Due 6 pm · assigned to laundry</small></div><span class="status">Open</span></div>
+                    <div class="task-item"><span class="room">LOBBY</span><div><strong>Lost and found</strong><small>Logged with photo · desk follows up</small></div><span class="status warn">Review</span></div>
                   </div>
                 </div>
               </div>
@@ -721,22 +779,120 @@
 
     <div class="statement">
       <div class="wrap statement-grid">
-        <p>Not another PMS. An AI layer above the systems you already use.</p>
-        <aside>The agents suggest. Your team decides. Owners see the result, not the guest list.</aside>
+        <p>Not another PMS. SwarmForge sits beside your PMS and POS.</p>
+        <aside>Rooms, rates, check-in, housekeeping boards, folios and night audit stay where they are. We are not a booking engine, a channel manager or a procurement system. The agents suggest. Your team decides.</aside>
       </div>
     </div>
+
+    <section id="suite">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="section-index">01 / THE SUITE</span>
+          <div><h2>One desk. Three products. One approvals queue.</h2><p>Each product does one job well and shares the same desk, the same approvals and the same audit trail. Start with the desk and add the rest when you are ready.</p></div>
+        </div>
+        <div class="domain-grid">
+          <article class="domain-card suite-card">
+            <span class="domain-number">SWARMFORGE OS <span class="badge">Pilot</span></span>
+            <svg viewBox="0 0 160 160" aria-hidden="true"><rect x="27" y="32" width="106" height="96" rx="10" fill="none" stroke="currentColor" stroke-width="2"/><path d="M50 61h56M50 82h34M50 103h49" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="m112 93 7 7 14-16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <h3>The AI ops desk for the whole hotel.</h3>
+            <p>Guest messages, the morning brief, tasks and approvals in one place. WhatsApp first, with email as a fallback. The AI drafts and routes. Your team sends and decides.</p>
+            <a class="more" href="#workflow">How the desk works →</a>
+          </article>
+          <article class="domain-card suite-card">
+            <span class="domain-number">GUESTLOOP <span class="badge">In development</span></span>
+            <svg viewBox="0 0 160 160" aria-hidden="true"><path d="M44 80a36 36 0 0 1 64-22M116 80a36 36 0 0 1-64 22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><path d="M108 40v18H90M52 120v-18h18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <h3>Every stay brings the next one.</h3>
+            <p>A light marketing CRM for independent hotels and travel agencies. Remember past guests and clients, build audiences, recover unconverted enquiries and fill slow dates, with consent and on WhatsApp first.</p>
+            <a class="more" href="/guestloop">Explore GuestLoop →</a>
+          </article>
+          <article class="domain-card suite-card">
+            <span class="domain-number">STORELOOP <span class="badge">In development</span></span>
+            <svg viewBox="0 0 160 160" aria-hidden="true"><path d="M34 62 80 38l46 24v56H34z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M58 118V86h44v32M58 100h44" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <h3>Service orders and stores, reconciled.</h3>
+            <p>Turn in-room dining, laundry, minibar and amenity requests into tracked orders with timers and charges. Give the GM a live, audited view of stock, variance and what to reorder.</p>
+            <a class="more" href="/storeloop">Explore StoreLoop →</a>
+          </article>
+        </div>
+        <p class="suite-foot">All three run on AskAI, the shared intelligence that drafts, matches and explains. It proposes. It never acts on its own.</p>
+      </div>
+    </section>
+
+    <section class="domains" id="guestloop">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="section-index">02 / GUESTLOOP</span>
+          <div><h2>Bring past guests back. See what it earned.</h2><p>GuestLoop is a light marketing CRM for independent hotels and travel agencies. It works on the guests and clients you already have, with their consent, and every reply lands on the SwarmForge desk.</p></div>
+        </div>
+        <div class="split-grid">
+          <div class="feature-panel">
+            <h3>For hotels</h3>
+            <ul class="feature-list">
+              <li><b>Guest and client memory.</b> Stays, preferences and consent in one record, built from the desk and your bookings file.</li>
+              <li><b>Ready-made audiences.</b> Ask "who should I contact?" and get a short list with reasons.</li>
+              <li><b>WhatsApp-first campaigns.</b> Email is the fallback. Every campaign is a draft until a person approves it.</li>
+              <li><b>Enquiry recovery.</b> Unconverted enquiries get a timely, polite follow-up draft instead of going cold.</li>
+              <li><b>Lifecycle recipes and slow-date offers.</b> Turn a quiet week or an unsold package into a campaign.</li>
+              <li><b>A revenue ledger you can trust.</b> Bookings are labelled matched or extra, so the number is honest.</li>
+            </ul>
+          </div>
+          <div class="feature-panel">
+            <h3>For travel agencies</h3>
+            <ul class="feature-list">
+              <li>The same loop on client and trip history, to bring travellers back for the next trip.</li>
+              <li>Works beside the tools you already use.</li>
+              <li><b>No bought lists. No cold messages.</b> Only people who said yes.</li>
+            </ul>
+            <p class="not-line">GuestLoop is not a PMS, booking engine, GDS, itinerary builder or website builder.</p>
+            <div class="panel-cta"><a class="button" href="#contact" data-interest="GuestLoop">Book a walkthrough</a></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="storeloop">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="section-index">03 / STORELOOP</span>
+          <div><h2>Every order tracked. Every item accounted for.</h2><p>StoreLoop brings the paper KOTs, minibar vouchers and store registers onto the desk. Service orders get a route, a timer and a charge. Stores get a live count, a variance and an audit trail the GM can read in a minute.</p></div>
+        </div>
+        <div class="split-grid">
+          <div class="feature-panel">
+            <h3>Service orders</h3>
+            <ul class="feature-list">
+              <li>In-room dining, laundry, minibar, amenities, car bookings, lost and found</li>
+              <li>Each request becomes a desk task with an owner and an SLA timer</li>
+              <li>Charges are sent to your PMS folio, or listed for the desk to post. Your PMS stays the bill.</li>
+              <li>Requests arrive on the same WhatsApp thread. The guest never talks to a second bot.</li>
+            </ul>
+          </div>
+          <div class="feature-panel">
+            <h3>Stores</h3>
+            <ul class="feature-list">
+              <li>Stock status and par levels for each store and outlet</li>
+              <li>Book versus physical counts, done on a phone</li>
+              <li>Bar, minibar and consumables variance, with likely causes explained</li>
+              <li>A full audit trail: who issued, counted, adjusted and approved</li>
+              <li>Reorder suggestions the GM approves. StoreLoop proposes, it never orders.</li>
+              <li>A price index of frequently bought items, built from your own purchase entries, with its caveats shown</li>
+            </ul>
+            <p class="not-line">StoreLoop is not procurement. No purchase orders, no supplier bidding, no POS replacement, no folio.</p>
+            <div class="panel-cta"><a class="button" href="#contact" data-interest="StoreLoop">Book a walkthrough</a></div>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <section id="workflow">
       <div class="wrap">
         <div class="section-head">
-          <span class="section-index">01 / THE LOOP</span>
-          <div><h2>AI that knows where its authority ends.</h2><p>A guest message, a soft night, or an aging task becomes a proposal. The right person approves it. Approved work is tracked until it is done.</p></div>
+          <span class="section-index">04 / THE LOOP</span>
+          <div><h2>AI that knows where its authority ends.</h2><p>A guest message, a slow week or a stock variance becomes a proposal. The right person approves it. Approved work is tracked until it is done.</p></div>
         </div>
         <div class="flow">
-          <article class="flow-step"><b>01</b><h3>Signal</h3><p>WhatsApp, the morning brief, a checkout, or a weekly revenue scan enters the hotel's context.</p></article>
-          <article class="flow-step"><b>02</b><h3>Suggest</h3><p>The AI checks tasks, hotel policy, and what the guest has already bought before it proposes a next move.</p></article>
-          <article class="flow-step"><b>03</b><h3>Approve</h3><p>The GM or manager sees the evidence, risk and policy fit—then approves, edits or declines.</p></article>
-          <article class="flow-step"><b>04</b><h3>Track</h3><p>Approved work becomes a task with an owner, status, timing and an audit trail through completion.</p></article>
+          <article class="flow-step"><b>01</b><h3>Signal</h3><p>A WhatsApp message, the morning brief, a service order or a stock count enters the hotel's context.</p></article>
+          <article class="flow-step"><b>02</b><h3>Suggest</h3><p>AskAI checks hotel policy, open tasks and history, then drafts the next move: a reply, a campaign or a reorder list.</p></article>
+          <article class="flow-step"><b>03</b><h3>Approve</h3><p>The GM or manager sees the evidence, the risk and the policy fit, then approves, edits or declines.</p></article>
+          <article class="flow-step"><b>04</b><h3>Track</h3><p>Approved work becomes a task with an owner, a timer and an audit trail through to completion.</p></article>
         </div>
       </div>
     </section>
@@ -744,7 +900,7 @@
     <section class="domains" id="operations">
       <div class="wrap">
         <div class="section-head">
-          <span class="section-index">02 / ONE OPERATING VIEW</span>
+          <span class="section-index">05 / SWARMFORGE OS</span>
           <div><h2>The day is already busy. The interface shouldn't be.</h2><p>The GM runs the morning. Staff see their work. Important guests are routed first. Everyone else gets the task, not the guest's phone number.</p></div>
         </div>
         <div class="domain-grid">
@@ -773,7 +929,7 @@
     <section id="owners">
       <div class="wrap">
         <div class="section-head">
-          <span class="section-index">03 / FOR OWNERS</span>
+          <span class="section-index">06 / FOR OWNERS</span>
           <div><h2>See the hotels. Skip the chase.</h2><p>The fastest return is usually one of three: a guest answered on time, a soft night caught early, or an owner who no longer calls each GM for an update.</p></div>
         </div>
         <div class="domain-grid">
@@ -781,7 +937,7 @@
             <span class="domain-number">PORTFOLIO</span>
             <svg viewBox="0 0 160 160" aria-hidden="true"><path d="M36 112V58h28l12-16h48v70M36 112h100" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M58 86h18M86 86h18M58 102h18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
             <h3>Which hotel needs you.</h3>
-            <p>Health, revenue, and a short daily note for every property you own. Guest names stay at the hotel.</p>
+            <p>Health, guest follow-ups and a short daily note for every property you own. Guest names stay at the hotel.</p>
           </article>
           <article class="domain-card">
             <span class="domain-number">ONE GOAL</span>
@@ -793,7 +949,7 @@
             <span class="domain-number">A LIGHT START</span>
             <svg viewBox="0 0 160 160" aria-hidden="true"><path d="M48 40h64v80H48zM64 40V28h32v12M58 64h44M58 80h32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
             <h3>No new system of record.</h3>
-            <p>A bookings file is enough to begin. SwarmForge sits above the PMS. It does not replace the bill.</p>
+            <p>A bookings file is enough to begin. SwarmForge sits beside the PMS. It never replaces the bill.</p>
           </article>
         </div>
       </div>
@@ -804,19 +960,27 @@
         <div class="trust-copy">
           <div class="eyebrow">Trust is the product</div>
           <h2>Built for the reality of hotel access.</h2>
-          <p>Operational speed shouldn't mean losing control of guest information, hotel policy or who approved what.</p>
+          <p>Speed should not cost you control of guest information, hotel policy or who approved what.</p>
           <div class="trust-list">
             <div class="trust-item">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 5 6v5c0 4.7 2.7 8 7 10 4.3-2 7-5.3 7-10V6l-7-3Z" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m9 12 2 2 4-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              <div><strong>Guest identity stays GM-only</strong><span>Managers work by room number; staff see only the work assigned to them.</span></div>
+              <div><strong>Nothing sends itself</strong><span>AI drafts on WhatsApp and email. A person sends. Campaigns, comps, write-offs and reorders wait for approval.</span></div>
+            </div>
+            <div class="trust-item">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8 10h8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+              <div><strong>WhatsApp first, done properly</strong><span>Consent, template rules and quiet hours are handled by the desk. Email is the fallback.</span></div>
             </div>
             <div class="trust-item">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l3 3v15H6zM9 11h6M9 15h6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-              <div><strong>Policies travel with every proposal</strong><span>Hotel documents and SOPs are checked before work reaches the approval queue.</span></div>
+              <div><strong>Consent before marketing</strong><span>GuestLoop only contacts people who opted in. An ops chat is not marketing consent.</span></div>
+            </div>
+            <div class="trust-item">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 5 6v5c0 4.7 2.7 8 7 10 4.3-2 7-5.3 7-10V6l-7-3Z" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m9 12 2 2 4-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <div><strong>Guest identity stays GM-only</strong><span>Managers work by room number. Staff see only the work assigned to them.</span></div>
             </div>
             <div class="trust-item">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 3-6.2L4 8M4 4v4h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M12 7v5l3 2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-              <div><strong>An explainable record</strong><span>Actions, decisions and task timing stay visible in the hotel's audit trail.</span></div>
+              <div><strong>One audit trail across the suite</strong><span>Desk actions, campaigns, orders, counts and adjustments land in the same record.</span></div>
             </div>
           </div>
         </div>
@@ -834,26 +998,26 @@
       <div class="wrap">
         <div class="section-head">
           <div>
-            <div class="section-index">04 / VISION</div>
+            <div class="section-index">07 / VISION</div>
             <h2>Where this is heading.</h2>
           </div>
-          <p>Ideas on AI agents, direct bookings and a tighter hotel desk. These posts describe direction, not features you can switch on today.</p>
+          <p>Ideas on a more capable desk, trust for AI agents and direct offers. These posts describe direction, not features you can switch on today.</p>
         </div>
         <div class="vision-grid">
-          <a class="vision-card" href="/blog/agent-booking-channel.html">
-            <span>Booking channel</span>
-            <h3>An agent booking channel.</h3>
-            <p>Hotels publish an offer. A guest or a registered agent requests it. The hotel pays only when a booking happens.</p>
+          <a class="vision-card" href="/blog/ai-desk.html">
+            <span>AI desk</span>
+            <h3>A more capable AI desk.</h3>
+            <p>Notice, understand, recommend, act, learn. People still approve anything that touches guests or money.</p>
           </a>
           <a class="vision-card" href="/blog/trust-layer.html">
             <span>Trust layer</span>
             <h3>A trust layer for personal agents.</h3>
             <p>Who is calling, what the traveler allowed, and what the hotel allows. Rules are checked by software, not by a persuasive message.</p>
           </a>
-          <a class="vision-card" href="/blog/ai-desk.html">
-            <span>AI desk</span>
-            <h3>A more capable AI desk.</h3>
-            <p>Notice, understand, recommend, act, learn. People still approve anything that touches guests, rooms or money.</p>
+          <a class="vision-card" href="/blog/agent-booking-channel.html">
+            <span>Booking channel <em class="tag-later">Later</em></span>
+            <h3>An agent-readable offer feed.</h3>
+            <p>Hotels publish an offer. A guest or a registered agent requests it. Direction, not a feature you can switch on today.</p>
           </a>
         </div>
       </div>
@@ -862,8 +1026,8 @@
     <section class="cta-section">
       <div class="wrap">
         <div class="cta-block">
-          <div><h2>Start with one hotel.</h2><p>Bring the morning, WhatsApp, and the week's opportunities into one loop. Pricing is scoped to the property. Email us for a walkthrough and a cost.</p></div>
-          <a class="button" href="mailto:admin@simplicore.ai">Ask about cost <span aria-hidden="true">→</span></a>
+          <div><h2>Start with one hotel.</h2><p>Start with the desk. Add GuestLoop and StoreLoop as they open. Pricing is scoped to the property. Email us for a walkthrough and a cost.</p></div>
+          <a class="button" href="#contact">Book a walkthrough <span aria-hidden="true">→</span></a>
         </div>
       </div>
     </section>
@@ -891,15 +1055,24 @@
           <input id="contactEmail" name="email" type="email" autocomplete="email" placeholder="you@hotel.com" required />
         </div>
         <div class="form-field full">
-          <label for="contactHotel">Hotel or property</label>
-          <input id="contactHotel" name="hotel" type="text" autocomplete="organization" placeholder="Property name and location" />
+          <label for="contactHotel">Hotel or agency</label>
+          <input id="contactHotel" name="hotel" type="text" autocomplete="organization" placeholder="Property or agency name and location" />
+        </div>
+        <div class="form-field full">
+          <label for="contactInterest">Interested in</label>
+          <select id="contactInterest" name="interest">
+            <option value="SwarmForge OS">SwarmForge OS</option>
+            <option value="GuestLoop">GuestLoop</option>
+            <option value="StoreLoop">StoreLoop</option>
+            <option value="All three" selected>All three</option>
+          </select>
         </div>
         <div class="form-field full">
           <label for="contactMessage">What would you like to improve?</label>
           <textarea id="contactMessage" name="message" placeholder="A quick note about your operation, team or guest experience" required></textarea>
         </div>
         <button class="button" type="submit">
-          Send email
+          Book a walkthrough
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
         <p class="form-note" id="contactNote" aria-live="polite">Opens a new email to admin@simplicore.ai.</p>
@@ -907,12 +1080,15 @@
     </div>
 
     <div class="wrap footer-base">
-      <div class="footer-mark"><strong>SwarmForge</strong><span>A SimpliCore.ai product for independent hotels.</span></div>
+      <div class="footer-mark"><strong>SwarmForge</strong><span>A SimpliCore.ai suite for independent hotels and travel agencies.</span></div>
       <div class="footer-links">
+        <a href="#suite">SwarmForge OS</a>
+        <a href="/guestloop">GuestLoop</a>
+        <a href="/storeloop">StoreLoop</a>
         <a href="#workflow">How it works</a>
-        <a href="#owners">For owners</a>
-        <a href="#trust">Trust & control</a>
+        <a href="#trust">Trust &amp; control</a>
         <a href="/blog/">Vision</a>
+        <a href="https://app.swarmforge.simplicore.ai">Sign in</a>
         <a href="mailto:admin@simplicore.ai">admin@simplicore.ai</a>
       </div>
     </div>
@@ -951,6 +1127,18 @@
     });
   });
 
+  const contactInterest = document.getElementById('contactInterest');
+  document.querySelectorAll('[data-interest]').forEach((link) => {
+    link.addEventListener('click', () => {
+      if (contactInterest) contactInterest.value = link.dataset.interest;
+    });
+  });
+  const params = new URLSearchParams(window.location.search);
+  if (contactInterest && params.get('interest')) {
+    const wanted = params.get('interest');
+    if ([...contactInterest.options].some((o) => o.value === wanted)) contactInterest.value = wanted;
+  }
+
   const contactForm = document.getElementById('contactForm');
   const contactNote = document.getElementById('contactNote');
 
@@ -963,14 +1151,16 @@
     const email = String(data.get('email') || '').trim();
     const hotel = String(data.get('hotel') || '').trim();
     const message = String(data.get('message') || '').trim();
-    const subject = hotel ? `SwarmForge enquiry — ${hotel}` : 'SwarmForge enquiry';
+    const interest = String(data.get('interest') || '').trim();
+    const subject = hotel ? `SwarmForge walkthrough: ${hotel}` : 'SwarmForge walkthrough';
     const body = [
       `Name: ${name}`,
       `Email: ${email}`,
-      hotel ? `Hotel: ${hotel}` : '',
+      hotel ? `Hotel or agency: ${hotel}` : '',
+      interest ? `Interested in: ${interest}` : '',
       '',
       message
-    ].filter((line, index) => line || index > 2).join('\n');
+    ].filter((line, index) => line || index > 3).join('\n');
 
     contactNote.textContent = 'Your email app is opening. Review the message there before sending.';
     window.location.href = `mailto:admin@simplicore.ai?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
