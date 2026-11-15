@@ -6,12 +6,47 @@
   <meta name="color-scheme" content="light dark" />
   <meta name="theme-color" content="#e9e5dd" media="(prefers-color-scheme: light)" />
   <meta name="theme-color" content="#08111a" media="(prefers-color-scheme: dark)" />
-  <link rel="icon" href="data:," />
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" href="/assets/icon-192.png" />
+  <link rel="apple-touch-icon" href="/assets/icon-192.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <title>SwarmForge — An AI team for independent hotels</title>
-  <meta name="description" content="SwarmForge is an AI operating layer for independent hotels. It proposes the next move. A person approves anything that spends money or reaches a guest. Owners see the portfolio without the guest list." />
+  <title>SwarmForge: AI ops desk and suite for independent hotels</title>
+  <meta name="description" content="SwarmForge OS runs your hotel desk on WhatsApp. GuestLoop brings past guests back. StoreLoop tracks service orders and stock. AI proposes, your team approves." />
+  <link rel="canonical" href="https://swarmforge.simplicore.ai/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="SwarmForge" />
+  <meta property="og:url" content="https://swarmforge.simplicore.ai/" />
+  <meta property="og:title" content="SwarmForge: AI ops desk and suite for independent hotels" />
+  <meta property="og:description" content="SwarmForge OS runs your hotel desk on WhatsApp. GuestLoop brings past guests back. StoreLoop tracks service orders and stock. AI proposes, your team approves." />
+  <meta property="og:image" content="https://swarmforge.simplicore.ai/assets/og-swarmforge.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="SwarmForge: AI ops desk and suite for independent hotels" />
+  <meta name="twitter:description" content="SwarmForge OS runs your hotel desk on WhatsApp. GuestLoop brings past guests back. StoreLoop tracks service orders and stock. AI proposes, your team approves." />
+  <meta name="twitter:image" content="https://swarmforge.simplicore.ai/assets/og-swarmforge.png" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "name": "SimpliCore AI",
+        "url": "https://simplicore.ai/",
+        "email": "admin@simplicore.ai"
+      },
+      {
+        "@type": "SoftwareApplication",
+        "name": "SwarmForge",
+        "url": "https://swarmforge.simplicore.ai/",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "description": "An AI suite for independent hotels: SwarmForge OS, GuestLoop and StoreLoop. AI proposes, a person approves.",
+        "publisher": { "@type": "Organization", "name": "SimpliCore AI" }
+      }
+    ]
+  }
+  </script>
   <style>
     :root {
       color-scheme: light dark;
@@ -590,34 +625,25 @@
       *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
     }
 
-    .blog-post { padding: 28px 0 10px; border-top: 1px solid var(--line); }
-    .blog-post .wrap { max-width: 820px; }
-    .blog-kicker { margin: 0 0 8px; font: 700 12px/1 "Manrope", sans-serif; letter-spacing: .06em; text-transform: uppercase; color: var(--teal); }
-    .blog-kicker a { color: inherit; text-decoration: none; }
-    .blog-post h2 { font-size: clamp(32px, 4vw, 48px); line-height: 1.05; margin: 0 0 18px; }
-    .blog-post h2[style], .blog-post h3[style] { color: inherit; border: 0; padding: 0; margin: 0; }
-    .blog-post p { color: var(--muted); font-size: 16px; line-height: 1.65; }
-    .blog-post a { color: var(--teal); }
-    .blog-post .cards, .blog-post .road { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin: 18px 0; }
-    .blog-post .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-md); padding: 16px 18px; }
-    .blog-post .card h3 { margin: 0 0 6px; color: var(--teal); font-family: "Manrope", sans-serif; font-size: 16px; line-height: 1.3; }
-    .blog-post .flow { display: flex; flex-wrap: wrap; gap: 10px; margin: 18px 0; border: 0; grid-template-columns: none; }
-    .blog-post .step { flex: 1 1 140px; background: var(--surface); border: 1px solid var(--line); border-top: 4px solid var(--teal); border-radius: var(--radius-md); padding: 12px; text-align: center; font-size: 14px; color: var(--ink); }
-    .blog-post .step b { display: block; color: var(--ink); font-size: 15px; margin: 0; }
-    .blog-post .step .n { display: inline-block; width: 26px; height: 26px; border-radius: 50%; background: var(--ink); color: var(--bg); line-height: 26px; font-size: 13px; margin-bottom: 6px; }
-    .blog-post .cta { background: var(--ink); color: var(--bg); border-radius: var(--radius-lg); padding: 28px; margin: 28px 0; text-align: center; }
-    .blog-post .cta p { color: color-mix(in srgb, var(--bg) 78%, transparent); }
-    .blog-post .cta a { display: inline-block; margin-top: 12px; background: var(--accent); color: var(--accent-ink); text-decoration: none; padding: 12px 22px; border-radius: 8px; font-weight: 700; }
-    .blog-post .note { font-size: 13px; font-style: italic; }
-    .blog-post .ex { background: var(--teal-soft); border: 1px dashed var(--teal); border-radius: var(--radius-md); padding: 16px 18px; margin: 18px 0; }
-    .blog-post .ex .lbl { font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--teal); font-weight: 700; }
-    .blog-post table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 15px; background: var(--surface); }
-    .blog-post td, .blog-post th { border: 1px solid var(--line); padding: 8px 10px; text-align: left; }
-    .blog-post th { background: var(--ink); color: var(--bg); }
-    .blog-post details { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-md); padding: 12px 16px; margin: 10px 0; }
-    .blog-post summary { font-weight: 700; color: var(--ink); cursor: pointer; }
-    .blog-post ul { padding-left: 22px; color: var(--muted); }
-    .blog-post li { margin: 4px 0; }
+    /* Suite, GuestLoop and StoreLoop sections */
+    .badge { display: inline-block; margin-left: 8px; padding: 3px 9px; border: 1px solid currentColor; border-radius: 99px; font-size: 10px; letter-spacing: .08em; vertical-align: middle; opacity: .85; }
+    .suite-card .more { margin-top: 18px; font-size: 13px; font-weight: 700; text-decoration: none; }
+    .suite-card .more:hover, .suite-card .more:focus-visible { text-decoration: underline; }
+    .suite-foot { margin: 24px 0 0; color: var(--muted); font-size: 14px; }
+    .split-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+    .feature-panel { background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 28px; box-shadow: var(--shadow-small); }
+    .feature-panel h3 { margin: 0 0 14px; font-family: "Cormorant Garamond", serif; font-size: 30px; line-height: 1.05; }
+    .feature-list { margin: 0; padding-left: 18px; color: var(--muted); }
+    .feature-list li { margin: 8px 0; }
+    .feature-list b { color: var(--ink); }
+    .not-line { margin: 18px 0 0; padding-left: 12px; border-left: 3px solid var(--accent); color: var(--muted); font-size: 14px; }
+    .panel-cta { margin-top: 20px; }
+    .tag-later { margin-left: 6px; padding: 2px 7px; border: 1px solid currentColor; border-radius: 99px; font-size: 10px; }
+    .india-line { margin-top: -6px; font-size: 14px; color: var(--muted); }
+    .form-field select { width: 100%; border: 0; border-bottom: 1px solid color-mix(in srgb, var(--bg) 28%, transparent); border-radius: 0; padding: 12px 0; background: transparent; color: var(--bg); font: 500 14px/1.45 "Manrope", sans-serif; }
+    .form-field select:focus { outline: none; border-bottom-color: var(--lime); }
+    .form-field select option { color: #101a28; background: #fffdf9; }
+    @media (max-width: 860px) { .split-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
@@ -625,10 +651,12 @@
   <header class="topbar">
     <nav class="nav wrap" aria-label="Primary navigation">
       <div class="nav-links" id="navLinks">
+        <a href="#suite">Suite</a>
+        <a href="/guestloop">GuestLoop</a>
+        <a href="/storeloop">StoreLoop</a>
         <a href="#workflow">How it works</a>
-        <a href="#owners">For owners</a>
         <a href="#trust">Trust</a>
-        <a href="#vision">Vision</a>
+        <a href="/blog/">Vision</a>
         <a href="#contact">Contact</a>
       </div>
       <div class="nav-actions">
@@ -636,7 +664,7 @@
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
         </button>
         <a class="button ghost" href="https://app.swarmforge.simplicore.ai">Sign in</a>
-        <a class="button primary" href="https://app.swarmforge.simplicore.ai">Start with one hotel</a>
+        <a class="button primary" href="#contact">Book a walkthrough</a>
       </div>
     </nav>
   </header>
@@ -658,18 +686,19 @@
         <div class="hero-copy">
           <div class="eyebrow">AI for independent hotels</div>
           <h1>See the pulse of your hotel. Act on what <em>matters.</em></h1>
-          <p>SwarmForge is an AI team for one hotel. It reads the morning, guest messages, and the week ahead, then proposes the next move. A person approves anything that spends money or reaches a guest.</p>
+          <p>SwarmForge is an AI suite for independent hotels. SwarmForge OS runs the guest desk on WhatsApp. GuestLoop brings past guests back. StoreLoop keeps service orders and stores in order. AI proposes the next move, and a person approves anything that spends money or reaches a guest.</p>
+          <p class="india-line">Built for independent hotels in India, starting with 25 to 50 rooms.</p>
           <div class="hero-actions">
-            <a class="button accent" href="https://app.swarmforge.simplicore.ai">
-              Create an account
+            <a class="button accent" href="#contact">
+              Book a walkthrough
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
-            <a class="button" href="#workflow">See the operating loop</a>
+            <a class="button" href="#suite">See the suite</a>
           </div>
           <div class="proof-line" aria-label="Product principles">
             <span><i></i>Human in the loop</span>
-            <span><i></i>Owner view</span>
-            <span><i></i>Weekly opportunities</span>
+            <span><i></i>WhatsApp first</span>
+            <span><i></i>Not a PMS</span>
           </div>
         </div>
 
@@ -685,8 +714,8 @@
               <div class="app-tabs" role="tablist" aria-label="Product preview tabs">
                 <button class="tab-button active" data-panel="brief" role="tab" aria-selected="true">Daily brief</button>
                 <button class="tab-button" data-panel="guest" role="tab" aria-selected="false">Guest services</button>
+                <button class="tab-button" data-panel="orders" role="tab" aria-selected="false">Service orders</button>
                 <button class="tab-button" data-panel="maintenance" role="tab" aria-selected="false">Maintenance</button>
-                <button class="tab-button" data-panel="housekeeping" role="tab" aria-selected="false">Housekeeping</button>
               </div>
               <div class="app-main">
                 <div class="panel active" id="brief" role="tabpanel">
@@ -701,7 +730,7 @@
                   </div>
                   <div class="brief-card alert">
                     <div class="brief-title"><span></span><strong>Late checkout request</strong><time>Room 204</time></div>
-                    <p>A returning guest asked to stay until 2 pm. Housekeeping capacity and tomorrow's arrival have already been checked.</p>
+                    <p>A returning guest asked to stay until 2 pm. The desk checked the policy and the open tasks for that room.</p>
                     <div class="brief-actions" aria-label="Illustrative decision options"><span class="mini-button approve">Approve</span><span class="mini-button">Review context</span></div>
                   </div>
                   <div class="brief-card">
@@ -728,12 +757,12 @@
                   </div>
                 </div>
 
-                <div class="panel" id="housekeeping" role="tabpanel">
-                  <div class="panel-heading"><div><small>HOUSEKEEPING</small><h2>Turnaround at a glance</h2></div><span class="date-pill">Room linked</span></div>
+                <div class="panel" id="orders" role="tabpanel">
+                  <div class="panel-heading"><div><small>SERVICE ORDERS</small><h2>Every order on the desk</h2></div><span class="date-pill">Illustrative</span></div>
                   <div class="task-list">
-                    <div class="task-item"><span class="room">105</span><div><strong>Extra linen</strong><small>Guest request · assigned</small></div><span class="status">Open</span></div>
-                    <div class="task-item"><span class="room">216</span><div><strong>Priority turnover</strong><small>Arrival due this afternoon</small></div><span class="status warn">Due soon</span></div>
-                    <div class="task-item"><span class="room">308</span><div><strong>Deep clean</strong><small>Completed by Meena</small></div><span class="status">Done</span></div>
+                    <div class="task-item"><span class="room">204</span><div><strong>In-room dining, 2 items</strong><small>SLA timer running · charge ready to post</small></div><span class="status">On time</span></div>
+                    <div class="task-item"><span class="room">118</span><div><strong>Laundry pickup</strong><small>Due 6 pm · assigned to laundry</small></div><span class="status">Open</span></div>
+                    <div class="task-item"><span class="room">LOBBY</span><div><strong>Lost and found</strong><small>Logged with photo · desk follows up</small></div><span class="status warn">Review</span></div>
                   </div>
                 </div>
               </div>
@@ -750,22 +779,120 @@
 
     <div class="statement">
       <div class="wrap statement-grid">
-        <p>Not another PMS. An AI layer above the systems you already use.</p>
-        <aside>The agents suggest. Your team decides. Owners see the result, not the guest list.</aside>
+        <p>Not another PMS. SwarmForge sits beside your PMS and POS.</p>
+        <aside>Rooms, rates, check-in, housekeeping boards, folios and night audit stay where they are. We are not a booking engine, a channel manager or a procurement system. The agents suggest. Your team decides.</aside>
       </div>
     </div>
+
+    <section id="suite">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="section-index">01 / THE SUITE</span>
+          <div><h2>One desk. Three products. One approvals queue.</h2><p>Each product does one job well and shares the same desk, the same approvals and the same audit trail. Start with the desk and add the rest when you are ready.</p></div>
+        </div>
+        <div class="domain-grid">
+          <article class="domain-card suite-card">
+            <span class="domain-number">SWARMFORGE OS <span class="badge">Pilot</span></span>
+            <svg viewBox="0 0 160 160" aria-hidden="true"><rect x="27" y="32" width="106" height="96" rx="10" fill="none" stroke="currentColor" stroke-width="2"/><path d="M50 61h56M50 82h34M50 103h49" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="m112 93 7 7 14-16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <h3>The AI ops desk for the whole hotel.</h3>
+            <p>Guest messages, the morning brief, tasks and approvals in one place. WhatsApp first, with email as a fallback. The AI drafts and routes. Your team sends and decides.</p>
+            <a class="more" href="#workflow">How the desk works →</a>
+          </article>
+          <article class="domain-card suite-card">
+            <span class="domain-number">GUESTLOOP <span class="badge">In development</span></span>
+            <svg viewBox="0 0 160 160" aria-hidden="true"><path d="M44 80a36 36 0 0 1 64-22M116 80a36 36 0 0 1-64 22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><path d="M108 40v18H90M52 120v-18h18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <h3>Every stay brings the next one.</h3>
+            <p>A light marketing CRM for independent hotels and travel agencies. Remember past guests and clients, build audiences, recover unconverted enquiries and fill slow dates, with consent and on WhatsApp first.</p>
+            <a class="more" href="/guestloop">Explore GuestLoop →</a>
+          </article>
+          <article class="domain-card suite-card">
+            <span class="domain-number">STORELOOP <span class="badge">In development</span></span>
+            <svg viewBox="0 0 160 160" aria-hidden="true"><path d="M34 62 80 38l46 24v56H34z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M58 118V86h44v32M58 100h44" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <h3>Service orders and stores, reconciled.</h3>
+            <p>Turn in-room dining, laundry, minibar and amenity requests into tracked orders with timers and charges. Give the GM a live, audited view of stock, variance and what to reorder.</p>
+            <a class="more" href="/storeloop">Explore StoreLoop →</a>
+          </article>
+        </div>
+        <p class="suite-foot">All three run on AskAI, the shared intelligence that drafts, matches and explains. It proposes. It never acts on its own.</p>
+      </div>
+    </section>
+
+    <section class="domains" id="guestloop">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="section-index">02 / GUESTLOOP</span>
+          <div><h2>Bring past guests back. See what it earned.</h2><p>GuestLoop is a light marketing CRM for independent hotels and travel agencies. It works on the guests and clients you already have, with their consent, and every reply lands on the SwarmForge desk.</p></div>
+        </div>
+        <div class="split-grid">
+          <div class="feature-panel">
+            <h3>For hotels</h3>
+            <ul class="feature-list">
+              <li><b>Guest and client memory.</b> Stays, preferences and consent in one record, built from the desk and your bookings file.</li>
+              <li><b>Ready-made audiences.</b> Ask "who should I contact?" and get a short list with reasons.</li>
+              <li><b>WhatsApp-first campaigns.</b> Email is the fallback. Every campaign is a draft until a person approves it.</li>
+              <li><b>Enquiry recovery.</b> Unconverted enquiries get a timely, polite follow-up draft instead of going cold.</li>
+              <li><b>Lifecycle recipes and slow-date offers.</b> Turn a quiet week or an unsold package into a campaign.</li>
+              <li><b>A revenue ledger you can trust.</b> Bookings are labelled matched or extra, so the number is honest.</li>
+            </ul>
+          </div>
+          <div class="feature-panel">
+            <h3>For travel agencies</h3>
+            <ul class="feature-list">
+              <li>The same loop on client and trip history, to bring travellers back for the next trip.</li>
+              <li>Works beside the tools you already use.</li>
+              <li><b>No bought lists. No cold messages.</b> Only people who said yes.</li>
+            </ul>
+            <p class="not-line">GuestLoop is not a PMS, booking engine, GDS, itinerary builder or website builder.</p>
+            <div class="panel-cta"><a class="button" href="#contact" data-interest="GuestLoop">Book a walkthrough</a></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="storeloop">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="section-index">03 / STORELOOP</span>
+          <div><h2>Every order tracked. Every item accounted for.</h2><p>StoreLoop brings the paper KOTs, minibar vouchers and store registers onto the desk. Service orders get a route, a timer and a charge. Stores get a live count, a variance and an audit trail the GM can read in a minute.</p></div>
+        </div>
+        <div class="split-grid">
+          <div class="feature-panel">
+            <h3>Service orders</h3>
+            <ul class="feature-list">
+              <li>In-room dining, laundry, minibar, amenities, car bookings, lost and found</li>
+              <li>Each request becomes a desk task with an owner and an SLA timer</li>
+              <li>Charges are sent to your PMS folio, or listed for the desk to post. Your PMS stays the bill.</li>
+              <li>Requests arrive on the same WhatsApp thread. The guest never talks to a second bot.</li>
+            </ul>
+          </div>
+          <div class="feature-panel">
+            <h3>Stores</h3>
+            <ul class="feature-list">
+              <li>Stock status and par levels for each store and outlet</li>
+              <li>Book versus physical counts, done on a phone</li>
+              <li>Bar, minibar and consumables variance, with likely causes explained</li>
+              <li>A full audit trail: who issued, counted, adjusted and approved</li>
+              <li>Reorder suggestions the GM approves. StoreLoop proposes, it never orders.</li>
+              <li>A price index of frequently bought items, built from your own purchase entries, with its caveats shown</li>
+            </ul>
+            <p class="not-line">StoreLoop is not procurement. No purchase orders, no supplier bidding, no POS replacement, no folio.</p>
+            <div class="panel-cta"><a class="button" href="#contact" data-interest="StoreLoop">Book a walkthrough</a></div>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <section id="workflow">
       <div class="wrap">
         <div class="section-head">
-          <span class="section-index">01 / THE LOOP</span>
-          <div><h2>AI that knows where its authority ends.</h2><p>A guest message, a soft night, or an aging task becomes a proposal. The right person approves it. Approved work is tracked until it is done.</p></div>
+          <span class="section-index">04 / THE LOOP</span>
+          <div><h2>AI that knows where its authority ends.</h2><p>A guest message, a slow week or a stock variance becomes a proposal. The right person approves it. Approved work is tracked until it is done.</p></div>
         </div>
         <div class="flow">
-          <article class="flow-step"><b>01</b><h3>Signal</h3><p>WhatsApp, the morning brief, a checkout, or a weekly revenue scan enters the hotel's context.</p></article>
-          <article class="flow-step"><b>02</b><h3>Suggest</h3><p>The AI checks tasks, hotel policy, and what the guest has already bought before it proposes a next move.</p></article>
-          <article class="flow-step"><b>03</b><h3>Approve</h3><p>The GM or manager sees the evidence, risk and policy fit—then approves, edits or declines.</p></article>
-          <article class="flow-step"><b>04</b><h3>Track</h3><p>Approved work becomes a task with an owner, status, timing and an audit trail through completion.</p></article>
+          <article class="flow-step"><b>01</b><h3>Signal</h3><p>A WhatsApp message, the morning brief, a service order or a stock count enters the hotel's context.</p></article>
+          <article class="flow-step"><b>02</b><h3>Suggest</h3><p>AskAI checks hotel policy, open tasks and history, then drafts the next move: a reply, a campaign or a reorder list.</p></article>
+          <article class="flow-step"><b>03</b><h3>Approve</h3><p>The GM or manager sees the evidence, the risk and the policy fit, then approves, edits or declines.</p></article>
+          <article class="flow-step"><b>04</b><h3>Track</h3><p>Approved work becomes a task with an owner, a timer and an audit trail through to completion.</p></article>
         </div>
       </div>
     </section>
@@ -773,7 +900,7 @@
     <section class="domains" id="operations">
       <div class="wrap">
         <div class="section-head">
-          <span class="section-index">02 / ONE OPERATING VIEW</span>
+          <span class="section-index">05 / SWARMFORGE OS</span>
           <div><h2>The day is already busy. The interface shouldn't be.</h2><p>The GM runs the morning. Staff see their work. Important guests are routed first. Everyone else gets the task, not the guest's phone number.</p></div>
         </div>
         <div class="domain-grid">
@@ -802,7 +929,7 @@
     <section id="owners">
       <div class="wrap">
         <div class="section-head">
-          <span class="section-index">03 / FOR OWNERS</span>
+          <span class="section-index">06 / FOR OWNERS</span>
           <div><h2>See the hotels. Skip the chase.</h2><p>The fastest return is usually one of three: a guest answered on time, a soft night caught early, or an owner who no longer calls each GM for an update.</p></div>
         </div>
         <div class="domain-grid">
@@ -810,7 +937,7 @@
             <span class="domain-number">PORTFOLIO</span>
             <svg viewBox="0 0 160 160" aria-hidden="true"><path d="M36 112V58h28l12-16h48v70M36 112h100" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M58 86h18M86 86h18M58 102h18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
             <h3>Which hotel needs you.</h3>
-            <p>Health, revenue, and a short daily note for every property you own. Guest names stay at the hotel.</p>
+            <p>Health, guest follow-ups and a short daily note for every property you own. Guest names stay at the hotel.</p>
           </article>
           <article class="domain-card">
             <span class="domain-number">ONE GOAL</span>
@@ -822,7 +949,7 @@
             <span class="domain-number">A LIGHT START</span>
             <svg viewBox="0 0 160 160" aria-hidden="true"><path d="M48 40h64v80H48zM64 40V28h32v12M58 64h44M58 80h32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
             <h3>No new system of record.</h3>
-            <p>A bookings file is enough to begin. SwarmForge sits above the PMS. It does not replace the bill.</p>
+            <p>A bookings file is enough to begin. SwarmForge sits beside the PMS. It never replaces the bill.</p>
           </article>
         </div>
       </div>
@@ -833,19 +960,27 @@
         <div class="trust-copy">
           <div class="eyebrow">Trust is the product</div>
           <h2>Built for the reality of hotel access.</h2>
-          <p>Operational speed shouldn't mean losing control of guest information, hotel policy or who approved what.</p>
+          <p>Speed should not cost you control of guest information, hotel policy or who approved what.</p>
           <div class="trust-list">
             <div class="trust-item">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 5 6v5c0 4.7 2.7 8 7 10 4.3-2 7-5.3 7-10V6l-7-3Z" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m9 12 2 2 4-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              <div><strong>Guest identity stays GM-only</strong><span>Managers work by room number; staff see only the work assigned to them.</span></div>
+              <div><strong>Nothing sends itself</strong><span>AI drafts on WhatsApp and email. A person sends. Campaigns, comps, write-offs and reorders wait for approval.</span></div>
+            </div>
+            <div class="trust-item">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8 10h8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+              <div><strong>WhatsApp first, done properly</strong><span>Consent, template rules and quiet hours are handled by the desk. Email is the fallback.</span></div>
             </div>
             <div class="trust-item">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l3 3v15H6zM9 11h6M9 15h6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-              <div><strong>Policies travel with every proposal</strong><span>Hotel documents and SOPs are checked before work reaches the approval queue.</span></div>
+              <div><strong>Consent before marketing</strong><span>GuestLoop only contacts people who opted in. An ops chat is not marketing consent.</span></div>
+            </div>
+            <div class="trust-item">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 5 6v5c0 4.7 2.7 8 7 10 4.3-2 7-5.3 7-10V6l-7-3Z" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m9 12 2 2 4-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <div><strong>Guest identity stays GM-only</strong><span>Managers work by room number. Staff see only the work assigned to them.</span></div>
             </div>
             <div class="trust-item">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 3-6.2L4 8M4 4v4h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M12 7v5l3 2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-              <div><strong>An explainable record</strong><span>Actions, decisions and task timing stay visible in the hotel's audit trail.</span></div>
+              <div><strong>One audit trail across the suite</strong><span>Desk actions, campaigns, orders, counts and adjustments land in the same record.</span></div>
             </div>
           </div>
         </div>
@@ -863,60 +998,36 @@
       <div class="wrap">
         <div class="section-head">
           <div>
-            <div class="section-index">04 / VISION</div>
+            <div class="section-index">07 / VISION</div>
             <h2>Where this is heading.</h2>
           </div>
-          <p>Ideas on AI agents, direct bookings and a tighter hotel desk. These posts describe direction, not features you can switch on today.</p>
+          <p>Ideas on a more capable desk, trust for AI agents and direct offers. These posts describe direction, not features you can switch on today.</p>
         </div>
         <div class="vision-grid">
-          <a class="vision-card" href="#post-agent-booking">
-            <span>Booking channel</span>
-            <h3>An agent booking channel.</h3>
-            <p>Hotels publish an offer. A guest or a registered agent requests it. The hotel pays only when a booking happens.</p>
+          <a class="vision-card" href="/blog/ai-desk.html">
+            <span>AI desk</span>
+            <h3>A more capable AI desk.</h3>
+            <p>Notice, understand, recommend, act, learn. People still approve anything that touches guests or money.</p>
           </a>
-          <a class="vision-card" href="#post-trust-layer">
+          <a class="vision-card" href="/blog/trust-layer.html">
             <span>Trust layer</span>
             <h3>A trust layer for personal agents.</h3>
             <p>Who is calling, what the traveler allowed, and what the hotel allows. Rules are checked by software, not by a persuasive message.</p>
           </a>
-          <a class="vision-card" href="#post-ai-desk">
-            <span>AI desk</span>
-            <h3>A more capable AI desk.</h3>
-            <p>Notice, understand, recommend, act, learn. People still approve anything that touches guests, rooms or money.</p>
+          <a class="vision-card" href="/blog/agent-booking-channel.html">
+            <span>Booking channel <em class="tag-later">Later</em></span>
+            <h3>An agent-readable offer feed.</h3>
+            <p>Hotels publish an offer. A guest or a registered agent requests it. Direction, not a feature you can switch on today.</p>
           </a>
         </div>
-      </div>
-    </section>
-
-    <section class="blog-post" id="post-agent-booking">
-      <div class="wrap">
-        <p class="blog-kicker"><a href="#vision">Vision</a> · Booking channel</p>
-        <h2>An Agent Booking Channel for Independent Hotels</h2>
-        <p>More travelers are starting to ask AI assistants to plan trips. Today those assistants mostly send people to the same large booking sites that hotels already depend on. We think independent hotels deserve a direct path into this new channel, one where the hotel stays in control, the guest gets a clear offer, and the hotel pays only when a booking actually happens.</p><p>This post describes where SwarmForge is heading. It is a vision for a future channel, not a feature you can switch on today.</p><h2>The problem</h2><p>Independent hotels live with three pressures at once.</p><div class="cards"><div class="card"><h3>Commission pressure</h3>Online travel agencies bring real demand, but every booking they deliver carries a commission. For a small property, that cost adds up across a season and leaves less room for service, staff and upkeep.</div><div class="card"><h3>Limited GM time</h3>The GM is often also the revenue manager, the marketer and the person fixing the front desk printer. Building promotions and pushing them to channels rarely gets the time it deserves.</div><div class="card"><h3>A new kind of visitor</h3>Personal AI agents are beginning to search and compare on behalf of travelers. If hotels are not reachable by those agents in a way they control, the agents will simply route through whoever is.</div></div><p>None of these go away on their own. What can change is how easily a small hotel can put a good offer in front of travelers and their agents, without adding hours of work or another intermediary that takes a cut of every stay.</p><h2>How it works</h2><div class="flow"><div class="step"><span class="n">1</span><b>Hotel AI suggests</b>Offers for soft dates</div><div class="step"><span class="n">2</span><b>GM approves</b>Price, rooms, blackout dates</div><div class="step"><span class="n">3</span><b>Offer published</b>Open feed, free to post</div><div class="step"><span class="n">4</span><b>Agent or guest requests</b>Within the offer rules</div><div class="step"><span class="n">5</span><b>Booking confirmed</b>Fee only on booking</div></div><p><b>1. The hotel AI spots an opportunity.</b> SwarmForge already helps GMs look at their operations. In this vision, it also notices soft dates, such as a quiet midweek stretch, and drafts an offer: a room type, a price, what is included and how long the offer is valid.</p><p><b>2. The GM approves.</b> Nothing goes live without the GM. They can accept the draft, change the price or inclusions, set how many rooms are available and mark blackout dates where the offer does not apply.</p><p><b>3. The offer is published to a public feed.</b> Approved offers appear on a simple page on Prefertrip.com, one card per offer, and in a machine-readable file that AI agents can read. Posting an offer is free.</p><p><b>4. A guest or an agent requests the stay.</b> A traveler can click the card, or a registered AI agent can send a request for its traveler. Requests must fit the offer: valid dates, available rooms, within the expiry.</p><p><b>5. The booking is confirmed.</b> At first, every request goes to the GM for a one click approval. Then a payment link goes to the guest. Once the guest pays, both sides get a confirmation and the hotel pays a fee for that booking. If nobody books, the hotel pays nothing.</p><h2>What the GM controls</h2><p>The point of this channel is to put more control in the hotel's hands, not less. Every offer carries rules that the hotel sets and that software enforces.</p><ul><li><b>Price envelope:</b> the published price, plus the lowest price the hotel would ever accept if negotiation is turned on later. Anything outside that range is refused or sent to the GM.</li><li><b>Room counts:</b> how many rooms the offer can sell. When they are gone, the offer stops taking requests.</li><li><b>Blackout dates:</b> dates the offer does not cover, such as festivals, weddings or dates already full. This removes most of the back and forth before it starts.</li><li><b>Expiry:</b> when the offer ends, so stale deals do not linger.</li><li><b>Approvals:</b> during the pilot, every booking request needs the GM's approval. Over time a hotel could choose to auto approve requests that fit its rules, but anything that costs money stays with a person.</li></ul><h2>What the guest or agent experiences</h2><p>For a traveler browsing on their own, the experience is simple. They see a card with a hotel photo, the hotel name with a link to its website, the dates, the room type, the price, what is included and when the offer expires. One button lets them request the stay. They fill in a short form with their name, email, phone, dates and number of guests.</p><p>After the GM approves, the guest receives a payment link from Prefertrip, processed through Razorpay. The link has a short expiry. When payment goes through, the guest and the hotel each receive a confirmation email, and the GM records the booking in their property management system as they would any direct booking. If the link expires unpaid, the rooms go back on offer.</p><p>For an AI agent, the steps are the same, just structured. The agent reads the offer file, checks the rules, and sends a request with the traveler's details through a registered gateway. Unregistered bots can read the public offers but cannot place requests. We describe how agents get registered and trusted in <a href="#post-trust-layer">our post on the trust layer</a>.</p><div class="flow"><div class="step"><span class="n">1</span><b>Request</b>Guest or agent sends details</div><div class="step"><span class="n">2</span><b>GM approves</b>One click</div><div class="step"><span class="n">3</span><b>Payment link</b>Sent by Prefertrip via Razorpay</div><div class="step"><span class="n">4</span><b>Confirmed</b>Emails to guest and hotel</div><div class="step"><span class="n">5</span><b>Recorded</b>GM enters it in the PMS</div></div><div class="ex"><div class="lbl">Illustrative example, not real data</div><h3 style="margin:6px 0">A quiet Tuesday to Thursday</h3><p>Imagine a 20 room boutique hotel with a quiet stretch next month. SwarmForge suggests a two night midweek offer on a deluxe room with breakfast and late checkout. The GM sets the price at ₹6,000 per night, allows 4 rooms, blacks out one date that clashes with a local event, and sets the offer to expire in ten days.</p><p>A traveler's AI assistant finds the offer and sends a request for two nights. The GM approves it from their phone. The guest pays ₹12,000 through the payment link and both sides get a confirmation. The hotel pays a single booking fee for that stay. Three of the four rooms remain on offer until the expiry.</p><p>The numbers above are made up to show the flow. Actual prices, fees and results depend on each hotel and are not a forecast.</p></div><h2>Trust and safety</h2><ul><li><b>People approve money.</b> No price, refund or booking that costs money happens without a person saying yes.</li><li><b>SwarmForge never holds guest funds.</b> Payments are collected through Prefertrip's payment provider, not held by the software.</li><li><b>Rules are enforced by software, not guessed by AI.</b> AI can draft and suggest. Whether a request fits the hotel's rules is checked by plain, predictable code.</li><li><b>Only registered agents can book.</b> Anyone can read public offers, but placing a request requires an agent that has been identified and approved.</li><li><b>Everything is recorded.</b> Requests, approvals, payments and confirmations leave a clear trail the hotel can review.</li></ul><h2>Why now</h2><p>Personal AI agents are moving from answering questions to taking actions. Large companies are publishing early standards for how agents should shop and pay. Hotels that are machine readable and rule driven will be easier for those agents to work with. Starting small now, with one hotel and a handful of offers, lets us learn what guests, agents and GMs actually need before the channel grows.</p><h2>What it isn't</h2><ul><li>It is not a replacement for OTAs. Most hotels will keep using them. This is an additional direct channel.</li><li>It is not a promise of lower costs in every case. Whether it saves money depends on how many bookings it brings and the fee for each one.</li><li>It is not an instant booking engine on day one. Without a live connection to the hotel's systems, requests are confirmed by the GM.</li><li>It is not a payment service. SwarmForge does not hold or move guest money.</li></ul><h2>FAQ</h2><details><summary>Is this live today?</summary><p>No. This is a vision we are working toward, starting with a small pilot.</p></details><details><summary>How much does the hotel pay?</summary><p>Posting offers is free. The hotel pays a fee only when a booking happens. Specific fees will be shared with pilot hotels directly.</p></details><details><summary>Do I need a channel manager or PMS integration?</summary><p>Not for the pilot. The GM confirms availability and enters bookings manually. Deeper integrations can come later.</p></details><details><summary>Who handles payments?</summary><p>Payments are collected by Prefertrip through Razorpay. SwarmForge never holds the money.</p></details><details><summary>Can an AI agent book without my approval?</summary><p>Not during the pilot. Every request comes to the GM first.</p></details><details><summary>What about guest support?</summary><p>Support for the stay stays with the hotel, just like a direct booking.</p></details><h2>Roadmap</h2><div class="road"><div class="card"><h3>Pilot</h3><ul><li>One hotel, a handful of offers</li><li>Public offer page and offer file</li><li>Request form with GM approval</li><li>Payment links and confirmation emails</li><li>Blackout dates and room counts</li></ul></div><div class="card"><h3>Later</h3><ul><li>More hotels and simple search by city, dates and price</li><li>Registered agents requesting stays directly</li><li>Optional auto approval within hotel rules</li><li>Negotiation within hotel set limits</li><li>Live availability through PMS partners</li></ul></div></div><div class="cta"><h2 style="color:#fff;border:0;padding:0;margin:0">Interested in shaping this with us?</h2><p>Hotels and partners who want to talk about early pilots can reach us anytime.</p><a href="mailto:admin@simplicore.ai">Contact admin@simplicore.ai</a></div><p class="note">This post describes SwarmForge's product direction. It is not a claim that these capabilities are available today.</p>
-      </div>
-    </section>
-
-    <section class="blog-post" id="post-trust-layer">
-      <div class="wrap">
-        <p class="blog-kicker"><a href="#vision">Vision</a> · Trust layer</p>
-        <h2>The Web Needs a Trust Layer for Personal AI Agents</h2>
-        <p>Websites were built for people: browse a page, compare a few options, fill in a form. Personal AI agents are a new kind of visitor. They are software acting for a person, carrying an intent such as "find a room that fits my dates and budget." For that to turn into a real booking, a hotel needs to know who is asking, what the traveler actually allowed, and whether the request fits the hotel's own rules.</p><p>This post describes how SwarmForge thinks about that trust layer. It is a design direction, not a network that is already built.</p><h2>The problem</h2><p>Some website owners now control which automated systems can read their content. But reading content and making a purchase are very different things. A crawler that indexes a page is harmless compared with an agent that wants to reserve a room and take a payment.</p><p>Today a hotel has two poor choices. Block automated traffic and miss the travelers whose agents are trying to book, or let it in and hope nothing goes wrong. Neither works for a small property with no security team. What is missing is a simple, predictable way to welcome trusted agents while keeping everything else at arm's length.</p><h2>Three separate questions</h2><div class="cards"><div class="card"><h3>Who is calling?</h3>The agent and the organization responsible for it.</div><div class="card"><h3>What did the person allow?</h3>The dates, preferences, maximum price, and whether the agent may book or must ask first.</div><div class="card"><h3>What does the hotel allow?</h3>Availability, policies, price limits and approval rules.</div></div><p>Keeping these questions separate makes decisions easier to understand and to challenge. A registered agent should not automatically be allowed to spend a traveler's money. A traveler's approval should not override a hotel's inventory or rules. And a hotel's rules should never be bent because an agent is persuasive.</p><h2>How it works</h2><div class="flow"><div class="step"><span class="n">1</span><b>Apply</b>Agent and operator identify themselves</div><div class="step"><span class="n">2</span><b>Verify</b>Credentials checked</div><div class="step"><span class="n">3</span><b>Approved</b>Clear limits apply</div><div class="step"><span class="n">4</span><b>Act within rules</b>Requests checked every time</div><div class="step"><span class="n">5</span><b>Monitored</b>Access can be revoked</div></div><p><b>Discovery is open.</b> Hotels publish their approved offers, availability windows and terms in a public, machine readable form. Any agent can read them, the same way any person can read a website.</p><p><b>Booking is registered.</b> To send a booking request, an agent and the company behind it register first. They identify themselves, agree to the rules of the channel and receive credentials. Those credentials can be checked on every request and withdrawn at any time.</p><p><b>Every request is checked against rules.</b> When a registered agent asks for a stay, software checks the request against the offer: dates, room counts, blackout dates, price limits and expiry. If it fits, it moves forward. If not, it is refused or sent to a person. The AI does not decide whether the rules are met.</p><p><b>Abuse is limited.</b> Request limits and monitoring keep a misbehaving agent from flooding a hotel. Problem agents can be suspended without affecting anyone else.</p><h2>Negotiation within limits</h2><p>Later on, an agent may want to ask for a better rate, an extra night or breakfast included. We see negotiation as useful only if the hotel sets the boundaries in advance. The hotel defines a range: the lowest price it would accept and which extras it is willing to add. Within that range, an offer can be made automatically. Outside it, the request goes to the GM or is politely declined.</p><p>The principle is simple: AI may propose, but rules decide. A clever message from an agent cannot push a hotel below its floor, because the floor is enforced by plain software rather than by a language model's judgment.</p><div class="flow"><div class="step"><span class="n">1</span><b>Agent asks</b>Rate or extras</div><div class="step"><span class="n">2</span><b>Rules check</b>Within hotel limits?</div><div class="step"><span class="n">3</span><b>Offer or review</b>Auto offer, or GM decides</div><div class="step"><span class="n">4</span><b>Traveler approves</b>Exact terms shown</div></div><h2>What the GM controls</h2><ul><li><b>Which offers are public</b> and for how long.</li><li><b>Price envelopes:</b> the published price and the lowest acceptable price if negotiation is enabled.</li><li><b>Room counts and blackout dates</b> for each offer.</li><li><b>Approval rules:</b> which requests need a person. During a pilot, all of them do.</li><li><b>Which agents to accept</b>, with the option to decline any registered agent.</li></ul><h2>What the traveler and agent experience</h2><p>The traveler sets the mandate: dates, budget, preferences and whether their agent may finalize or must check back. The agent searches participating hotels, sends a structured request and receives a clear answer: an offer with exact terms, a request under review, or a refusal with a reason. Before anything is paid, the traveler sees the final terms and approves them.</p><p>A booking is confirmed only when three things have happened: the traveler has given the consent required, the hotel has committed the room, and the agreed payment step has succeeded. If anything fails along the way, the request keeps a clear status so everyone knows where it stands.</p><div class="ex"><div class="lbl">Illustrative example, not real data</div><h3 style="margin:6px 0">An agent asks for a better rate</h3><p>A hotel publishes a weekend offer at ₹7,000 per night and sets a floor of ₹6,300, with breakfast as an optional extra. A registered agent asks for ₹6,000 with breakfast. The rules check says ₹6,000 is below the floor, so the system counters at ₹6,300 with breakfast. The traveler approves, and the request goes to the GM for final confirmation.</p><p>A second, unregistered bot tries to send the same request. It can still read the offer, but its booking request is refused because it has no valid credentials.</p><p>These numbers are invented to explain the flow and do not describe any real hotel.</p></div><h2>A shared record</h2><p>Important events are recorded: the request, any counter offer, approvals, payment, confirmation, changes and cancellations. The hotel, the agent and the traveler can each understand what happened. Reputation may later help judge which agents are reliable, but it should be explainable, open to appeal, and kept separate from verified identity.</p><h2>Trust and safety</h2><ul><li>Identity, traveler permission, hotel rules and the transaction record are kept separate.</li><li>Credentials can be withdrawn at any time.</li><li>Rules are checked by software every time, not by AI judgment.</li><li>People approve anything that costs money.</li><li>SwarmForge never holds guest funds.</li></ul><h2>Why now</h2><p>Agent identity and commerce standards are taking shape, including <a href="https://developers.googleblog.com/under-the-hood-universal-commerce-protocol-ucp/">Google's Universal Commerce Protocol</a> and <a href="https://developer.visa.com/capabilities/trusted-agent-protocol">Visa's Trusted Agent Protocol</a>. Rather than invent a proprietary system that every agent must adopt, we intend to connect through standards and adapters as they mature. Designing the trust layer now means hotels are ready when agents arrive.</p><h2>What it isn't</h2><ul><li>It is not a single universal registry for the whole web.</li><li>It is not a promise that agent bookings will always be cheaper or better than other channels.</li><li>It is not a way for agents to bypass a hotel's rules or staff.</li><li>It is not a reputation score that replaces verified identity.</li></ul><h2>FAQ</h2><details><summary>Can any bot book my rooms?</summary><p>No. Anyone can read public offers, but only registered agents can send booking requests, and those requests must fit your rules.</p></details><details><summary>What happens if an agent misbehaves?</summary><p>Its access can be limited or withdrawn without affecting other agents.</p></details><details><summary>Can an agent talk my price down?</summary><p>Only within the range you set in advance. Software enforces the floor.</p></details><details><summary>Does AI decide whether a request is allowed?</summary><p>No. AI can suggest, but whether a request fits your rules is checked by predictable software.</p></details><details><summary>Will this work with other agent standards?</summary><p>That is the intention. We plan to connect through emerging standards rather than require one proprietary system.</p></details><details><summary>Is this available now?</summary><p>No. This is a design direction we are piloting step by step.</p></details><h2>Roadmap</h2><div class="road"><div class="card"><h3>Pilot</h3><ul><li>Public offers anyone can read</li><li>A small set of registered agents</li><li>All requests reviewed by the GM</li><li>A clear record of every request</li></ul></div><div class="card"><h3>Later</h3><ul><li>Self service agent registration</li><li>Negotiation within hotel set limits</li><li>Explainable, appealable reputation</li><li>Adapters for emerging agent standards</li></ul></div></div><div class="cta"><h2 style="color:#fff;border:0;padding:0;margin:0">Interested in shaping this with us?</h2><p>Hotels and partners who want to talk about early pilots can reach us anytime.</p><a href="mailto:admin@simplicore.ai">Contact admin@simplicore.ai</a></div><p class="note">This post describes SwarmForge's product direction. It is not a claim that these capabilities are available today.</p>
-      </div>
-    </section>
-
-    <section class="blog-post" id="post-ai-desk">
-      <div class="wrap">
-        <p class="blog-kicker"><a href="#vision">Vision</a> · AI desk</p>
-        <h2>A More Capable AI Desk for Independent Hotels</h2>
-        <p>Independent hotels have no shortage of data. Reservations, guest feedback, operating costs, staffing, local events and daily decisions all affect revenue and guest experience. The hard part is bringing those signals together in time to act, often with a small team already doing several jobs at once.</p><p>SwarmForge's vision is an AI desk that helps owners and GMs see what matters, decide what to do and follow through, with the right controls. This post describes that direction. It is not a claim that every capability described is available today.</p><h2>The problem</h2><div class="cards"><div class="card"><h3>Scattered signals</h3>Bookings sit in one system, reviews in another, costs in a spreadsheet. Seeing the full picture takes time most GMs do not have.</div><div class="card"><h3>Too many hats</h3>In a small hotel the GM handles revenue, marketing, staffing and guest issues. Good ideas get lost in the day.</div><div class="card"><h3>Tools that only talk</h3>Many AI tools answer questions in a chat window and stop there. The work of acting on the answer still lands on the team.</div></div><p>At the same time, the way guests find hotels is changing. Commission based channels remain important, and AI agents are starting to search on travelers' behalf. A small team needs help to keep up without giving away control.</p><h2>From signals to action</h2><div class="flow"><div class="step"><span class="n">1</span><b>Notice</b>A change worth attention</div><div class="step"><span class="n">2</span><b>Understand</b>Context and why it matters</div><div class="step"><span class="n">3</span><b>Recommend</b>A practical next step</div><div class="step"><span class="n">4</span><b>Act</b>Approved work gets done</div><div class="step"><span class="n">5</span><b>Learn</b>Did it help?</div></div><p><b>Notice.</b> The desk brings forward a change or opportunity that deserves attention, such as a run of soft nights, a cost creeping up or a pattern in guest feedback.</p><p><b>Understand.</b> It shows the relevant hotel context and explains why the issue matters, so the GM is not asked to trust a black box.</p><p><b>Recommend.</b> It proposes a practical next step with the assumptions and expected effect visible. The GM can adjust any part of it.</p><p><b>Act.</b> Approved work is carried out, or routed to the person responsible. The desk does not quietly change prices or commit rooms beyond the rules the hotel has chosen.</p><p><b>Learn.</b> What happened is recorded, so the team can judge whether the action helped and do better next time.</p><h2>One desk, many focused agents</h2><p>We see a future where a GM gives the desk a goal, such as improving weekday occupancy or reducing avoidable operating costs, and focused AI agents help with the analysis and follow up. One might look at booking patterns, another at local events, another at drafting an offer. They work from hotel approved information, share a clear view of the task and return results in one place for the GM to review.</p><p>The goal is not a collection of disconnected bots. It is one coherent desk: what was noticed, what is recommended, what needs approval and what happened afterward, all connected.</p><h2>What the GM controls</h2><ul><li><b>Goals:</b> what the desk should focus on this week or season.</li><li><b>Boundaries:</b> price ranges, room limits and blackout dates the desk must respect.</li><li><b>Approvals:</b> which actions need a person. Anything affecting guests, staff, inventory or money stays with the team.</li><li><b>Data:</b> which information the desk may use. The hotel's data stays the hotel's.</li><li><b>Scope:</b> which capabilities are turned on at all.</li></ul><h2>What the team experiences</h2><p>Instead of hunting through reports, the GM opens the desk and sees a short list of things that matter today, each with a clear explanation and a suggested next step. Approving, editing or dismissing takes a moment. Staff see the tasks routed to them. Later, the GM can look back and see what the desk suggested, what the team decided and how it turned out.</p><div class="ex"><div class="lbl">Illustrative example, not real data</div><h3 style="margin:6px 0">Turning soft nights into an offer</h3><p>Imagine the desk notices that occupancy for the second week of next month is well below the same period last year, while a nearby conference is drawing visitors. It summarizes the booking pace and the event, and suggests a three night package with airport pickup at ₹5,500 per night.</p><p>The GM lowers the room count to 5, adds breakfast and approves. The offer is published through the hotel's chosen channels, including the <a href="#post-agent-booking">agent booking channel</a> when it is available. Two weeks later the desk reports how many rooms the offer filled, so the GM can decide whether to repeat it.</p><p>All figures here are illustrative and do not describe any real hotel or result.</p></div><h2>Trust and safety</h2><ul><li>The hotel sets the boundaries, and software enforces them.</li><li>Every recommendation shows its reasoning and assumptions.</li><li>People approve anything that affects guests, staff, inventory or money.</li><li>Actions are recorded so the team can see what happened and why.</li><li>The desk works only from information the hotel has approved.</li></ul><h2>Why now</h2><p>AI is now capable enough to read hotel context and prepare useful options, and guests are beginning to use AI agents to plan travel. Independent hotels that can turn signals into action quickly, without growing their teams, will be better placed for both. Building the desk around clear rules and approvals from the start means new capabilities can be added safely.</p><p>Just as important, the desk should know when to stay quiet. A short list of well explained suggestions is more useful to a busy GM than a constant stream of alerts. Part of the design work is deciding what deserves attention, and letting each hotel tune that to its own rhythm.</p><h2>A foundation that adapts</h2><p>Hotels will use new channels as expectations and technology change. Some will want help with direct booking, others with reputation, guest communication or connections to their existing systems. Our direction is to fit these into the same model: hotel defined rules, clear proposals, human approval and a record of actions.</p><h2>What it isn't</h2><ul><li>It is not autopilot. The desk prepares and suggests; people decide.</li><li>It is not a replacement for the hospitality and judgment of the hotel team.</li><li>It is not measured by how busy the AI looks. Success is better decisions with less friction.</li><li>It is not a promise of specific results.</li></ul><h2>FAQ</h2><details><summary>Will the AI change my prices on its own?</summary><p>No. It can suggest changes, but anything affecting prices, rooms or money needs your approval and stays within your rules.</p></details><details><summary>Do I need technical staff?</summary><p>The aim is that a GM can use the desk directly, without a technical team.</p></details><details><summary>What data does it use?</summary><p>Only information the hotel has approved. The hotel's data stays under its control.</p></details><details><summary>How do I know why it suggested something?</summary><p>Every recommendation shows the context and assumptions behind it.</p></details><details><summary>Can I turn capabilities on or off?</summary><p>Yes. Each hotel chooses its own scope.</p></details><details><summary>Is everything described here available now?</summary><p>No. This is our product vision, and capabilities will arrive step by step.</p></details><h2>Roadmap</h2><div class="road"><div class="card"><h3>Pilot</h3><ul><li>Notice and recommend for core hotel signals</li><li>GM approval on every action</li><li>A record of suggestions and decisions</li></ul></div><div class="card"><h3>Later</h3><ul><li>Goal driven work across focused agents</li><li>Offers published to new channels</li><li>Measuring whether actions helped</li><li>More integrations with hotel systems</li></ul></div></div><div class="cta"><h2 style="color:#fff;border:0;padding:0;margin:0">Interested in shaping this with us?</h2><p>Hotels and partners who want to talk about early pilots can reach us anytime.</p><a href="mailto:admin@simplicore.ai">Contact admin@simplicore.ai</a></div><p class="note">This post describes SwarmForge's product direction. It is not a claim that these capabilities are available today.</p>
       </div>
     </section>
 
     <section class="cta-section">
       <div class="wrap">
         <div class="cta-block">
-          <div><h2>Start with one hotel.</h2><p>Bring the morning, WhatsApp, and the week's opportunities into one loop. Pricing is scoped to the property. Email us for a walkthrough and a cost.</p></div>
-          <a class="button" href="mailto:admin@simplicore.ai">Ask about cost <span aria-hidden="true">→</span></a>
+          <div><h2>Start with one hotel.</h2><p>Start with the desk. Add GuestLoop and StoreLoop as they open. Pricing is scoped to the property. Email us for a walkthrough and a cost.</p></div>
+          <a class="button" href="#contact">Book a walkthrough <span aria-hidden="true">→</span></a>
         </div>
       </div>
     </section>
@@ -944,15 +1055,24 @@
           <input id="contactEmail" name="email" type="email" autocomplete="email" placeholder="you@hotel.com" required />
         </div>
         <div class="form-field full">
-          <label for="contactHotel">Hotel or property</label>
-          <input id="contactHotel" name="hotel" type="text" autocomplete="organization" placeholder="Property name and location" />
+          <label for="contactHotel">Hotel or agency</label>
+          <input id="contactHotel" name="hotel" type="text" autocomplete="organization" placeholder="Property or agency name and location" />
+        </div>
+        <div class="form-field full">
+          <label for="contactInterest">Interested in</label>
+          <select id="contactInterest" name="interest">
+            <option value="SwarmForge OS">SwarmForge OS</option>
+            <option value="GuestLoop">GuestLoop</option>
+            <option value="StoreLoop">StoreLoop</option>
+            <option value="All three" selected>All three</option>
+          </select>
         </div>
         <div class="form-field full">
           <label for="contactMessage">What would you like to improve?</label>
           <textarea id="contactMessage" name="message" placeholder="A quick note about your operation, team or guest experience" required></textarea>
         </div>
         <button class="button" type="submit">
-          Send email
+          Book a walkthrough
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
         <p class="form-note" id="contactNote" aria-live="polite">Opens a new email to admin@simplicore.ai.</p>
@@ -960,15 +1080,15 @@
     </div>
 
     <div class="wrap footer-base">
-      <div class="footer-mark"><strong>SwarmForge</strong><span>A SimpliCore.ai product for independent hotels.</span></div>
+      <div class="footer-mark"><strong>SwarmForge</strong><span>A SimpliCore.ai suite for independent hotels and travel agencies.</span></div>
       <div class="footer-links">
+        <a href="#suite">SwarmForge OS</a>
+        <a href="/guestloop">GuestLoop</a>
+        <a href="/storeloop">StoreLoop</a>
         <a href="#workflow">How it works</a>
-        <a href="#owners">For owners</a>
-        <a href="#trust">Trust & control</a>
-        <a href="#vision">Vision</a>
-        <a href="#post-agent-booking">Booking channel</a>
-        <a href="#post-trust-layer">Trust layer</a>
-        <a href="#post-ai-desk">AI desk</a>
+        <a href="#trust">Trust &amp; control</a>
+        <a href="/blog/">Vision</a>
+        <a href="https://app.swarmforge.simplicore.ai">Sign in</a>
         <a href="mailto:admin@simplicore.ai">admin@simplicore.ai</a>
       </div>
     </div>
@@ -1007,6 +1127,18 @@
     });
   });
 
+  const contactInterest = document.getElementById('contactInterest');
+  document.querySelectorAll('[data-interest]').forEach((link) => {
+    link.addEventListener('click', () => {
+      if (contactInterest) contactInterest.value = link.dataset.interest;
+    });
+  });
+  const params = new URLSearchParams(window.location.search);
+  if (contactInterest && params.get('interest')) {
+    const wanted = params.get('interest');
+    if ([...contactInterest.options].some((o) => o.value === wanted)) contactInterest.value = wanted;
+  }
+
   const contactForm = document.getElementById('contactForm');
   const contactNote = document.getElementById('contactNote');
 
@@ -1019,14 +1151,16 @@
     const email = String(data.get('email') || '').trim();
     const hotel = String(data.get('hotel') || '').trim();
     const message = String(data.get('message') || '').trim();
-    const subject = hotel ? `SwarmForge enquiry — ${hotel}` : 'SwarmForge enquiry';
+    const interest = String(data.get('interest') || '').trim();
+    const subject = hotel ? `SwarmForge walkthrough: ${hotel}` : 'SwarmForge walkthrough';
     const body = [
       `Name: ${name}`,
       `Email: ${email}`,
-      hotel ? `Hotel: ${hotel}` : '',
+      hotel ? `Hotel or agency: ${hotel}` : '',
+      interest ? `Interested in: ${interest}` : '',
       '',
       message
-    ].filter((line, index) => line || index > 2).join('\n');
+    ].filter((line, index) => line || index > 3).join('\n');
 
     contactNote.textContent = 'Your email app is opening. Review the message there before sending.';
     window.location.href = `mailto:admin@simplicore.ai?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;

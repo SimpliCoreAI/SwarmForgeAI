@@ -1,12 +1,12 @@
 """
-SwarmForgeAI demo server — public landing + login-gated app surface.
+SwarmForgeAI demo server: public landing + login-gated app surface.
 Run: python server.py
 """
 import os
 from pathlib import Path
 
 from dotenv import load_dotenv
-from flask import Flask, redirect, render_template_string, request, session, url_for, abort, send_file
+from flask import Flask, redirect, render_template_string, request, session, url_for, abort, send_file, send_from_directory
 
 load_dotenv()
 
@@ -35,7 +35,7 @@ LOGIN_HTML = """
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SwarmForgeAI — Sign In</title>
+<title>SwarmForgeAI: Sign In</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -132,6 +132,52 @@ def index():
     if not landing_path.exists():
         abort(404)
     return landing_path.read_text()
+
+
+@app.route("/guestloop")
+def guestloop_page():
+    page_path = BASE_DIR / "public" / "guestloop.html"
+    if not page_path.exists():
+        abort(404)
+    return page_path.read_text()
+
+
+@app.route("/storeloop")
+def storeloop_page():
+    page_path = BASE_DIR / "public" / "storeloop.html"
+    if not page_path.exists():
+        abort(404)
+    return page_path.read_text()
+
+
+@app.route("/robots.txt")
+def robots_txt():
+    robots_path = BASE_DIR / "public" / "robots.txt"
+    if not robots_path.exists():
+        abort(404)
+    return send_file(robots_path, mimetype="text/plain", conditional=True)
+
+
+@app.route("/sitemap.xml")
+def sitemap_xml():
+    sitemap_path = BASE_DIR / "public" / "sitemap.xml"
+    if not sitemap_path.exists():
+        abort(404)
+    return send_file(sitemap_path, mimetype="application/xml", conditional=True)
+
+
+@app.route("/favicon.ico")
+def favicon():
+    icon_path = BASE_DIR / "public" / "favicon.ico"
+    if not icon_path.exists():
+        abort(404)
+    return send_file(icon_path, mimetype="image/x-icon", conditional=True)
+
+
+@app.route("/assets/<path:filename>")
+def public_assets(filename):
+    # Public marketing assets only (icons, social preview image).
+    return send_from_directory(BASE_DIR / "public" / "assets", filename, conditional=True)
 
 
 @app.route("/home")

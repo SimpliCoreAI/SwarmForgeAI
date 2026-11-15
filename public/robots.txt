@@ -1,0 +1,16 @@
+# SwarmForge: allow search and AI search crawlers explicitly.
+# No robots.txt existed before; crawlers defaulted to allowed.
+# This file makes the allow explicit so a future default can't silently close it.
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: *
+Allow: /
+Disallow: /app
+Disallow: /support
+Disallow: /login
+
+Sitemap: https://swarmforge.simplicore.ai/sitemap.xml
