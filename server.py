@@ -134,6 +134,14 @@ def index():
     return landing_path.read_text()
 
 
+@app.route("/robots.txt")
+def robots_txt():
+    robots_path = BASE_DIR / "public" / "robots.txt"
+    if not robots_path.exists():
+        abort(404)
+    return send_file(robots_path, mimetype="text/plain", conditional=True)
+
+
 @app.route("/home")
 def home():
     return redirect(url_for("index"), code=302)
