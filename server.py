@@ -239,6 +239,33 @@ def blog_page(page):
     return blog_html(slug)
 
 
+PRODUCT_PAGES = {
+    "guestloop": "guestloop.html",
+    "storeloop": "storeloop.html",
+}
+
+
+def product_html(slug):
+    filename = PRODUCT_PAGES.get(slug)
+    if not filename:
+        abort(404)
+    path = BASE_DIR / "public" / "products" / filename
+    if not path.is_file():
+        abort(404)
+    return path.read_text(encoding="utf-8")
+
+
+@app.route("/products")
+def products_index_redirect():
+    return redirect("/#products", code=302)
+
+
+@app.route("/products/<page>")
+def product_page(page):
+    slug = page[:-5] if page.endswith(".html") else page
+    return product_html(slug)
+
+
 if __name__ == "__main__":
     port = int(os.getenv("PORT", "8877"))
     print(f"SwarmForgeAI server starting on http://0.0.0.0:{port}")
